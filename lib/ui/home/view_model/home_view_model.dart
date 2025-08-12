@@ -1,8 +1,8 @@
 
   import 'package:flutter/material.dart';
   
-  class CompanyViewModel extends ChangeNotifier {
-	  CompanyViewModel();
+  class HomeViewModel extends ChangeNotifier {
+	  HomeViewModel();
 	
 	  // Add your ViewModel code here
   }

@@ -1,4 +1,6 @@
 const Map<String, String> enUS = {
+  // //
+  'ok':'OK',
   // SIGN IN PAGE
   'title': 'Hello, Again',
   'subtitle': 'Welcome back, you\'ve been missed',
@@ -20,7 +22,15 @@ const Map<String, String> enUS = {
   'sign_up': 'Sign Up',
   'create_account' : "Create Account",
   'create_account_subtitle': 'Let\'s Create Account Together',
-  //COMPANY PAGE 
+  'admin_c_title':'Connect With Admin',
+  'admin_c_subtitle':'"Contact the admin to confirm the tariff"',
+  //TARIFF PAGE
+  'tariff_title':'Tariffs',
+  'tariff_subtitle':'Choose your tariff',
+  'tariff_buy':"Buy now",
+  'tariff_limit_title' :'Tariff Limit',
+  'tariff_limit_subtitle':'Your store addition limit for the tariff has been reached',
+  //STORE PAGE 
   'store_title':"Your Stores",
   'store_subtitle':'To add a store, click the add button below.',
   'store_create': 'Create Your Store',

@@ -40,15 +40,22 @@ class UserTariffService extends BaseService {
     }
   }
 
-  Future<void> deleteUserTariff(String userId) async {
-    try {
-      await supabase
-          .from(tableName)
-          .delete()
-          .eq('user_id', userId);
-    } catch (e) {
-      debugPrint('❌ Error in deleteUserTariff: $e');
-      rethrow;
-    }
+
+  Future<bool> hasUserTariff(String userId) async {
+  try {
+    final response = await supabase
+        .from(tableName)
+        .select('id')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+    return response != null; //yozuv bolsa TRUE
+  } catch (e) {
+    debugPrint('❌ Error in hasUserTariff: $e');
+    return false; // yozuv yoq bolsa FALSE
   }
+}
+
+
+
 }

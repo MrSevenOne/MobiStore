@@ -1,25 +1,45 @@
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mobi_store/config/localization/translations.dart';
 import 'package:mobi_store/export.dart';
-import 'package:mobi_store/routing/app_router.dart';
 import 'package:mobi_store/ui/core/themes/light_theme.dart';
 import 'package:mobi_store/ui/provider/locale_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
+import 'package:mobi_store/ui/provider/user_provider.dart';
+import 'package:mobi_store/ui/splash/view_model/splash_view_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-void main() async{
-    WidgetsFlutterBinding.ensureInitialized();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
     url: SupabaseConstants.supabaseUrl,
     anonKey: SupabaseConstants.supabaseAnonKey,
   );
   runApp(
-    MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_)=> LocaleProvider(),),
-    ],
-    child: const MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => LocaleProvider(),
+        ),
+        ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        ChangeNotifierProvider(create: (_) => UserViewModel(UserService())),
+        ChangeNotifierProvider(create: (context) => SplashViewModel()),
+        ChangeNotifierProvider(
+          create: (_) => TariffViewModel(),
+        ),
+        ChangeNotifierProvider(create: (_) => UserTariffViewModel()),
+        ChangeNotifierProvider(create: (context) => StoreViewModel()),
+        ChangeNotifierProvider(create: (_) => SelectedStoreViewModel()),
+      ],
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return MyApp();
+        },
+      ),
     ),
   );
 }
@@ -30,16 +50,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-        final localeProvider = Provider.of<LocaleProvider>(context);
+    final localeProvider = Provider.of<LocaleProvider>(context);
+    final userId = UserManager.currentUserId;
+    debugPrint('Xozirgi User Idsi: $userId');
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       translations: AppTranslations(),
       locale: localeProvider.locale,
       fallbackLocale: const Locale('en', 'US'),
       theme: LightTheme,
-      initialRoute: AppRouter.login,
-        onGenerateRoute: AppRouter.onGenerateRoute,
-         builder: (context, child) => ResponsiveBreakpoints.builder(
+      initialRoute: AppRouter.splash,
+      onGenerateRoute: AppRouter.onGenerateRoute,
+      builder: (context, child) => ResponsiveBreakpoints.builder(
         child: child!,
         breakpoints: [
           const Breakpoint(start: 0, end: 450, name: MOBILE),
@@ -51,4 +73,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

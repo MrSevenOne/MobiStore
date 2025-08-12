@@ -6,9 +6,9 @@ ThemeData LightTheme = ThemeData(
   scaffoldBackgroundColor: Color(0xFFF8F9FA),
   colorScheme: ColorScheme.light(
     primary: Color(0xFF5B9EE1),
-    onPrimary: Color(0xFF0072C0),
+    onPrimary: Colors.black,
     secondary: Colors.white,
-    background: Color(0xFFF8F9FA),
+    surface: Color(0xFFF8F9FA),
     shadow: Color(0xFFC6DDF4),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -21,7 +21,7 @@ ThemeData LightTheme = ThemeData(
       padding: EdgeInsets.symmetric(vertical: 4, horizontal: 32),
       textStyle: GoogleFonts.inknutAntiqua(
         textStyle: TextStyle(
-          fontSize: 18,
+          fontSize: 16.0,
           color: Colors.white,
           fontWeight: FontWeight.w500,
         ),
