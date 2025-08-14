@@ -1,6 +1,9 @@
 const Map<String, String> enUS = {
   // //
-  'ok':'OK',
+  'ok': 'OK',
+  'cancel':'cancel',
+  'delete':'delete',
+  'hello':'Hello',
   // SIGN IN PAGE
   'title': 'Hello, Again',
   'subtitle': 'Welcome back, you\'ve been missed',
@@ -20,22 +23,25 @@ const Map<String, String> enUS = {
   'dont_have_account': 'Don\'t have an account?',
   'have_account': 'Already Have An Account?',
   'sign_up': 'Sign Up',
-  'create_account' : "Create Account",
+  'create_account': "Create Account",
   'create_account_subtitle': 'Let\'s Create Account Together',
-  'admin_c_title':'Connect With Admin',
-  'admin_c_subtitle':'"Contact the admin to confirm the tariff"',
+  'admin_c_title': 'Connect With Admin',
+  'admin_c_subtitle': '"Contact the admin to confirm the tariff"',
   //TARIFF PAGE
-  'tariff_title':'Tariffs',
-  'tariff_subtitle':'Choose your tariff',
-  'tariff_buy':"Buy now",
-  'tariff_limit_title' :'Tariff Limit',
-  'tariff_limit_subtitle':'Your store addition limit for the tariff has been reached',
-  //STORE PAGE 
-  'store_title':"Your Stores",
-  'store_subtitle':'To add a store, click the add button below.',
+  'tariff_title': 'Tariffs',
+  'tariff_subtitle': 'Choose your tariff',
+  'tariff_buy': "Buy now",
+  'tariff_limit_title': 'Tariff Limit',
+  'tariff_limit_subtitle':
+      'Your store addition limit for the tariff has been reached',
+  //STORE PAGE
+  'store_title': "Your Stores",
+  'store_subtitle': 'To add a store, click the add button below.',
   'store_create': 'Create Your Store',
-  'store_name':'Store Name',
-  'store_location':'Store Location',
-  'store_name_add':'Enter name',
-  'store_location_add':'Enter location',
+  'store_name': 'Store Name',
+  'store_location': 'Store Location',
+  'store_name_add': 'Enter name',
+  'store_location_add': 'Enter location',
+  'shop_delete_title': 'Delete',
+  'shop_delete_description': 'Should the store be deleted ?',
 };

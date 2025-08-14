@@ -1,23 +1,23 @@
 import 'package:mobi_store/export.dart';
-import '../../../data/services/data/store_service.dart';
+import '../../../data/services/data/supabase/database/shop_service.dart';
 
-class StoreViewModel extends ChangeNotifier {
-  final StoreService _storeService = StoreService();
+class ShopViewmodel extends ChangeNotifier {
+  final ShopService _shopService = ShopService();
 
   bool _isLoading = false;
   String? _errorMessage;
-  List<StoreModel> _stores = [];
+  List<ShopModel> _stores = [];
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
-  List<StoreModel> get stores => _stores;
+  List<ShopModel> get stores => _stores;
 
   /// Store qo‘shish
   Future<void> createStore(String address, String storeName) async {
     _isLoading = true;
     notifyListeners();
     try {
-      await _storeService.createStore(address, storeName);
+      await _shopService.createStore(address, storeName);
       fetchStores();
     } catch (e) {
       _errorMessage = e.toString();
@@ -33,7 +33,7 @@ class StoreViewModel extends ChangeNotifier {
     final userId = UserManager.currentUserId!;
     _setLoading(true);
     try {
-      _stores = await _storeService.getStoresByUser(userId);
+      _stores = await _shopService.getStoresByUser(userId);
       _errorMessage = null;
       notifyListeners();
     } catch (e) {
@@ -44,11 +44,30 @@ class StoreViewModel extends ChangeNotifier {
     }
   }
 
-  /// Store o‘chirish
-  Future<void> removeStore(int id) async {
+  Future<void> updateStore(ShopModel shopModel) async {
     _setLoading(true);
     try {
-      await _storeService.deleteStore(id);
+      await _shopService.updateStore(shopModel);
+
+      final index = _stores.indexWhere((store) => store.id == shopModel.id);
+      if (index != -1) {
+        _stores[index] = shopModel;
+      }
+
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString();
+      rethrow;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  /// Store o‘chirish
+  Future<void> deleteStore(int id) async {
+    _setLoading(true);
+    try {
+      await _shopService.deleteStore(id);
       _stores.removeWhere((store) => store.id == id);
       notifyListeners();
     } catch (e) {
@@ -62,7 +81,7 @@ class StoreViewModel extends ChangeNotifier {
    /// Store bo‘yicha limitni aniqlash
   Future<bool> checkStoreLimit() async {
     try {
-      final result = await _storeService.checkStoreLimit();
+      final result = await _shopService.checkStoreLimit();
       debugPrint("✅ Store limit check result: $result");
       return result; // bool qiymat qaytariladi
     } catch (e) {

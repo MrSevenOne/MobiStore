@@ -37,7 +37,7 @@ class SplashViewModel extends ChangeNotifier {
     } else {
       if (storeProvider.storeId == null) {
           // Store tanlanmagan bo‘lsa → StoreSelectPage
-        _targetRoute = AppRouter.company;
+        _targetRoute = AppRouter.shop;
        
       } else {
        // Store tanlangan bo‘lsa → HomePage

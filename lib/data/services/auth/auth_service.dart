@@ -36,7 +36,40 @@ class AuthService {
       throw 'AuthService.signIn error: $e';
     }
   }
+    // Email yangilash
+  Future<void> updateEmail(String newEmail) async {
+    try {
+      await _client.auth.updateUser(UserAttributes(email: newEmail));
+    } catch (e) {
+      throw 'AuthService.updateEmail error: $e';
+    }
+  }
 
+  // Parol yangilash
+  Future<void> updatePassword(String newPassword) async {
+    try {
+      await _client.auth.updateUser(UserAttributes(password: newPassword));
+    } catch (e) {
+      throw 'AuthService.updatePassword error: $e';
+    }
+  }
+  /// Email va passwordni birga yangilash
+  /// Email yoki password bo'sh/null bo'lsa ham ishlaydi
+  Future<void> updateEmailAndPassword({
+    String? newEmail,
+    String? newPassword,
+  }) async {
+    try {
+      final attributes = UserAttributes(
+        email: (newEmail != null && newEmail.isNotEmpty) ? newEmail : null,
+        password: (newPassword != null && newPassword.isNotEmpty) ? newPassword : null,
+      );
+
+      await _client.auth.updateUser(attributes);
+    } catch (e) {
+      throw 'AuthService.updateEmailAndPassword error: $e';
+    }
+  }
   // Chiqish
   Future<void> signOut() async {
     try {

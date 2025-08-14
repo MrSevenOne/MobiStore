@@ -1,20 +1,20 @@
 import 'package:mobi_store/export.dart';
 
-class CompanyScreen extends StatefulWidget {
-  const CompanyScreen({super.key});
+class ShopScreen extends StatefulWidget {
+  const ShopScreen({super.key});
 
   @override
-  State<CompanyScreen> createState() => _CompanyScreenState();
+  State<ShopScreen> createState() => _CompanyScreenState();
 }
 
-class _CompanyScreenState extends State<CompanyScreen> {
+class _CompanyScreenState extends State<ShopScreen> {
   @override
   void initState() {
     super.initState();
     final userId = Supabase.instance.client.auth.currentUser?.id;
     if (userId != null) {
       Future.microtask(() {
-        context.read<StoreViewModel>().fetchStores();
+        context.read<ShopViewmodel>().fetchStores();
       });
     }
   }
@@ -42,28 +42,28 @@ class _CompanyScreenState extends State<CompanyScreen> {
             ).animate().fade(duration: 600.ms).scale(delay: 400.ms),
             ///////
             Expanded(
-              child: Consumer<StoreViewModel>(
+              child: Consumer<ShopViewmodel>(
                 builder: (context, viewModel, _) {
                   viewModel.isLoading == true;
                   if (viewModel.isLoading) {
                     return ListView.builder(
                       itemCount:
                           3, // loading holatida nechta item chiqishini belgilash
-                      itemBuilder: (context, index) => StoreShimmerCard(),
+                      itemBuilder: (context, index) => ShopShimmerCard(),
                     );
                   }
                   if (viewModel.stores.isEmpty) {
-                    return const Center(
-                        child: Text(
-                      "Hali do‘kon qo‘shilmagan",
-                      style: TextStyle(color: Colors.red),
+                    return Center(
+                        child: Image.asset(
+                      'assets/icons/emptyitem.png',
+                      height: 200.0,
                     ));
                   }
                   return ListView.builder(
                     itemCount: viewModel.stores.length,
                     itemBuilder: (context, index) {
-                      return StoreCard(
-                        store: viewModel.stores[index],
+                      return ShopCard(
+                        shopModel: viewModel.stores[index],
                         index: index,
                       );
                     },
@@ -76,7 +76,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final viewModel = context.read<StoreViewModel>();
+          final viewModel = context.read<ShopViewmodel>();
           final userId = Supabase.instance.client.auth.currentUser?.id;
 
           if (userId == null) {
@@ -91,10 +91,10 @@ class _CompanyScreenState extends State<CompanyScreen> {
           if (canAdd == true) {
             // Limit ichida bo‘lsa dialog ochiladi
             // ignore: use_build_context_synchronously
-            StoreAddDialog.show(context);
+            ShopAddDialog.show(context);
           } else {
             // Limit oshgan bo‘lsa ogohlantirish
-            StoreLimitedWidget.show(context);
+            ShopeLimitedWidget.show(context);
           }
         },
         child: const Icon(Icons.add),

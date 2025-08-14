@@ -37,13 +37,18 @@ class UserModel {
 
   /// Faqat insert/update uchun
   Map<String, dynamic> toInsertMap() {
-    return {
-      'name': name,
-      'email': email,
-      'password': password,
-      'status': status,
-    };
+    final map = <String, dynamic>{};
+
+    if (id != null) map['id'] = id;
+    if (name != null) map['name'] = name;
+    if (email != null) map['email'] = email;
+    if (password != null && password!.isNotEmpty) {
+      map['password'] = password;
+    }
+
+    return map;
   }
+
 
   UserModel copyWith({
     String? name,

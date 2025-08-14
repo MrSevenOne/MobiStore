@@ -2,14 +2,15 @@ import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/auth/widgets/admin_connect_screen.dart';
 import 'package:mobi_store/ui/auth/widgets/login_screen.dart';
 import 'package:mobi_store/ui/auth/widgets/signup_screen.dart';
-import 'package:mobi_store/ui/store/view_model/store_view_model.dart';
-import 'package:mobi_store/ui/store/store_screen.dart';
-import 'package:mobi_store/ui/home/view_model/home_view_model.dart';
 import 'package:mobi_store/ui/home/widgets/home_screen.dart';
 import 'package:mobi_store/ui/onboarding/widgets/onboarding_screen.dart';
+import 'package:mobi_store/ui/profile/profile_screen.dart';
+import 'package:mobi_store/ui/provider/user_provider.dart';
+import 'package:mobi_store/ui/setting/view_model/setting_view_model.dart';
+import 'package:mobi_store/ui/setting/widgets/setting_screen.dart';
+import 'package:mobi_store/ui/shop/shop_screen.dart';
 import 'package:mobi_store/ui/splash/view_model/splash_view_model.dart';
 import 'package:mobi_store/ui/splash/widgets/splash_screen.dart';
-import 'package:mobi_store/ui/tariff/view_model/tariff_view_model.dart';
 import 'package:mobi_store/ui/tariff/tariff_screen.dart';
 
 class AppRouter {
@@ -17,10 +18,12 @@ class AppRouter {
   static const String onboarding = '/OnboardingScreen';
   static const String login = '/LoginScreen';
   static const String signup = '/SignUpScreen';
-  static const String company = '/CompanyScreen';
+  static const String shop = '/ShopScreen';
   static const String home = '/HomeScreen';
   static const String tariff = '/TariffScreen';
   static const String adminConnect = '/AdminConnectScreen';
+  static const String profile = '/ProfileScreen';
+  static const String setting = '/SettingScreen';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -73,14 +76,13 @@ class AppRouter {
           transitionDuration: const Duration(milliseconds: 500),
         );
 
-      case company:
+      case shop:
         // final arg = settings.arguments;
         return MaterialPageRoute(
-          builder: (context) => CompanyScreen(
-          ),
+          builder: (context) => ShopScreen(),
         );
-        
-        //Admin Connect Page
+
+      //Admin Connect Page
       case adminConnect:
         return MaterialPageRoute(
           builder: (context) => AdminConnectScreen(),
@@ -90,12 +92,22 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => TariffScreen(),
         );
+      case profile:
+        return MaterialPageRoute(
+          builder: (context) => ProfileScreen(
+          ),
+        );
       case home:
-        final arg = settings.arguments;
+        // final arg = settings.arguments;
         return MaterialPageRoute(
           builder: (context) => HomeScreen(
-            viewModel: arg is HomeViewModel ? arg : HomeViewModel(),
-          ),
+              // viewModel: arg is HomeViewModel ? arg : HomeViewModel(),
+              ),
+        );
+      case setting:
+        final arg = settings.arguments;
+        return MaterialPageRoute(
+          builder: (context) => SettingScreen(viewModel: arg is SettingViewModel ? arg : SettingViewModel(),),
         );
 
       default:

@@ -10,10 +10,10 @@ export 'package:mobi_store/config/constants/ui_constants.dart';
 
 //Widgets
 export 'package:mobi_store/ui/tariff/widgets/tariff_card.dart';
-export 'package:mobi_store/ui/store/widgets/store_card.dart';
-export 'package:mobi_store/ui/store/widgets/store_card_shimmer.dart';
-export 'package:mobi_store/ui/store/widgets/store_limited.dart';
-export 'package:mobi_store/ui/store/widgets/store_add.dart';
+export 'package:mobi_store/ui/shop/widgets/shop_card.dart';
+export 'package:mobi_store/ui/shop/widgets/shop_card_shimmer.dart';
+export 'package:mobi_store/ui/shop/widgets/shop_limited.dart';
+export 'package:mobi_store/ui/shop/widgets/shop_add.dart';
 
 
 // Constants
@@ -29,7 +29,7 @@ export 'package:supabase_flutter/supabase_flutter.dart';
 export 'package:mobi_store/ui/auth/view_model/auth_view_model.dart';
 export 'package:mobi_store/ui/tariff/view_model/tariff_view_model.dart';
 export 'package:mobi_store/ui/provider/usertariff_viewmodel.dart';
-export 'package:mobi_store/ui/store/view_model/store_view_model.dart';
+export 'package:mobi_store/ui/shop/view_model/shop_viewmodel.dart';
 
 
 
@@ -39,9 +39,9 @@ export 'package:mobi_store/ui/store/view_model/store_view_model.dart';
 //Service
 export 'package:mobi_store/data/services/auth/auth_service.dart';
 export 'package:mobi_store/data/services/base_service.dart';
-export 'package:mobi_store/data/services/data/user_service.dart';
-export 'package:mobi_store/data/services/data/tariffs_service.dart';
-export 'package:mobi_store/data/services/data/usertariff_service.dart';
+export 'package:mobi_store/data/services/data/supabase/database/user_service.dart';
+export 'package:mobi_store/data/services/data/supabase/database/tariffs_service.dart';
+export 'package:mobi_store/data/services/data/supabase/database/usertariff_service.dart';
 
 
 
@@ -54,7 +54,7 @@ export 'package:get/get_utils/get_utils.dart';
 export 'package:mobi_store/domain/models/user_model.dart';
 export 'package:mobi_store/domain/models/tariffs_model.dart';
 export 'package:mobi_store/domain/models/usertariff_model.dart';
-export 'package:mobi_store/domain/models/store_model.dart';
+export 'package:mobi_store/domain/models/shop_model.dart';
 
 
 

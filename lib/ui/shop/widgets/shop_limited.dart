@@ -1,11 +1,11 @@
 import 'package:mobi_store/export.dart';
 
-class StoreLimitedWidget extends StatelessWidget {
-  const StoreLimitedWidget({super.key});
+class ShopeLimitedWidget extends StatelessWidget {
+  const ShopeLimitedWidget({super.key});
 
   static void show(BuildContext context) async {
     return showDialog(
-      builder: (_) => StoreLimitedWidget(),
+      builder: (_) => ShopeLimitedWidget(),
       context: context,
     );
   }

@@ -1,7 +1,7 @@
 import 'package:mobi_store/export.dart';
 
-class StoreService extends BaseService{
-  StoreService() : super('stores');
+class ShopService extends BaseService{
+  ShopService() : super('stores');
 
 
   /// Yangi store qo‘shish (trigger ishlaydi)
@@ -20,7 +20,7 @@ Future<void> createStore(String address, String storeName) async {
 }
 
  /// Foydalanuvchining barcha storelarini olish
-Future<List<StoreModel>> getStoresByUser(String userId) async {
+Future<List<ShopModel>> getStoresByUser(String userId) async {
   try {
     final response = await supabase
         .from(tableName)
@@ -29,13 +29,34 @@ Future<List<StoreModel>> getStoresByUser(String userId) async {
         .order('created_at', ascending: false);
 
     return (response as List)
-        .map((item) => StoreModel.fromMap(item))
+        .map((item) => ShopModel.fromMap(item))
         .toList();
   } catch (e) {
     debugPrint("❌ getStoresByUser Error: $e");
     rethrow;
   }
 }
+
+
+/// Store tahrirlash
+Future<void> updateStore(ShopModel storeModel) async {
+  try {
+    final response = await supabase
+        .from(tableName)
+        .update({
+          'address': storeModel.address,
+          'store_name': storeModel.storeName,
+        })
+        .eq('id', storeModel.id!)
+        .select();
+
+    debugPrint("✅ Store yangilandi: $response");
+  } catch (e) {
+    debugPrint("❌ updateStore Error: $e");
+    rethrow;
+  }
+}
+
 
 Future<bool> checkStoreLimit() async {
   try {

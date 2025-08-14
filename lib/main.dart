@@ -1,10 +1,13 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mobi_store/config/localization/translations.dart';
+import 'package:mobi_store/data/services/data/supabase/store/store_service.dart';
 import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/core/themes/light_theme.dart';
 import 'package:mobi_store/ui/provider/locale_provider.dart';
+import 'package:mobi_store/ui/provider/store_viewmodel.dart';
 import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
+import 'package:mobi_store/ui/provider/theme_provider.dart';
 import 'package:mobi_store/ui/provider/user_provider.dart';
 import 'package:mobi_store/ui/splash/view_model/splash_view_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -29,8 +32,10 @@ void main() async {
           create: (_) => TariffViewModel(),
         ),
         ChangeNotifierProvider(create: (_) => UserTariffViewModel()),
-        ChangeNotifierProvider(create: (context) => StoreViewModel()),
         ChangeNotifierProvider(create: (_) => SelectedStoreViewModel()),
+        ChangeNotifierProvider(create: (_)=> ShopViewmodel()),
+        ChangeNotifierProvider(create: (_)=>StoreViewModel(SupabaseStorageService(Supabase.instance.client))),
+        ChangeNotifierProvider(create: (_)=>ThemeViewModel()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),

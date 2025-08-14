@@ -1,11 +1,11 @@
-class StoreModel {
+class ShopModel {
   final int? id;
   final DateTime? createdAt;
   final String address;
   final String storeName;
   final String? userId;
 
-  StoreModel({
+  ShopModel({
     this.id,
     this.createdAt,
     required this.address,
@@ -13,8 +13,8 @@ class StoreModel {
     this.userId,
   });
 
-  factory StoreModel.fromMap(Map<String, dynamic> map) {
-    return StoreModel(
+  factory ShopModel.fromMap(Map<String, dynamic> map) {
+    return ShopModel(
       id: map['id'] as int?,
       createdAt: map['created_at'] != null
           ? DateTime.parse(map['created_at'])
@@ -33,5 +33,22 @@ class StoreModel {
       'store_name': storeName,
       'user_id': userId,
     };
+  }
+
+    /// copyWith metodi
+  ShopModel copyWith({
+    int? id,
+    String? name,
+    String? address,
+    String? userId,
+    DateTime? createdAt,
+  }) {
+    return ShopModel(
+      id: id ?? this.id,
+      storeName: name ?? this.storeName,
+      address: address ?? this.address,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+    );
   }
 }

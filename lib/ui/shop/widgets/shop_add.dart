@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobi_store/ui/core/ui/buttons/showdialog_button.dart';
 import 'package:provider/provider.dart';
-import '../view_model/store_view_model.dart';
+import '../view_model/shop_viewmodel.dart';
 
-class StoreAddDialog extends StatefulWidget {
-  const StoreAddDialog({super.key});
+class ShopAddDialog extends StatefulWidget {
+  const ShopAddDialog({super.key});
 
   @override
-  State<StoreAddDialog> createState() => _StoreAddDialogState();
+  State<ShopAddDialog> createState() => _StoreAddDialogState();
 
   static Future<void> show(BuildContext context) {
     return showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => const StoreAddDialog(),
+      builder: (_) => const ShopAddDialog(),
     );
   }
 }
 
-class _StoreAddDialogState extends State<StoreAddDialog> {
+class _StoreAddDialogState extends State<ShopAddDialog> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
@@ -32,7 +32,7 @@ class _StoreAddDialogState extends State<StoreAddDialog> {
     setState(() => _isSubmitting = true);
 
     try {
-      final viewModel = context.read<StoreViewModel>();
+      final viewModel = context.read<ShopViewmodel>();
       await viewModel.createStore(_nameController.text.trim(),  _locationController.text.trim());
 
       if (mounted) Navigator.pop(context); // ✅ muvaffaqiyatli bo‘lsa dialog yopiladi
