@@ -7,6 +7,7 @@ import 'package:mobi_store/ui/core/ui/dropdown/company_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/dropdown/imei_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/textfield/custom_textfield.dart';
 import 'package:mobi_store/ui/home/widgets/imageupload_widget.dart';
+import 'package:mobi_store/ui/provider/company_viewmodel.dart';
 import 'package:mobi_store/ui/provider/phone_viewmodel.dart';
 import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
 
@@ -151,24 +152,21 @@ class _PhoneAddWidgetState extends State<PhoneAddWidget> {
                   /// Colour
                   ColourDropdown(controller: colourController),
 
-                  /// Agar company iPhone bo‘lsa yomkist chiqadi
+                  // Yomkist (faqat iPhone kompaniya tanlansa)
                   if (selectedCompanyId != null &&
-                      selectedCompanyId!.toLowerCase() == "Iphone")
+                      Provider.of<CompanyViewModel>(context, listen: false)
+                              .companies
+                              .firstWhere((c) => c.id == selectedCompanyId!)
+                              .name
+                              .toLowerCase() ==
+                          'iphone') ...[
                     CustomTextfield(
-                      label: 'yomkist'.tr,
-                      hint: 'enter_yomkist'.tr,
+                      label: 'Yomkist',
+                      hint: 'Enter quantity',
                       controller: yomkistController,
                       keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'enter_yomkist'.tr;
-                        }
-                        if (int.tryParse(value) == null) {
-                          return 'enter_valid_number'.tr;
-                        }
-                        return null;
-                      },
                     ),
+                  ],
 
                   /// IMEI
                   IMEIDropdown(
