@@ -53,23 +53,7 @@ class AuthService {
       throw 'AuthService.updatePassword error: $e';
     }
   }
-  /// Email va passwordni birga yangilash
-  /// Email yoki password bo'sh/null bo'lsa ham ishlaydi
-  Future<void> updateEmailAndPassword({
-    String? newEmail,
-    String? newPassword,
-  }) async {
-    try {
-      final attributes = UserAttributes(
-        email: (newEmail != null && newEmail.isNotEmpty) ? newEmail : null,
-        password: (newPassword != null && newPassword.isNotEmpty) ? newPassword : null,
-      );
 
-      await _client.auth.updateUser(attributes);
-    } catch (e) {
-      throw 'AuthService.updateEmailAndPassword error: $e';
-    }
-  }
   // Chiqish
   Future<void> signOut() async {
     try {

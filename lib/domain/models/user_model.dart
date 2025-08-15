@@ -40,9 +40,9 @@ class UserModel {
     final map = <String, dynamic>{};
 
     if (id != null) map['id'] = id;
-    if (name != null) map['name'] = name;
-    if (email != null) map['email'] = email;
-    if (password != null && password!.isNotEmpty) {
+    map['name'] = name;
+    map['email'] = email;
+    if (password.isNotEmpty) {
       map['password'] = password;
     }
 

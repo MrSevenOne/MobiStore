@@ -26,7 +26,7 @@ export 'package:supabase_flutter/supabase_flutter.dart';
 
 
 //View Model
-export 'package:mobi_store/ui/auth/view_model/auth_view_model.dart';
+export 'package:mobi_store/ui/provider/auth_view_model.dart';
 export 'package:mobi_store/ui/tariff/view_model/tariff_view_model.dart';
 export 'package:mobi_store/ui/provider/usertariff_viewmodel.dart';
 export 'package:mobi_store/ui/shop/view_model/shop_viewmodel.dart';
@@ -38,7 +38,7 @@ export 'package:mobi_store/ui/shop/view_model/shop_viewmodel.dart';
 
 //Service
 export 'package:mobi_store/data/services/auth/auth_service.dart';
-export 'package:mobi_store/data/services/base_service.dart';
+export 'package:mobi_store/data/services/data/supabase/database/base_service.dart';
 export 'package:mobi_store/data/services/data/supabase/database/user_service.dart';
 export 'package:mobi_store/data/services/data/supabase/database/tariffs_service.dart';
 export 'package:mobi_store/data/services/data/supabase/database/usertariff_service.dart';

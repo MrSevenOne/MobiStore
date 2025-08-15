@@ -1,12 +1,10 @@
 import 'package:mobi_store/export.dart';
-import 'package:mobi_store/ui/auth/widgets/admin_connect_screen.dart';
-import 'package:mobi_store/ui/auth/widgets/login_screen.dart';
-import 'package:mobi_store/ui/auth/widgets/signup_screen.dart';
-import 'package:mobi_store/ui/home/widgets/home_screen.dart';
-import 'package:mobi_store/ui/onboarding/widgets/onboarding_screen.dart';
+import 'package:mobi_store/ui/auth/admin_connect_screen.dart';
+import 'package:mobi_store/ui/auth/login_screen.dart';
+import 'package:mobi_store/ui/auth/signup_screen.dart';
+import 'package:mobi_store/ui/home/home_screen.dart';
+import 'package:mobi_store/ui/onboarding/onboarding_screen.dart';
 import 'package:mobi_store/ui/profile/profile_screen.dart';
-import 'package:mobi_store/ui/provider/user_provider.dart';
-import 'package:mobi_store/ui/setting/view_model/setting_view_model.dart';
 import 'package:mobi_store/ui/setting/widgets/setting_screen.dart';
 import 'package:mobi_store/ui/shop/shop_screen.dart';
 import 'package:mobi_store/ui/splash/view_model/splash_view_model.dart';
@@ -105,9 +103,9 @@ class AppRouter {
               ),
         );
       case setting:
-        final arg = settings.arguments;
+        // final arg = settings.arguments;
         return MaterialPageRoute(
-          builder: (context) => SettingScreen(viewModel: arg is SettingViewModel ? arg : SettingViewModel(),),
+          builder: (context) => SettingScreen(),
         );
 
       default:

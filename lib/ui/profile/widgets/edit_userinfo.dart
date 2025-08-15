@@ -45,17 +45,11 @@ class _EditUserinfoWidgetState extends State<EditUserinfoWidget> {
     final currentUser = userViewModel.user;
     if (currentUser == null) return;
 
-    final updatedUser = currentUser.copyWith(
+    currentUser.copyWith(
       name: _nameController.text.trim(),
       email: _emailController.text.trim(),
     );
 
-    await userViewModel.updateFullUser(
-      updatedUser,
-      newPassword: _passwordController.text.isNotEmpty
-          ? _passwordController.text
-          : null,
-    );
 
     if (userViewModel.error == null) {
       if (mounted) Navigator.of(context).pop();

@@ -63,9 +63,8 @@ class UserService extends BaseService {
           'name': userModel.name,
           'email': userModel.email.trim(),
           // agar parol bo'lsa (opsional) yangilash
-          if (userModel.password != null &&
-              userModel.password!.trim().isNotEmpty)
-            'password': userModel.password!.trim(),
+          if (userModel.password.trim().isNotEmpty)
+            'password': userModel.password.trim(),
         })
         .eq('id', userModel.id!);
 

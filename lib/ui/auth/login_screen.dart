@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:mobi_store/ui/auth/view_model/auth_view_model.dart';
+import 'package:mobi_store/ui/provider/auth_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:mobi_store/config/constants/ui_constants.dart';
 import 'package:mobi_store/routing/app_router.dart';
@@ -72,13 +71,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text("email".tr,
-                        style: theme.textTheme.bodyLarge!
+                        style: theme.textTheme.bodyMedium!
                             .copyWith(color: Colors.black)),
                   ),
                   SizedBox(height: 12),
                   TextFormField(
                     controller: emailController,
-                    style: const TextStyle(color: Colors.black, fontSize: 20),
+                    style: const TextStyle(color: Colors.black, fontSize: 16.0),
                     decoration: InputDecoration(hintText: "email_hint".tr),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -98,14 +97,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text("password".tr,
-                        style: theme.textTheme.bodyLarge!
+                        style: theme.textTheme.bodyMedium!
                             .copyWith(color: Colors.black)),
                   ),
                   SizedBox(height: 12),
                   TextFormField(
                     controller: passwordController,
                     obscureText: _obscureText,
-                    style: const TextStyle(color: Colors.black, fontSize: 20),
+                    style: const TextStyle(color: Colors.black, fontSize: 16.0),
                     decoration: InputDecoration(
                       hintText: "password_hint".tr,
                       suffixIcon: Padding(
@@ -167,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: Colors.white, strokeWidth: 2)
                             : Text(
                                 "sign_in".tr,
-                                style: theme.textTheme.bodyLarge!.copyWith(
+                                style: theme.textTheme.bodyMedium!.copyWith(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -186,18 +185,13 @@ class _LoginScreenState extends State<LoginScreen> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("dont_have_account".tr,
-              style: theme.textTheme.bodySmall!.copyWith(fontSize: 16.0)),
+          Text("dont_have_account".tr, style: theme.textTheme.bodySmall),
           TextButton(
             onPressed: () => Navigator.pushNamed(context, AppRouter.signup),
             child: Text(
               "sign_up".tr,
-              style: GoogleFonts.abhayaLibre(
-                textStyle: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              style: theme.textTheme.bodyMedium!
+                  .copyWith(color: theme.primaryColor),
             ),
           ),
         ],

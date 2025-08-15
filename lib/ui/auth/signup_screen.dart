@@ -68,13 +68,13 @@ class _SignupScreenState extends State<SignupScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text("user_name".tr,
-                        style: theme.textTheme.bodyLarge!
+                        style: theme.textTheme.bodyMedium!
                             .copyWith(color: Colors.black)),
                   ),
                   SizedBox(height: 12),
                   TextFormField(
                     controller: nameController,
-                    style: const TextStyle(color: Colors.black, fontSize: 20),
+                    style: const TextStyle(color: Colors.black, fontSize: 16.0),
                     decoration: InputDecoration(hintText: 'name_hint'.tr),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -89,13 +89,13 @@ class _SignupScreenState extends State<SignupScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text("email".tr,
-                        style: theme.textTheme.bodyLarge!
+                        style: theme.textTheme.bodyMedium!
                             .copyWith(color: Colors.black)),
                   ),
                   SizedBox(height: 12),
                   TextFormField(
                     controller: emailController,
-                    style: const TextStyle(color: Colors.black, fontSize: 20),
+                    style: const TextStyle(color: Colors.black, fontSize: 16.0),
                     decoration: InputDecoration(hintText: 'email_hint'.tr),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -115,14 +115,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text("password".tr,
-                        style: theme.textTheme.bodyLarge!
+                        style: theme.textTheme.bodyMedium!
                             .copyWith(color: Colors.black)),
                   ),
                   SizedBox(height: 12),
                   TextFormField(
                     controller: passwordController,
                     obscureText: _obscureText,
-                    style: const TextStyle(color: Colors.black, fontSize: 20),
+                    style: const TextStyle(color: Colors.black, fontSize: 16.0),
                     decoration: InputDecoration(
                       hintText: "password_hint".tr,
                       suffixIcon: IconButton(
@@ -172,7 +172,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 color: Colors.white, strokeWidth: 2)
                             : Text(
                                 "sign_up".tr,
-                                style: theme.textTheme.bodyLarge!.copyWith(
+                                style: theme.textTheme.bodyMedium!.copyWith(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -192,17 +192,12 @@ class _SignupScreenState extends State<SignupScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text("have_account".tr,
-              style: theme.textTheme.bodySmall!.copyWith(fontSize: 16.0)),
+              style: theme.textTheme.bodySmall),
           TextButton(
             onPressed: () => Navigator.pushNamed(context, AppRouter.login),
             child: Text(
               "sign_in".tr,
-              style: GoogleFonts.abhayaLibre(
-                textStyle: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              style:theme.textTheme.bodyMedium!.copyWith(color: theme.primaryColor),
             ),
           ),
         ],

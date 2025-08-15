@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-ThemeData LightTheme = ThemeData(
+ThemeData DarkTheme = ThemeData(
   appBarTheme: AppBarTheme(
     titleTextStyle: GoogleFonts.aBeeZee(
-            textStyle: const TextStyle(fontSize: 20.0, color: Colors.black),
+      textStyle: const TextStyle(fontSize: 20.0, color: Colors.white),
     ),
+    backgroundColor: const Color(0xFF1A1A1A),
   ),
-  brightness: Brightness.light,
-  scaffoldBackgroundColor: const Color(0xFFF8F9FA),
-  colorScheme: const ColorScheme.light(
+  brightness: Brightness.dark,
+  scaffoldBackgroundColor: const Color(0xFF121212),
+  colorScheme: const ColorScheme.dark(
     primary: Color(0xFF5B9EE1),
-    onPrimary: Colors.black,
-    secondary: Colors.white,
-    surface: Color(0xFFF8F9FA),
-    shadow: Color(0xFF707B81),
-    error: Colors.red,
-    outline: Color(0xFFE9EDEF),
-    // 🔹 Shimmer ranglari (Light)
+    onPrimary: Colors.white,
+    secondary: Color(0xFF1E1E1E),
+    surface: Color(0xFF1E1E1E),
+    shadow: Color(0xFF000000),
+    error: Colors.redAccent,
+    outline: Color(0xFF2C2C2C),
   ),
-  iconTheme: IconThemeData(
-    color: Color(0xFF707B81),
+  iconTheme: const IconThemeData(
+    color: Colors.white70,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -40,15 +40,15 @@ ThemeData LightTheme = ThemeData(
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
-    hintStyle: GoogleFonts. aBeeZee(
+    hintStyle: GoogleFonts.aBeeZee(
       textStyle: const TextStyle(
-        color: Color(0xFF707B81),
+        color: Colors.white60,
         fontSize: 14,
       ),
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
     filled: true,
-    fillColor: Colors.white,
+    fillColor: const Color(0xFF1E1E1E),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(100),
       borderSide: BorderSide.none,
@@ -56,26 +56,22 @@ ThemeData LightTheme = ThemeData(
   ),
   textTheme: TextTheme(
     titleLarge: GoogleFonts.aBeeZee(
-      textStyle:
-          const TextStyle(fontSize: 36.0, color: Color(0xFF1A2530)),
+      textStyle: const TextStyle(fontSize: 36.0, color: Colors.white),
     ),
     titleMedium: GoogleFonts.aBeeZee(
       textStyle: const TextStyle(fontSize: 24.0, color: Colors.white),
     ),
     titleSmall: GoogleFonts.aBeeZee(
-      textStyle:
-          const TextStyle(fontSize: 20.0, color: Color(0xFF5B9EE1)),
+      textStyle: const TextStyle(fontSize: 20.0, color: Color(0xFF5B9EE1)),
     ),
     bodyLarge: GoogleFonts.aBeeZee(
-      textStyle:
-          const TextStyle(fontSize: 18.0, color: Colors.black),
+      textStyle: const TextStyle(fontSize: 18.0, color: Colors.white),
     ),
     bodyMedium: GoogleFonts.aBeeZee(
-      textStyle: const TextStyle(fontSize: 16.0, color: Colors.black),
+      textStyle: const TextStyle(fontSize: 16.0, color: Colors.white70),
     ),
     bodySmall: GoogleFonts.aBeeZee(
-      textStyle:
-          const TextStyle(fontSize: 14, color: Color(0xFF707B81)),
+      textStyle: const TextStyle(fontSize: 14, color: Colors.white54),
     ),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -87,4 +83,3 @@ ThemeData LightTheme = ThemeData(
     ),
   ),
 );
-

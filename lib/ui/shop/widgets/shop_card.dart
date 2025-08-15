@@ -76,8 +76,18 @@ class ShopCard extends StatelessWidget {
         onTap: () async {
           final selectStoreVM = context.read<SelectedStoreViewModel>();
 
-          // Store ID ni localga va providerga saqlash
+          if (shopModel.id == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("❌ Do‘kon ID mavjud emas")),
+            );
+            return;
+          }
+
+          // Store ID ni saqlash
           await selectStoreVM.saveStoreId(shopModel.id!);
+
+          // 🔍 Konsolda tekshirish
+          print("✅ Tanlangan storeId: ${selectStoreVM.storeId}");
 
           // Home sahifaga o'tish
           Navigator.pushReplacementNamed(context, AppRouter.home);
