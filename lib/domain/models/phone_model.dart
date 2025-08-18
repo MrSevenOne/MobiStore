@@ -1,3 +1,5 @@
+import 'package:mobi_store/domain/models/company_model.dart';
+
 class PhoneModel {
   final int? id;
   final String modelName;
@@ -10,8 +12,10 @@ class PhoneModel {
   final String? userId;
   final String shopId;
   final String imageUrl;
+  final String? fileId; // 🔥 ImageKit fileId qo‘shildi
   final String companyName; // uuid
   final DateTime? createdAt;
+  final CompanyModel? companyModel;
 
   PhoneModel({
     this.id,
@@ -25,8 +29,10 @@ class PhoneModel {
     this.userId,
     required this.shopId,
     required this.imageUrl,
+    this.fileId, // 🔥
     required this.companyName,
     this.createdAt,
+    this.companyModel,
   });
 
   factory PhoneModel.fromJson(Map<String, dynamic> json) => PhoneModel(
@@ -41,8 +47,14 @@ class PhoneModel {
         userId: json['user_id'],
         shopId: json['shop_id'],
         imageUrl: json['image_url'],
-        companyName: json['company_name'],
-        createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
+        fileId: json['file_id'], // 🔥 JSON’dan olish
+        companyName: json['company_name'], // uuid yoki name
+        createdAt: json['created_at'] != null
+            ? DateTime.parse(json['created_at'])
+            : null,
+        companyModel: json['company'] != null
+            ? CompanyModel.fromJson(json['company'])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -55,6 +67,7 @@ class PhoneModel {
         'price': price,
         'shop_id': shopId,
         'image_url': imageUrl,
+        'file_id': fileId, // 🔥 Supabase’ga ham saqlanadi
         'company_name': companyName,
       };
 }
