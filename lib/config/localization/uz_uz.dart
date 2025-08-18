@@ -44,4 +44,55 @@ const Map<String, String> uzUZ = {
   'shop_delete_title': 'O‘chirish',
   'shop_delete_description': 'Do‘kon o‘chiriladimi?',
   'home_title':'Asosiy Sahifa',
+
+  // Colour names
+  'colour':'Rang',
+  'select_colour':'Rangni tanlang',
+  'color_black': 'Qora',
+  'color_white': 'Oq',
+  'color_red': 'Qizil',
+  'color_blue': 'Ko‘k',
+  'color_green': 'Yashil',
+  'color_gold': 'Oltin',
+  'color_silver': 'Kumush',
+  'color_pink': 'Pushti',
+  'color_purple': 'Siyohrang',
+  'color_orange': 'To‘q sariq',
+  'color_yellow': 'Sariq',
+  'color_gray': 'Kulrang',
+  'color_navy': 'Havorang',
+  'color_rose_gold': 'Atirgul oltin',
+  'color_champagne': 'Shampan',
+
+  // Company
+  'company':'Kompaniya',
+  'enter_company':'Kompaniya nomini kiriting',
+  'select_company':'Kompaniya tanlang',
+  'not_select_company':'Kompaniyalar mavjud emas',
+
+  // IMEI
+  'imei':'IMEI',
+  'select_imei':'IMEI sonini tanlang',
+
+  // Mobile
+  'mobile_name':'Model nomi',
+  'enter_model':'Model kiriting',
+  'status':'Holat',
+
+  // Phone Add Page
+  'add_phone': 'Telefon qo‘shish',
+  'upload_image_warning': 'Iltimos, rasm yuklang',
+  'select_company_warning': 'Iltimos, kompaniya tanlang',
+  'phone_added_success': 'Telefon muvaffaqiyatli qo‘shildi',
+  'phone_added_error': 'Telefon qo‘shishda xatolik yuz berdi',
+  'add': 'Qo‘shish',
+  'price': 'Narx',
+  'enter_price': 'Narxni kiriting',
+  'box': 'Quti',
+  'box_yes': 'Ha',
+  'box_no': 'Yo‘q',
+
+  // Phone info
+  'yomkis': 'Sig‘im',
+  'sale': 'Sotish',
 };

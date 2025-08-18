@@ -44,4 +44,55 @@ const Map<String, String> ruRU = {
   'shop_delete_title': 'Удалить',
   'shop_delete_description': 'Удалить магазин?',
   'home_title':'Домашняя страница',
+
+  // Colour names
+  'colour':'Цвет',
+  'select_colour':'Выберите цвет',
+  'color_black': 'Черный',
+  'color_white': 'Белый',
+  'color_red': 'Красный',
+  'color_blue': 'Синий',
+  'color_green': 'Зеленый',
+  'color_gold': 'Золотой',
+  'color_silver': 'Серебряный',
+  'color_pink': 'Розовый',
+  'color_purple': 'Фиолетовый',
+  'color_orange': 'Оранжевый',
+  'color_yellow': 'Желтый',
+  'color_gray': 'Серый',
+  'color_navy': 'Тёмно-синий',
+  'color_rose_gold': 'Розовое золото',
+  'color_champagne': 'Шампанское',
+
+  // Company
+  'company':'Компания',
+  'enter_company':'Введите компанию',
+  'select_company':'Выберите компанию',
+  'not_select_company':'Нет доступных компаний',
+
+  // IMEI
+  'imei':'IMEI',
+  'select_imei':'Выберите количество IMEI',
+
+  // Mobile
+  'mobile_name':'Модель',
+  'enter_model':'Введите модель',
+  'status':'Статус',
+
+  // Phone Add Page
+  'add_phone': 'Добавить телефон',
+  'upload_image_warning': 'Пожалуйста, загрузите изображение',
+  'select_company_warning': 'Пожалуйста, выберите компанию',
+  'phone_added_success': 'Телефон успешно добавлен',
+  'phone_added_error': 'Произошла ошибка при добавлении телефона',
+  'add': 'Добавить',
+  'price': 'Цена',
+  'enter_price': 'Введите цену',
+  'box': 'Коробка',
+  'box_yes': 'Да',
+  'box_no': 'Нет',
+
+  // Phone info
+  'yomkis': 'Ёмкость',
+  'sale': 'Продажа',
 };

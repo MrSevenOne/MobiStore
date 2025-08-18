@@ -2,7 +2,8 @@ const Map<String, String> enUS = {
   // //
   'ok': 'OK',
   'cancel':'cancel',
-  'delete':'delete',
+  'delete':'Delete',
+  'edit':'Edit',
   'hello':'Hello',
   // SIGN IN PAGE
   'title': 'Hello, Again',
@@ -87,4 +88,7 @@ const Map<String, String> enUS = {
   'box': 'Box',
   'box_yes': 'Yes',
   'box_no': 'No',
+  //Phone info
+  'yomkis': 'Yomkis',
+  'sale': 'Sale',
 };
