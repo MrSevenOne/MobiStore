@@ -10,7 +10,7 @@ const String imageKitPrivateKey = "private_K1xUUjspkXcLUHHdWQK2FynIYPs=";
 /// Service: ImageKit bilan ishlash
 class ImageKitService {
   /// Rasm yuklash
-  static Future<String?> uploadImage({
+  static Future<Map<String, dynamic>?> uploadImage({
     required File file,
     required String userId,
     required String storeId,
@@ -18,12 +18,10 @@ class ImageKitService {
     try {
       final uri = Uri.parse(imageKitUploadUrl);
 
-      // 📂 Dinamik folder yo‘li
       final folderPath = "/phones/users/$userId/$storeId";
 
-      // 📌 Fayl nomini vaqt bo‘yicha yaratish
       final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-      final String extension = file.path.split('.').last; // jpg, png va h.k.
+      final String extension = file.path.split('.').last;
       final String uniqueFileName = "${timestamp}_phone.$extension";
 
       final request = http.MultipartRequest('POST', uri)
@@ -31,16 +29,18 @@ class ImageKitService {
         ..fields['folder'] = folderPath
         ..files.add(await http.MultipartFile.fromPath('file', file.path))
         ..headers['Authorization'] =
-            'Basic ' + base64Encode(utf8.encode("$imageKitPrivateKey:"));
+            'Basic ${base64Encode(utf8.encode("$imageKitPrivateKey:"))}';
 
       final response = await request.send();
+      final respStr = await response.stream.bytesToString();
 
       if (response.statusCode == 200) {
-        final respStr = await response.stream.bytesToString();
         final data = json.decode(respStr);
-        return data['url']; // ✅ Yuklangan rasm manzili
+        return {
+          "url": data['url'],
+          "fileId": data['fileId'],
+        };
       } else {
-        final respStr = await response.stream.bytesToString();
         print("❌ Upload error: ${response.statusCode}");
         print("Server javobi: $respStr");
         return null;
@@ -49,5 +49,57 @@ class ImageKitService {
       print("❌ Exception: $e");
       return null;
     }
+  }
+
+  /// Rasmni o‘chirish
+  static Future<bool> deleteImage(String fileId) async {
+    try {
+      final uri = Uri.parse("https://api.imagekit.io/v1/files/$fileId");
+
+      final response = await http.delete(
+        uri,
+        headers: {
+          'Authorization':
+              'Basic ${base64Encode(utf8.encode("$imageKitPrivateKey:"))}',
+        },
+      );
+
+      if (response.statusCode == 204) {
+        print("✅ Rasm o‘chirildi");
+        return true;
+      } else {
+        print("❌ Delete error: ${response.statusCode}");
+        print("Server javobi: ${response.body}");
+        return false;
+      }
+    } catch (e) {
+      print("❌ Exception: $e");
+      return false;
+    }
+  }
+
+  /// Rasmni yangilash (oldFileId bilan o‘chirib, yangi rasmni yuklash)
+  static Future<Map<String, dynamic>?> updateImage({
+    required File newFile,
+    required String userId,
+    required String storeId,
+    required String oldFileId,
+  }) async {
+    // 1️⃣ Avval eski rasmni o‘chirish
+    final deleted = await deleteImage(oldFileId);
+
+    if (!deleted) {
+      print("❌ Eski rasmni o‘chirishda xatolik");
+      return null;
+    }
+
+    // 2️⃣ Yangi rasmni yuklash
+    final uploaded = await uploadImage(
+      file: newFile,
+      userId: userId,
+      storeId: storeId,
+    );
+
+    return uploaded;
   }
 }
