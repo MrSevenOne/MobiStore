@@ -91,6 +91,7 @@ const Map<String, String> ruRU = {
   'box': 'Коробка',
   'box_yes': 'Да',
   'box_no': 'Нет',
+  'add_press':'Нажмите + для добавления информации',
 
   // Phone info
   'yomkis': 'Ёмкость',

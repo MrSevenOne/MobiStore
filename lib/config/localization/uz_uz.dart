@@ -91,6 +91,7 @@ const Map<String, String> uzUZ = {
   'box': 'Quti',
   'box_yes': 'Ha',
   'box_no': 'Yo‘q',
+  'add_press':'Ma\'lumot qo\'shish uchun + bosing',
 
   // Phone info
   'yomkis': 'Sig‘im',

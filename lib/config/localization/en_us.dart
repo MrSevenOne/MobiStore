@@ -80,7 +80,9 @@ const Map<String, String> enUS = {
   'add_phone': 'Add Phone',
   'upload_image_warning': 'Please upload an image',
   'select_company_warning': 'Please select a company',
+  'phone_add_true': "Phone Add",
   'phone_added_success': 'Phone successfully added',
+  'phone_add_false':"Phone Error",
   'phone_added_error': 'An error occurred while adding the phone',
   'add': 'Add',
   'price': 'Price',
@@ -88,7 +90,10 @@ const Map<String, String> enUS = {
   'box': 'Box',
   'box_yes': 'Yes',
   'box_no': 'No',
+  'add_press':'Press + to add information',
   //Phone info
   'yomkis': 'Yomkis',
   'sale': 'Sale',
+  'memory':"Memory",
+  'select_memory':'Select memory',
 };
