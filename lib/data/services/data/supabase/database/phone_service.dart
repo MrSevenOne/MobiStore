@@ -9,9 +9,9 @@ class PhoneService extends BaseService {
       final response = await supabase
           .from('phones')
           .insert(phone.toJson())
-          .select()
+          .select('*, company:company_name(*)')
           .single();
-       return PhoneModel.fromJson(response);
+      return PhoneModel.fromJson(response);
     } catch (e) {
       debugPrint("Error adding phone: $e");
       return null;
@@ -21,9 +21,10 @@ class PhoneService extends BaseService {
   Future<List<PhoneModel>> getPhones() async {
     try {
       final response = await supabase
-          .from(tableName)
-          .select()
+          .from('phones')
+          .select('*, company:company_name(*)')
           .order('created_at', ascending: false);
+
       return (response as List).map((e) => PhoneModel.fromJson(e)).toList();
     } catch (e) {
       debugPrint("Error fetching phones: $e");
@@ -31,16 +32,37 @@ class PhoneService extends BaseService {
     }
   }
 
-  Future<bool> updatePhone(PhoneModel phone) async {
+  Future<PhoneModel?> updatePhone(PhoneModel phone) async {
     try {
+      if (phone.id == null) {
+        debugPrint("Error updating phone: Telefon ID topilmadi");
+        return null;
+      }
+
       final response = await supabase
           .from(tableName)
           .update(phone.toJson())
-          .eq('id', phone.id!);
-      return response.error == null;
+          .eq('id', phone.id!)
+          .select(
+              '*, company:company_name(*)') // company ni ham qaytarish uchun
+          .maybeSingle();
+
+      if (response == null) {
+        debugPrint("Error updating phone: Response null");
+        return null;
+      }
+
+      if (response is Map &&
+          response.containsKey('error') &&
+          response['error'] != null) {
+        debugPrint("Supabase xatosi: ${response['error']['message']}");
+        return null;
+      }
+
+      return PhoneModel.fromJson(response); // Full PhoneModel qaytariladi
     } catch (e) {
       debugPrint("Error updating phone: $e");
-      return false;
+      return null;
     }
   }
 
@@ -58,7 +80,7 @@ class PhoneService extends BaseService {
     try {
       final response = await supabase
           .from(tableName)
-          .select()
+          .select('*, company:company_name(*)')
           .eq('shop_id', shopId)
           .order('created_at', ascending: false);
       return (response as List).map((e) => PhoneModel.fromJson(e)).toList();

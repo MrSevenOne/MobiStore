@@ -2,10 +2,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mobi_store/config/localization/translations.dart';
 import 'package:mobi_store/export.dart';
+import 'package:mobi_store/test.dart';
 import 'package:mobi_store/ui/core/themes/dark_theme.dart';
 import 'package:mobi_store/ui/core/themes/light_theme.dart';
 import 'package:mobi_store/ui/provider/company_viewmodel.dart';
+import 'package:mobi_store/ui/provider/imageupload_viewmodel.dart';
 import 'package:mobi_store/ui/provider/locale_viewmodel.dart';
+import 'package:mobi_store/ui/provider/phone_report_view_model.dart';
 import 'package:mobi_store/ui/provider/phone_viewmodel.dart';
 import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
 import 'package:mobi_store/ui/provider/theme_provider.dart';
@@ -14,7 +17,7 @@ import 'package:mobi_store/ui/splash/view_model/splash_view_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
     url: SupabaseConstants.supabaseUrl,
@@ -46,7 +49,9 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ThemeViewModel()),
         ChangeNotifierProvider(create: (_) => UserViewModel(UserService())),
         ChangeNotifierProvider(create: (_) => CompanyViewModel()),
-        ChangeNotifierProvider(create: (_)=>PhoneViewModel(),)
+        ChangeNotifierProvider(create: (_) => PhoneViewModel()),
+        ChangeNotifierProvider(create: (_) => ImageUploadViewModel()),
+        ChangeNotifierProvider(create: (_) => PhoneReportViewModel()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
@@ -62,7 +67,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
 
   // This widget is the root of your application.
   @override
@@ -70,9 +74,8 @@ class MyApp extends StatelessWidget {
     final localeProvider = Provider.of<LocaleViewmodel>(context);
     final themeVM = Provider.of<ThemeViewModel>(context);
 
-
-
     return GetMaterialApp(
+      // home: CustomBottomNavBar(),
       debugShowCheckedModeBanner: false,
       translations: AppTranslations(),
       locale: localeProvider.locale,

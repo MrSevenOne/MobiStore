@@ -42,21 +42,38 @@ class PhoneViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> updatePhone(PhoneModel phone) async {
+  Future<PhoneModel?> updatePhone(PhoneModel phone) async {
     isLoading = true;
     notifyListeners();
 
     try {
-      final result = await _service.updatePhone(phone);
-      if (result) {
-        int index = phones.indexWhere((p) => p.id == phone.id);
-        if (index != -1) phones[index] = phone;
+      if (phone.id == null) {
+        errorMessage = "Telefon ID topilmadi";
+        debugPrint("Error: Telefon ID null");
+        return null;
       }
-      errorMessage = null;
-      return result;
+
+      final updatedPhoneFromService = await _service.updatePhone(phone);
+      if (updatedPhoneFromService != null) {
+        final index = phones.indexWhere((p) => p.id == phone.id);
+        if (index != -1) {
+          phones[index] =
+              updatedPhoneFromService; // Supabase’dan qaytgan full model bilan almashtirish
+          debugPrint("Telefon yangilandi: ${updatedPhoneFromService.id}");
+        } else {
+          debugPrint("Telefon ro‘yxatda topilmadi: ${phone.id}");
+          phones.add(updatedPhoneFromService);
+        }
+        errorMessage = null;
+        return updatedPhoneFromService;
+      } else {
+        errorMessage = "Telefonni yangilashda xato yuz berdi";
+        return null;
+      }
     } catch (e) {
-      errorMessage = "Failed to update phone";
-      return false;
+      errorMessage = "Xato: $e";
+      debugPrint("updatePhone xatosi: $e");
+      return null;
     } finally {
       isLoading = false;
       notifyListeners();
@@ -71,6 +88,7 @@ class PhoneViewModel extends ChangeNotifier {
       final result = await _service.deletePhone(id);
       if (result) phones.removeWhere((p) => p.id == id);
       errorMessage = null;
+      fetchPhones();
       return result;
     } catch (e) {
       errorMessage = "Failed to delete phone";

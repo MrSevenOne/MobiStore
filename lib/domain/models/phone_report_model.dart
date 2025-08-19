@@ -17,6 +17,7 @@ class PhoneReportModel {
   final int memory;
   final double salePrice;
   final DateTime saleTime;
+  final int paymentType; // ✅ yangi qo‘shildi
 
   PhoneReportModel({
     required this.id,
@@ -37,6 +38,7 @@ class PhoneReportModel {
     required this.memory,
     required this.salePrice,
     required this.saleTime,
+    required this.paymentType, // ✅ yangi
   });
 
   factory PhoneReportModel.fromJson(Map<String, dynamic> json) {
@@ -59,6 +61,7 @@ class PhoneReportModel {
       memory: json['memory'],
       salePrice: (json['sale_price'] as num).toDouble(),
       saleTime: DateTime.parse(json['sale_time']),
+      paymentType: json['payment_type'] as int, // ✅ yangi
     );
   }
 
@@ -82,6 +85,7 @@ class PhoneReportModel {
       'memory': memory,
       'sale_price': salePrice,
       'sale_time': saleTime.toIso8601String(),
+      'payment_type': paymentType, // ✅ yangi
     };
   }
 }

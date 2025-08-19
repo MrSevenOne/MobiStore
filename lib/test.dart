@@ -1,83 +1,93 @@
-// import 'package:mobi_store/export.dart';
-// import 'package:mobi_store/ui/provider/user_provider.dart';
+import 'package:flutter/material.dart';
 
-// class EditUserPage extends StatefulWidget {
-//   final UserModel user;
-//   const EditUserPage({Key? key, required this.user}) : super(key: key);
+class CustomBottomNavBar extends StatefulWidget {
+  const CustomBottomNavBar({super.key});
 
-//   @override
-//   State<EditUserPage> createState() => _EditUserPageState();
-// }
+  @override
+  State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
+}
 
-// class _EditUserPageState extends State<EditUserPage> {
-//   final _formKey = GlobalKey<FormState>();
-//   late TextEditingController _emailController;
-//   late TextEditingController _nameController;
-//   final _passwordController = TextEditingController();
+class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
+  int _currentIndex = 0;
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _emailController = TextEditingController(text: widget.user.email);
-//     _nameController = TextEditingController(text: widget.user.name ?? "");
-//   }
+  final List<Widget> _pages = [
+    const Center(child: Text("🏠 Home Page")),
+    const Center(child: Text("❤️ Favorites Page")),
+    const Center(child: Text("👜 Cart Page")),
+    const Center(child: Text("🔔 Notifications Page")),
+    const Center(child: Text("👤 Profile Page")),
+  ];
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final viewModel = context.watch<UserViewModel>();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_currentIndex],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
-//     return Scaffold(
-//       appBar: AppBar(title: Text("Edit User")),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Form(
-//           key: _formKey,
-//           child: Column(
-//             children: [
-//               TextFormField(
-//                 controller: _nameController,
-//                 decoration: InputDecoration(labelText: "Name"),
-//               ),
-//               TextFormField(
-//                 controller: _emailController,
-//                 decoration: InputDecoration(labelText: "Email"),
-//               ),
-//               TextFormField(
-//                 controller: _passwordController,
-//                 decoration: InputDecoration(labelText: "New Password"),
-//                 obscureText: true,
-//               ),
-//               const SizedBox(height: 20),
-//               if (viewModel.isLoading)
-//                 const CircularProgressIndicator()
-//               else
-//                 ElevatedButton(
-//                   onPressed: () {
-//                     if (_formKey.currentState!.validate()) {
-//                       final updatedUser = widget.user.copyWith(
-//                         name: _nameController.text,
-//                         email: _emailController.text,
-//                       );
+      // markazdagi tugma
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue,
+        shape: const CircleBorder(),
+        onPressed: () {
+          setState(() {
+            _currentIndex = 2; // markaziy sahifa (Cart)
+          });
+        },
+        child: const Icon(Icons.shopping_bag, color: Colors.white, size: 28),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-//                       viewModel.updateFullUser(
-//                         updatedUser,
-//                         newPassword: _passwordController.text.isEmpty
-//                             ? null
-//                             : _passwordController.text,
-//                       );
-//                     }
-//                   },
-//                   child: const Text("Update"),
-//                 ),
-//               if (viewModel.error != null)
-//                 Text(
-//                   viewModel.error!,
-//                   style: const TextStyle(color: Colors.red),
-//                 ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+      // pastki navigatsiya panel
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 8,
+        child: SizedBox(
+          height: 70,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: Icon(Icons.home,
+                    color: _currentIndex == 0 ? Colors.blue : Colors.grey),
+                onPressed: () {
+                  setState(() {
+                    _currentIndex = 0;
+                  });
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.favorite,
+                    color: _currentIndex == 1 ? Colors.blue : Colors.grey),
+                onPressed: () {
+                  setState(() {
+                    _currentIndex = 1;
+                  });
+                },
+              ),
+              const SizedBox(width: 40), // markaziy FAB uchun joy
+              IconButton(
+                icon: Icon(Icons.notifications,
+                    color: _currentIndex == 3 ? Colors.blue : Colors.grey),
+                onPressed: () {
+                  setState(() {
+                    _currentIndex = 3;
+                  });
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.person,
+                    color: _currentIndex == 4 ? Colors.blue : Colors.grey),
+                onPressed: () {
+                  setState(() {
+                    _currentIndex = 4;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

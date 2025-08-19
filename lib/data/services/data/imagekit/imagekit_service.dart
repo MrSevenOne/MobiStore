@@ -102,4 +102,32 @@ class ImageKitService {
 
     return uploaded;
   }
+
+  static Future<Map<String, dynamic>?> safeUpdateImage({
+  required File newFile,
+  required String userId,
+  required String storeId,
+  required String oldFileId,
+}) async {
+  // 1️⃣ Avval yangi rasmni yuklash
+  final uploaded = await uploadImage(
+    file: newFile,
+    userId: userId,
+    storeId: storeId,
+  );
+
+  if (uploaded == null) {
+    print("❌ Yangi rasm yuklanmadi");
+    return null;
+  }
+
+  // 2️⃣ Agar yangi rasm yuklangan bo‘lsa, eski rasmni o‘chirish
+  final deleted = await deleteImage(oldFileId);
+  if (!deleted) {
+    print("⚠️ Yangi rasm yuklandi, lekin eski rasm o‘chmadi");
+  }
+
+  return uploaded;
+}
+
 }

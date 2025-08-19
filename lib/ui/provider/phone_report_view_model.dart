@@ -28,14 +28,26 @@ class PhoneReportViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addReport(PhoneReportModel report) async {
+  /// ✅ phones → phone_reports function orqali ko‘chirish
+  Future<void> movePhoneToReport({
+    required int phoneId,
+    required double salePrice,
+    required int paymentType,
+  }) async {
     _isLoading = true;
+    _error = null;
     notifyListeners();
 
     try {
-      final inserted = await _service.addReport(report);
-      if (inserted != null) {
-        _reports.add(inserted);
+      final success = await _service.movePhoneToReport(
+        phoneId: phoneId,
+        salePrice: salePrice,
+        paymentType: paymentType,
+      );
+
+      if (success) {
+        // 🔄 qayta yuklab qo‘yish
+        await fetchReports();
       }
     } catch (e) {
       _error = e.toString();

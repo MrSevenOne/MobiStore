@@ -2,7 +2,8 @@ import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/auth/admin_connect_screen.dart';
 import 'package:mobi_store/ui/auth/login_screen.dart';
 import 'package:mobi_store/ui/auth/signup_screen.dart';
-import 'package:mobi_store/ui/home/home_screen.dart';
+import 'package:mobi_store/ui/home/home_page.dart';
+import 'package:mobi_store/ui/phones/view_model/phones_page.dart';
 import 'package:mobi_store/ui/onboarding/onboarding_screen.dart';
 import 'package:mobi_store/ui/profile/profile_screen.dart';
 import 'package:mobi_store/ui/setting/widgets/setting_screen.dart';
@@ -22,6 +23,7 @@ class AppRouter {
   static const String adminConnect = '/AdminConnectScreen';
   static const String profile = '/ProfileScreen';
   static const String setting = '/SettingScreen';
+  static const String phones = '/PhonesPage';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -92,8 +94,7 @@ class AppRouter {
         );
       case profile:
         return MaterialPageRoute(
-          builder: (context) => ProfileScreen(
-          ),
+          builder: (context) => ProfileScreen(),
         );
       case home:
         // final arg = settings.arguments;
@@ -102,6 +103,11 @@ class AppRouter {
               // viewModel: arg is HomeViewModel ? arg : HomeViewModel(),
               ),
         );
+        case phones:
+         return MaterialPageRoute(
+          builder: (context) => PhonesPage(),
+        );
+
       case setting:
         // final arg = settings.arguments;
         return MaterialPageRoute(

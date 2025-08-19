@@ -1,3 +1,4 @@
+import 'package:mobi_store/config/constants/colour_map.dart';
 import 'package:mobi_store/export.dart';
 
 class ColourDropdown extends StatefulWidget {
@@ -10,24 +11,6 @@ class ColourDropdown extends StatefulWidget {
 }
 
 class _ColourDropdownState extends State<ColourDropdown> {
-  final Map<String, Color> colorMap = {
-    'Black': Colors.black,
-    'White': Colors.white,
-    'Red': Colors.red,
-    'Blue': Colors.blue,
-    'Green': Colors.green,
-    'Gold': Colors.amber,
-    'Silver': Colors.grey,
-    'Pink': Colors.pink,
-    'Purple': Colors.purple,
-    'Orange': Colors.orange,
-    'Yellow': Colors.yellow,
-    'Gray': Colors.blueGrey,
-    'Navy': Colors.indigo,
-    'Rose Gold': Colors.pinkAccent,
-    'Champagne': Colors.amberAccent,
-  };
-
   String? selectedColor;
 
   @override
@@ -43,31 +26,31 @@ class _ColourDropdownState extends State<ColourDropdown> {
 
     return Column(
       children: [
-         Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'colour'.tr,
-                style: theme.textTheme.bodyMedium!
-                    .copyWith(color: theme.colorScheme.onSecondary),
-              ),
-            ),
-            SizedBox(height: 6.0),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'colour'.tr,
+            style: theme.textTheme.bodyMedium!
+                .copyWith(color: theme.colorScheme.onSecondary),
+          ),
+        ),
+        const SizedBox(height: 6.0),
         DropdownButtonFormField<String>(
           value: selectedColor,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(
-                color: theme.colorScheme.onSecondary
-              ),
+              borderSide: BorderSide(color: theme.colorScheme.onSecondary),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.onSecondary, width: 1.2),
+              borderSide:
+                  BorderSide(color: theme.colorScheme.onSecondary, width: 1.2),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5),
+              borderSide:
+                  BorderSide(color: theme.colorScheme.primary, width: 1.5),
             ),
           ),
           hint: Text(
@@ -78,7 +61,6 @@ class _ColourDropdownState extends State<ColourDropdown> {
             ),
           ),
           selectedItemBuilder: (context) {
-            // Tanlangan item dropdown ichida shunday ko‘rinadi
             return colorMap.entries.map((entry) {
               return Row(
                 children: [

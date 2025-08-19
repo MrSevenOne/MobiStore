@@ -11,11 +11,13 @@ class PhoneModel {
   final double price;
   final String? userId;
   final String shopId;
-  final String imageUrl;
-  final String? fileId; // 🔥 ImageKit fileId qo‘shildi
-  final String companyName; // uuid
+  final String? imageUrl;
+  final String? fileId;
+  final String companyName;
   final DateTime? createdAt;
   final CompanyModel? companyModel;
+  final int memory;
+  final int? ram;
 
   PhoneModel({
     this.id,
@@ -28,11 +30,13 @@ class PhoneModel {
     required this.price,
     this.userId,
     required this.shopId,
-    required this.imageUrl,
-    this.fileId, // 🔥
+     this.imageUrl,
+    this.fileId,
     required this.companyName,
     this.createdAt,
     this.companyModel,
+    required this.memory,
+    this.ram,
   });
 
   factory PhoneModel.fromJson(Map<String, dynamic> json) => PhoneModel(
@@ -47,8 +51,10 @@ class PhoneModel {
         userId: json['user_id'],
         shopId: json['shop_id'],
         imageUrl: json['image_url'],
-        fileId: json['file_id'], // 🔥 JSON’dan olish
-        companyName: json['company_name'], // uuid yoki name
+        fileId: json['file_id'],
+        companyName: json['company_name'],
+        memory: json['memory'],
+        ram: json['ram'],
         createdAt: json['created_at'] != null
             ? DateTime.parse(json['created_at'])
             : null,
@@ -58,6 +64,7 @@ class PhoneModel {
       );
 
   Map<String, dynamic> toJson() => {
+        // 'id': id, // Yangilash uchun id qo‘shildi
         'model_name': modelName,
         'colour': colour,
         'yomkist': yomkist,
@@ -67,7 +74,53 @@ class PhoneModel {
         'price': price,
         'shop_id': shopId,
         'image_url': imageUrl,
-        'file_id': fileId, // 🔥 Supabase’ga ham saqlanadi
+        'file_id': fileId,
         'company_name': companyName,
+        'memory': memory,
+        'ram': ram,
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PhoneModel &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          modelName == other.modelName &&
+          colour == other.colour &&
+          yomkist == other.yomkist &&
+          status == other.status &&
+          box == other.box &&
+          imei == other.imei &&
+          price == other.price &&
+          userId == other.userId &&
+          shopId == other.shopId &&
+          imageUrl == other.imageUrl &&
+          fileId == other.fileId &&
+          companyName == other.companyName &&
+          createdAt == other.createdAt &&
+          companyModel == other.companyModel &&
+          memory == other.memory &&
+          ram == other.ram;
+
+  @override
+  int get hashCode => Object.hash(
+        id,
+        modelName,
+        colour,
+        yomkist,
+        status,
+        box,
+        imei,
+        price,
+        userId,
+        shopId,
+        imageUrl,
+        fileId,
+        companyName,
+        createdAt,
+        companyModel,
+        memory,
+        ram,
+      );
 }

@@ -96,4 +96,5 @@ const Map<String, String> ruRU = {
   // Phone info
   'yomkis': 'Ёмкость',
   'sale': 'Продажа',
+  
 };

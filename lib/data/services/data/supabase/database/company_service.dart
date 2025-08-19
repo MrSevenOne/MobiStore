@@ -6,7 +6,7 @@ class CompanyService {
 
   Future<CompanyModel?> addCompany(CompanyModel company) async {
     try {
-      final response = await supabase.from('company_name').insert(company.toJson()).select().single();
+      final response = await supabase.from('company').insert(company.toJson()).select().single();
       return CompanyModel.fromJson(response);
     } catch (e) {
       debugPrint("Error adding company: $e");
@@ -16,7 +16,7 @@ class CompanyService {
 
   Future<List<CompanyModel>> getCompanies() async {
     try {
-      final response = await supabase.from('company_name').select().order('created_at', ascending: false);
+      final response = await supabase.from('company').select().order('created_at', ascending: false);
       return (response as List).map((e) => CompanyModel.fromJson(e)).toList();
     } catch (e) {
      debugPrint("Error fetching companies: $e");
@@ -26,7 +26,7 @@ class CompanyService {
 
   Future<bool> updateCompany(CompanyModel company) async {
     try {
-      final response = await supabase.from('company_name').update(company.toJson()).eq('id', company.id!);
+      final response = await supabase.from('company').update(company.toJson()).eq('id', company.id!);
       return response.error == null;
     } catch (e) {
       debugPrint("Error updating company: $e");
@@ -36,7 +36,7 @@ class CompanyService {
 
   Future<bool> deleteCompany(String id) async {
     try {
-      final response = await supabase.from('company_name').delete().eq('id', id);
+      final response = await supabase.from('company').delete().eq('id', id);
       return response.error == null;
     } catch (e) {
       debugPrint("Error deleting company: $e");

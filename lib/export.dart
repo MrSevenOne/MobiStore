@@ -69,6 +69,8 @@ export 'package:carousel_slider/carousel_slider.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:flutter_animate/flutter_animate.dart';
 export 'package:shared_preferences/shared_preferences.dart';
+export 'package:shimmer/shimmer.dart';
+
 
 
 

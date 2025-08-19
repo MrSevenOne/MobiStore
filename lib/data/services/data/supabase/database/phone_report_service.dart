@@ -2,7 +2,6 @@ import 'package:mobi_store/export.dart';
 import 'package:mobi_store/domain/models/phone_report_model.dart';
 
 class PhoneReportService extends BaseService {
-
   PhoneReportService() : super('phone_reports');
 
   Future<List<PhoneReportModel>> getReports() async {
@@ -28,14 +27,23 @@ class PhoneReportService extends BaseService {
     }
   }
 
-  Future<PhoneReportModel?> addReport(PhoneReportModel report) async {
+  /// ✅ Function orqali qo‘shish (phones → phone_reports)
+  Future<bool> movePhoneToReport({
+    required int phoneId,
+    required double salePrice,
+    required int paymentType,
+  }) async {
     try {
-      final response =
-          await supabase.from(tableName).insert(report.toJson()).select().single();
-      return PhoneReportModel.fromJson(response);
+      await supabase.rpc('move_phone_to_report', params: {
+        'p_phone_id': phoneId,
+        'p_sale_price': salePrice,
+        'p_payment_type': paymentType,
+      });
+      debugPrint("✅ Phone moved to report successfully!");
+      return true;
     } catch (e) {
-      debugPrint("❌ Error inserting phone report: $e");
-      return null;
+      debugPrint("❌ Error moving phone to report: $e");
+      return false;
     }
   }
 
