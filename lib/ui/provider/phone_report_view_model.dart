@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:mobi_store/domain/models/phone_report_model.dart';
 import 'package:mobi_store/data/services/data/supabase/database/phone_report_service.dart';
 
@@ -6,71 +6,100 @@ class PhoneReportViewModel extends ChangeNotifier {
   final PhoneReportService _service = PhoneReportService();
 
   List<PhoneReportModel> _reports = [];
-  bool _isLoading = false;
-  String? _error;
-
   List<PhoneReportModel> get reports => _reports;
+
+  bool _isLoading = false;
   bool get isLoading => _isLoading;
-  String? get error => _error;
 
-  Future<void> fetchReports() async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
 
-    try {
-      _reports = await _service.getReports();
-    } catch (e) {
-      _error = e.toString();
-    }
+  String? _currentShopId; // 📌 oxirgi chaqirilgan shopId ni saqlab turish
+  String? get currentShopId => _currentShopId;
 
-    _isLoading = false;
+  void _setLoading(bool value) {
+    _isLoading = value;
     notifyListeners();
   }
 
-  /// ✅ phones → phone_reports function orqali ko‘chirish
-  Future<void> movePhoneToReport({
+  void _setError(String? error) {
+    _errorMessage = error;
+    notifyListeners();
+  }
+
+  /// 📌 Faqat shopId bo‘yicha reportlarni olish
+ Future<List<PhoneReportModel>> fetchReportsByShop(String shopId) async {
+  try {
+    final reports = await _service.getReportsByShop(shopId);
+    _reports = reports;
+    notifyListeners();
+    return reports; // 🔥 qaytarilmoqda
+  } catch (e) {
+    debugPrint("Error fetching reports: $e");
+    return [];
+  }
+}
+
+
+  /// 📌 Telefonni reportga o‘tkazish
+  Future<bool> movePhoneToReport({
     required int phoneId,
     required double salePrice,
     required int paymentType,
   }) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
+    if (_currentShopId == null) return false;
 
+    _setLoading(true);
     try {
-      final success = await _service.movePhoneToReport(
+      final result = await _service.movePhoneToReport(
         phoneId: phoneId,
         salePrice: salePrice,
         paymentType: paymentType,
       );
-
-      if (success) {
-        // 🔄 qayta yuklab qo‘yish
-        await fetchReports();
+      if (result) {
+        await fetchReportsByShop(_currentShopId!); // ✅ avtomatik yangilash
       }
+      return result;
     } catch (e) {
-      _error = e.toString();
+      _setError("Xatolik: $e");
+      return false;
+    } finally {
+      _setLoading(false);
     }
-
-    _isLoading = false;
-    notifyListeners();
   }
 
-  Future<void> deleteReport(int id) async {
-    _isLoading = true;
-    notifyListeners();
-
+  /// 📌 Report yangilash
+  Future<bool> updateReport(int id, PhoneReportModel data) async {
+    _setLoading(true);
     try {
-      final success = await _service.deleteReport(id);
-      if (success) {
-        _reports.removeWhere((r) => r.id == id);
+      final result = await _service.updateReport(id, data.toJson());
+      if (result && _currentShopId != null) {
+        await fetchReportsByShop(_currentShopId!);
       }
+      return result;
     } catch (e) {
-      _error = e.toString();
+      _setError("Xatolik: $e");
+      return false;
+    } finally {
+      _setLoading(false);
     }
+  }
 
-    _isLoading = false;
-    notifyListeners();
+  /// 📌 Report o‘chirish
+  Future<bool> deleteReport(int id) async {
+    _setLoading(true);
+    try {
+      final result = await _service.deleteReport(id);
+      if (result) {
+        _reports.removeWhere((r) => r.id == id);
+        notifyListeners();
+      }
+      return result;
+    } catch (e) {
+      _setError("Xatolik: $e");
+      return false;
+    } finally {
+      _setLoading(false);
+    }
   }
 }

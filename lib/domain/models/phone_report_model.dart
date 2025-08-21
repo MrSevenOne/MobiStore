@@ -1,3 +1,5 @@
+import 'package:mobi_store/domain/models/company_model.dart';
+
 class PhoneReportModel {
   final int id;
   final DateTime createdAt;
@@ -17,7 +19,8 @@ class PhoneReportModel {
   final int memory;
   final double salePrice;
   final DateTime saleTime;
-  final int paymentType; // ✅ yangi qo‘shildi
+  final int paymentType; 
+  final CompanyModel? companyModel;
 
   PhoneReportModel({
     required this.id,
@@ -38,7 +41,8 @@ class PhoneReportModel {
     required this.memory,
     required this.salePrice,
     required this.saleTime,
-    required this.paymentType, // ✅ yangi
+    required this.paymentType, 
+    this.companyModel,
   });
 
   factory PhoneReportModel.fromJson(Map<String, dynamic> json) {
@@ -61,7 +65,10 @@ class PhoneReportModel {
       memory: json['memory'],
       salePrice: (json['sale_price'] as num).toDouble(),
       saleTime: DateTime.parse(json['sale_time']),
-      paymentType: json['payment_type'] as int, // ✅ yangi
+      paymentType: json['payment_type'] as int,
+      companyModel: json['company'] != null
+            ? CompanyModel.fromJson(json['company'])
+            : null,
     );
   }
 
@@ -85,7 +92,7 @@ class PhoneReportModel {
       'memory': memory,
       'sale_price': salePrice,
       'sale_time': saleTime.toIso8601String(),
-      'payment_type': paymentType, // ✅ yangi
+      'payment_type': paymentType, 
     };
   }
 }

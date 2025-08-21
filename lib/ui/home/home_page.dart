@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobi_store/ui/phones/view_model/phones_page.dart';
+import 'package:mobi_store/ui/phones/phones_page.dart';
 import 'package:mobi_store/ui/phones/widgets/phone_add.dart';
+import 'package:mobi_store/ui/reports/pages/phone_report/phonereport_screen.dart';
+import 'package:mobi_store/ui/reports/pages/report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,7 +16,7 @@ class _HomePageState extends State<HomeScreen> {
   final List<Widget> _pages = [
     const PhonesPage(),
     const Center(child: Text("❤️ Favorites")),
-    const Center(child: Text("🔔 Notifications")),
+    const ReportScreen(),
     const Center(child: Text("👤 Profile")),
   ];
 
@@ -22,14 +24,9 @@ class _HomePageState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_currentIndex],
-
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
-        
-
-        shape: const CircleBorder(
-          
-        ),
+        shape: const CircleBorder(),
         onPressed: () {
           Navigator.push(
             context,
@@ -39,7 +36,6 @@ class _HomePageState extends State<HomeScreen> {
         child: const Icon(Icons.add, color: Colors.white, size: 28),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
       bottomNavigationBar: BottomAppBar(
         color: Theme.of(context).colorScheme.secondary,
         shape: const CircularNotchedRectangle(),

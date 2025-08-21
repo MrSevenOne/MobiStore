@@ -4,30 +4,24 @@ import 'package:mobi_store/domain/models/phone_report_model.dart';
 class PhoneReportService extends BaseService {
   PhoneReportService() : super('phone_reports');
 
-  Future<List<PhoneReportModel>> getReports() async {
+  /// 📌 Shop ID bo‘yicha reportlarni olish
+  Future<List<PhoneReportModel>> getReportsByShop(String shopId) async {
     try {
-      final response = await supabase.from(tableName).select();
+      final response = await supabase
+          .from(tableName)
+          .select('*, company:company_name(*)')
+          .eq('shop_id', shopId)
+          .order('created_at', ascending: false);
+
       return (response as List)
           .map((e) => PhoneReportModel.fromJson(e))
           .toList();
     } catch (e) {
-      debugPrint("❌ Error fetching phone reports: $e");
-      rethrow;
+      debugPrint("❌ Error fetching reports by shop: $e");
+      return [];
     }
   }
 
-  Future<PhoneReportModel?> getReportById(int id) async {
-    try {
-      final response =
-          await supabase.from(tableName).select().eq('id', id).single();
-      return PhoneReportModel.fromJson(response);
-    } catch (e) {
-      debugPrint("❌ Error fetching phone report by id: $e");
-      return null;
-    }
-  }
-
-  /// ✅ Function orqali qo‘shish (phones → phone_reports)
   Future<bool> movePhoneToReport({
     required int phoneId,
     required double salePrice,
@@ -39,7 +33,6 @@ class PhoneReportService extends BaseService {
         'p_sale_price': salePrice,
         'p_payment_type': paymentType,
       });
-      debugPrint("✅ Phone moved to report successfully!");
       return true;
     } catch (e) {
       debugPrint("❌ Error moving phone to report: $e");

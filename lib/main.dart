@@ -6,6 +6,7 @@ import 'package:mobi_store/test.dart';
 import 'package:mobi_store/ui/core/themes/dark_theme.dart';
 import 'package:mobi_store/ui/core/themes/light_theme.dart';
 import 'package:mobi_store/ui/provider/company_viewmodel.dart';
+import 'package:mobi_store/ui/provider/daterange_viewmodel.dart';
 import 'package:mobi_store/ui/provider/imageupload_viewmodel.dart';
 import 'package:mobi_store/ui/provider/locale_viewmodel.dart';
 import 'package:mobi_store/ui/provider/phone_report_view_model.dart';
@@ -52,6 +53,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => PhoneViewModel()),
         ChangeNotifierProvider(create: (_) => ImageUploadViewModel()),
         ChangeNotifierProvider(create: (_) => PhoneReportViewModel()),
+        ChangeNotifierProvider(create: (_) => DaterangeViewmodel()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),

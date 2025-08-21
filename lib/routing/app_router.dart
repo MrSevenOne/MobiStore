@@ -3,9 +3,11 @@ import 'package:mobi_store/ui/auth/admin_connect_screen.dart';
 import 'package:mobi_store/ui/auth/login_screen.dart';
 import 'package:mobi_store/ui/auth/signup_screen.dart';
 import 'package:mobi_store/ui/home/home_page.dart';
-import 'package:mobi_store/ui/phones/view_model/phones_page.dart';
+import 'package:mobi_store/ui/phones/phones_page.dart';
 import 'package:mobi_store/ui/onboarding/onboarding_screen.dart';
 import 'package:mobi_store/ui/profile/profile_screen.dart';
+import 'package:mobi_store/ui/reports/pages/phone_report/phonereport_screen.dart';
+import 'package:mobi_store/ui/reports/pages/report_screen.dart';
 import 'package:mobi_store/ui/setting/widgets/setting_screen.dart';
 import 'package:mobi_store/ui/shop/shop_screen.dart';
 import 'package:mobi_store/ui/splash/view_model/splash_view_model.dart';
@@ -24,6 +26,8 @@ class AppRouter {
   static const String profile = '/ProfileScreen';
   static const String setting = '/SettingScreen';
   static const String phones = '/PhonesPage';
+  static const String phoneReport = '/PhoneReportScreen';
+  static const String report = '/ReportScreen';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -103,9 +107,17 @@ class AppRouter {
               // viewModel: arg is HomeViewModel ? arg : HomeViewModel(),
               ),
         );
-        case phones:
-         return MaterialPageRoute(
+      case phones:
+        return MaterialPageRoute(
           builder: (context) => PhonesPage(),
+        );
+      case phoneReport:
+        return MaterialPageRoute(
+          builder: (context) => PhoneReportScreen(),
+        );
+      case report:
+        return MaterialPageRoute(
+          builder: (context) => ReportScreen(),
         );
 
       case setting:

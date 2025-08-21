@@ -6,6 +6,8 @@ const Map<String, String> enUS = {
   'delete': 'Delete',
   'edit': 'Edit',
   'hello': 'Hello',
+  'from':'From',
+  'to':'To',
   // SIGN IN PAGE
   'title': 'Hello, Again',
   'subtitle': 'Welcome back, you\'ve been missed',
