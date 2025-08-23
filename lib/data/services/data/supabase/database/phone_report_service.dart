@@ -28,14 +28,21 @@ class PhoneReportService extends BaseService {
     required int paymentType,
   }) async {
     try {
-      await supabase.rpc('move_phone_to_report', params: {
-        'p_phone_id': phoneId,
-        'p_sale_price': salePrice,
-        'p_payment_type': paymentType,
-      });
+      final response = await supabase.rpc(
+        'move_phone_to_report',
+        params: {
+          'p_phone_id': phoneId,
+          'p_sale_price': salePrice,
+          'p_payment_type': paymentType,
+        },
+      );
+
+      // Agar xatolik bo‘lsa, Supabase RPC Future exception tashlaydi
+      // Shu sababli qo‘shimcha null check shart emas
+      debugPrint('Mahsulot Sotildi: true');
       return true;
     } catch (e) {
-      debugPrint("❌ Error moving phone to report: $e");
+      debugPrint("❌ Exception moving phone to report: $e");
       return false;
     }
   }
