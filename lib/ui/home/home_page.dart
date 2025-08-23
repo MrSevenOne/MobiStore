@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobi_store/ui/phones/phones_page.dart';
 import 'package:mobi_store/ui/phones/widgets/phone_add.dart';
-import 'package:mobi_store/ui/reports/pages/phone_report/phonereport_screen.dart';
-import 'package:mobi_store/ui/reports/pages/report_screen.dart';
+import 'package:mobi_store/ui/reports/report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
