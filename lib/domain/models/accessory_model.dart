@@ -7,6 +7,8 @@ class AccessoryModel {
   final String? colour;
   final String? imageUrl;
   final DateTime createdAt;
+  final int storeId;
+  final String userId;
 
   AccessoryModel({
     required this.id,
@@ -17,6 +19,8 @@ class AccessoryModel {
     this.colour,
     this.imageUrl,
     required this.createdAt,
+    required this.storeId,
+    required this.userId,
   });
 
   factory AccessoryModel.fromJson(Map<String, dynamic> json) {
@@ -24,11 +28,13 @@ class AccessoryModel {
       id: json['id'] as String,
       name: json['name'] as String,
       price: json['price'] as int,
-      categoryId: json['category_id'] as String?,
-      brand: json['brand'] as String?,
-      colour: json['colour'] as String?,
-      imageUrl: json['image_url'] as String?,
-      createdAt: DateTime.parse(json['created_at'] as String),
+      categoryId: json['category_id'],
+      brand: json['brand'],
+      colour: json['colour'],
+      imageUrl: json['image_url'],
+      createdAt: DateTime.parse(json['created_at']),
+      storeId: json['store_id'] as int,
+      userId: json['user_id'] as String,
     );
   }
 
@@ -42,6 +48,8 @@ class AccessoryModel {
       'colour': colour,
       'image_url': imageUrl,
       'created_at': createdAt.toIso8601String(),
+      'store_id': storeId,
+      'user_id': userId,
     };
   }
 }
