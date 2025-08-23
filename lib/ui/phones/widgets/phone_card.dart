@@ -128,7 +128,8 @@ class PhoneCard extends StatelessWidget {
                 ),
               ],
             ),
-            row("Price", '${phone.price} \$'),
+            row("Buy Price", '${phone.buyPrice} \$'),
+            row("Cost Price", '${phone.CostPrice} \$'),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -144,12 +145,15 @@ class PhoneCard extends StatelessWidget {
                       return SaleDialog(
                         onConfirm: (salePrice, paymentType) async {
                           final vm = context.read<PhoneReportViewModel>();
+                          print("phone ID: ${phone.id}");
                           await vm.movePhoneToReport(
                             phoneId: phone.id!,
                             salePrice: salePrice,
                             paymentType: paymentType,
                           );
-                          context.read<PhoneViewModel>().fetchPhonesByShop('${phone.id}');
+                          context
+                              .read<PhoneViewModel>()
+                              .fetchPhonesByShop('${phone.id}');
                         },
                       );
                     },

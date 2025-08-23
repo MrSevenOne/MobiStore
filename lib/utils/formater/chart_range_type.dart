@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-enum ChartRangeType { week, month, year }
+enum ChartRangeType { day, week, month, year }
 
 ChartRangeType getRangeType(DateTimeRange range) {
   final days = range.end.difference(range.start).inDays + 1;
 
-  if (days <= 7) {
+  if (days == 1) {
+    return ChartRangeType.day;
+  } else if (days <= 7) {
     return ChartRangeType.week;
   } else if (days <= 31 &&
       range.start.month == range.end.month &&
