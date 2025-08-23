@@ -1,52 +1,58 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:mobi_store/domain/models/accessory_category_model.dart';
+import 'package:mobi_store/domain/models/accessory_model.dart';
+import 'package:mobi_store/export.dart';
 
-class AccessoryCategoryService {
-  final _supabase = Supabase.instance.client;
-  final String table = 'accessory_categories';
+class AccessoryService extends BaseService{
 
-  Future<List<AccessoryCategoryModel>> getCategories() async {
+  AccessoryService(): super('accessories');
+
+  Future<List<AccessoryModel>> getAccessoriesByShop(int shopId) async {
     try {
-      final response = await _supabase.from(table).select();
+      final response = await supabase
+          .from(tableName)
+          .select()
+          .eq('store_id', shopId)
+          .order('created_at', ascending: false);
+
       return (response as List)
-          .map((e) => AccessoryCategoryModel.fromJson(e))
+          .map((json) => AccessoryModel.fromJson(json))
           .toList();
     } catch (e) {
-      print('❌ Error fetching categories: $e');
-      return [];
+      debugPrint("❌ Error fetching accessories: $e");
+      rethrow;
     }
   }
 
-  Future<AccessoryCategoryModel?> addCategory(String name) async {
+  Future<AccessoryModel?> addAccessory(AccessoryModel accessory) async {
     try {
-      final response = await _supabase
-          .from(table)
-          .insert({'name': name})
+      final response = await supabase
+          .from(tableName)
+          .insert(accessory.toJson())
           .select()
           .single();
-      return AccessoryCategoryModel.fromJson(response);
+
+      return AccessoryModel.fromJson(response);
     } catch (e) {
-      print('❌ Error adding category: $e');
+      debugPrint("❌ Error adding accessory: $e");
       return null;
     }
   }
 
-  Future<bool> updateCategory(String id, String name) async {
+  Future<bool> updateAccessory(String id, Map<String, dynamic> data) async {
     try {
-      await _supabase.from(table).update({'name': name}).eq('id', id);
+      await supabase.from(tableName).update(data).eq('id', id);
       return true;
     } catch (e) {
-      print('❌ Error updating category: $e');
+      debugPrint("❌ Error updating accessory: $e");
       return false;
     }
   }
 
-  Future<bool> deleteCategory(String id) async {
+  Future<bool> deleteAccessory(String id) async {
     try {
-      await _supabase.from(table).delete().eq('id', id);
+      await supabase.from(tableName).delete().eq('id', id);
       return true;
     } catch (e) {
-      print('❌ Error deleting category: $e');
+      debugPrint("❌ Error deleting accessory: $e");
       return false;
     }
   }
