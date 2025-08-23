@@ -7,7 +7,7 @@ import 'package:mobi_store/ui/phones/phones_page.dart';
 import 'package:mobi_store/ui/onboarding/onboarding_screen.dart';
 import 'package:mobi_store/ui/profile/profile_screen.dart';
 import 'package:mobi_store/ui/reports/pages/phone_report/phonereport_screen.dart';
-import 'package:mobi_store/ui/reports/pages/report_screen.dart';
+import 'package:mobi_store/ui/reports/report_screen.dart';
 import 'package:mobi_store/ui/setting/widgets/setting_screen.dart';
 import 'package:mobi_store/ui/shop/shop_screen.dart';
 import 'package:mobi_store/ui/splash/view_model/splash_view_model.dart';
