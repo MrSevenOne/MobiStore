@@ -8,7 +8,8 @@ class PhoneModel {
   final String status;
   final bool box;
   final int imei;
-  final double price;
+  final double buyPrice;
+  final double CostPrice;
   final String? userId;
   final String shopId;
   final String? imageUrl;
@@ -27,10 +28,11 @@ class PhoneModel {
     required this.status,
     required this.box,
     required this.imei,
-    required this.price,
+    required this.buyPrice,
+    required this.CostPrice,
     this.userId,
     required this.shopId,
-     this.imageUrl,
+    this.imageUrl,
     this.fileId,
     required this.companyName,
     this.createdAt,
@@ -47,7 +49,8 @@ class PhoneModel {
         status: json['status'],
         box: json['box'],
         imei: json['imei'],
-        price: (json['price'] as num).toDouble(),
+        buyPrice: (json['buy_price'] as num).toDouble(),
+        CostPrice: (json['cost_price'] as num).toDouble(),
         userId: json['user_id'],
         shopId: json['shop_id'],
         imageUrl: json['image_url'],
@@ -71,7 +74,8 @@ class PhoneModel {
         'status': status,
         'box': box,
         'imei': imei,
-        'price': price,
+        'buy_price': buyPrice,
+        'cost_price':CostPrice,
         'shop_id': shopId,
         'image_url': imageUrl,
         'file_id': fileId,
@@ -92,7 +96,8 @@ class PhoneModel {
           status == other.status &&
           box == other.box &&
           imei == other.imei &&
-          price == other.price &&
+          buyPrice == other.buyPrice &&
+          CostPrice == other.CostPrice &&
           userId == other.userId &&
           shopId == other.shopId &&
           imageUrl == other.imageUrl &&
@@ -112,7 +117,8 @@ class PhoneModel {
         status,
         box,
         imei,
-        price,
+        buyPrice,
+        CostPrice,
         userId,
         shopId,
         imageUrl,
