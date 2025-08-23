@@ -26,7 +26,8 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
   final TextEditingController colourController = TextEditingController();
   final TextEditingController yomkistController = TextEditingController();
   final TextEditingController imeiController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
+  final TextEditingController buyPriceController = TextEditingController();
+  final TextEditingController costPriceController = TextEditingController();
   final TextEditingController ramController = TextEditingController();
 
   String? selectedCompanyId;
@@ -60,7 +61,8 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
       status: statusValue,
       box: boxValue,
       imei: imeiCount,
-      price: double.tryParse(priceController.text.trim()) ?? 0,
+      buyPrice: double.tryParse(buyPriceController.text.trim()) ?? 0,
+      CostPrice: double.tryParse(costPriceController.text.trim()) ?? 0,
       companyName: selectedCompanyId!,
       shopId: shopId,
       imageUrl: uploadedImageUrl,
@@ -213,11 +215,21 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
                 },
               ),
 
-              /// Price
+              /// Buy Price
               CustomTextfield(
-                label: 'price'.tr,
+                label: 'Buy Price',
                 hint: 'enter_price'.tr,
-                controller: priceController,
+                controller: buyPriceController,
+                keyboardType: TextInputType.number,
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'enter_price'.tr : null,
+              ),
+
+              /// Cost Price
+              CustomTextfield(
+                label: 'Cost Price',
+                hint: 'enter_price'.tr,
+                controller: costPriceController,
                 keyboardType: TextInputType.number,
                 validator: (value) =>
                     value == null || value.isEmpty ? 'enter_price'.tr : null,

@@ -32,8 +32,9 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
   late TextEditingController modelController;
   late TextEditingController colourController;
   late TextEditingController yomkistController;
-  late TextEditingController priceController;
+  late TextEditingController buyPriceController;
   late TextEditingController ramController;
+  late TextEditingController costPriceController;
 
   String? selectedCompanyId;
   int? selectedMemory;
@@ -54,8 +55,10 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
     modelController = TextEditingController(text: phone.modelName);
     colourController = TextEditingController(text: phone.colour);
     yomkistController = TextEditingController(text: phone.yomkist?.toString());
-    priceController = TextEditingController(text: phone.price.toString());
+    buyPriceController = TextEditingController(text: phone.buyPrice.toString());
     ramController = TextEditingController(text: phone.ram?.toString());
+    costPriceController =
+        TextEditingController(text: phone.CostPrice.toString());
 
     selectedCompanyId = phone.companyName;
     selectedMemory = phone.memory;
@@ -113,12 +116,15 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
     final updatedPhone = PhoneModel(
       id: widget.phone.id,
       modelName: modelController.text.trim(),
-      colour: colourController.text.trim().isNotEmpty ? colourController.text.trim() : null,
+      colour: colourController.text.trim().isNotEmpty
+          ? colourController.text.trim()
+          : null,
       yomkist: yomkist,
       status: statusValue,
       box: boxValue,
       imei: imeiCount,
-      price: double.tryParse(priceController.text.trim()) ?? 0,
+      buyPrice: double.tryParse(buyPriceController.text.trim()) ?? 0,
+      CostPrice: double.tryParse(costPriceController.text.trim()) ?? 0,
       userId: userId,
       shopId: shopId,
       imageUrl: uploadedImageUrl!, // 🔹 yangilangan yoki eski rasm
@@ -140,7 +146,8 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
       Navigator.of(context).pop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(phoneVM.errorMessage ?? "phone_update_false".tr)),
+        SnackBar(
+            content: Text(phoneVM.errorMessage ?? "phone_update_false".tr)),
       );
     }
 
@@ -200,15 +207,17 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
 
                   CompanyDropdown(
                     selectedCompanyId: selectedCompanyId,
-                    onChanged: (value) => setState(() => selectedCompanyId = value),
+                    onChanged: (value) =>
+                        setState(() => selectedCompanyId = value),
                   ),
 
                   CustomTextfield(
                     label: 'mobile_name'.tr,
                     hint: 'enter_model'.tr,
                     controller: modelController,
-                    validator: (value) =>
-                        value == null || value.isEmpty ? 'enter_model'.tr : null,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'enter_model'.tr
+                        : null,
                   ),
 
                   ColourDropdown(controller: colourController),
@@ -217,16 +226,26 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
                     selectedMemory: selectedMemory,
                     onChanged: (val) => setState(() => selectedMemory = val),
                   ),
-
+                  //Buy Price 
                   CustomTextfield(
-                    label: 'price'.tr,
+                    label: 'Buy Price',
                     hint: 'enter_price'.tr,
-                    controller: priceController,
+                    controller: buyPriceController,
                     keyboardType: TextInputType.number,
-                    validator: (value) =>
-                        value == null || value.isEmpty ? 'enter_price'.tr : null,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'enter_price'.tr
+                        : null,
                   ),
-
+                  //Cost Price
+                   CustomTextfield(
+                    label: 'Buy Price',
+                    hint: 'enter_price'.tr,
+                    controller: costPriceController,
+                    keyboardType: TextInputType.number,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'enter_price'.tr
+                        : null,
+                  ),
                   const SizedBox(height: 16),
                   DialogButtons(
                     onCancel: () => Navigator.of(context).pop(),
