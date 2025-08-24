@@ -6,10 +6,11 @@ class PhoneCardShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.secondary,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
@@ -36,15 +37,13 @@ class PhoneCardShimmer extends StatelessWidget {
           ShimmerBox(radius: 4.0),
 
           const SizedBox(height: 6),
-                   ShimmerBox(radius: 4.0,width: 100.0),
+          ShimmerBox(radius: 4.0, width: 100.0),
 
           const SizedBox(height: 6),
-                   ShimmerBox(radius: 4.0,width: 80.0),
-
+          ShimmerBox(radius: 4.0, width: 80.0),
 
           const SizedBox(height: 12),
-                    ShimmerBox(radius: 8.0,height: 36.0),
-         
+          ShimmerBox(radius: 8.0, height: 36.0),
         ],
       ),
     );
