@@ -102,9 +102,16 @@ class PhoneCard extends StatelessWidget {
                     color: theme.colorScheme.onSecondary,
                   ),
                 ),
-                CircleAvatar(
-                  radius: 8,
-                  backgroundColor: colorMap[phone.colour] ?? Colors.grey,
+                Container(
+                  padding: const EdgeInsets.all(2), // border qalinligi
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: theme.colorScheme.shadow, // border rangi (shadow sifatida)
+                  ),
+                  child: CircleAvatar(
+                    radius: 8.0,
+                    backgroundColor: colorMap[phone.colour] ?? Colors.grey, // fon rangi
+                  ),
                 ),
               ],
             ),
