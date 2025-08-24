@@ -7,10 +7,12 @@ class ShopViewmodel extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   List<ShopModel> _stores = [];
+  ShopModel? _currentShop; // bitta shop maʼlumotini saqlash uchun
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   List<ShopModel> get stores => _stores;
+  ShopModel? get currentShop => _currentShop;
 
   /// Store qo‘shish
   Future<void> createStore(String address, String storeName) async {
@@ -44,6 +46,23 @@ class ShopViewmodel extends ChangeNotifier {
     }
   }
 
+  /// Shop ID bo‘yicha bitta store maʼlumotini olish
+  Future<void> getShopInfo(int shopId) async {
+    _setLoading(true);
+    try {
+      _currentShop = await _shopService.getStoreById(shopId);
+      _errorMessage = null;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString();
+      debugPrint("❌ getShopInfo error: $e");
+      notifyListeners();
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  /// Store yangilash
   Future<void> updateStore(ShopModel shopModel) async {
     _setLoading(true);
     try {
@@ -78,16 +97,16 @@ class ShopViewmodel extends ChangeNotifier {
     }
   }
 
-   /// Store bo‘yicha limitni aniqlash
+  /// Store bo‘yicha limitni aniqlash
   Future<bool> checkStoreLimit() async {
     try {
       final result = await _shopService.checkStoreLimit();
       debugPrint("✅ Store limit check result: $result");
-      return result; // bool qiymat qaytariladi
+      return result;
     } catch (e) {
       _errorMessage = e.toString();
       debugPrint("❌ Store limit check error: $e");
-      return false; // xatolik bo‘lsa false qaytadi
+      return false;
     }
   }
 
