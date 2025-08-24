@@ -1,29 +1,38 @@
-import 'package:mobi_store/export.dart';
 import 'package:mobi_store/domain/models/accessory_model.dart';
+import 'package:mobi_store/export.dart';
 
-class AccessoryService extends BaseService{
-
-  AccessoryService():super('accessories');
-
-  Future<List<AccessoryModel>> getAccessories() async {
+class AccessoryService extends BaseService {
+  AccessoryService() : super('accessories');
+  Future<List<AccessoryModel>> getAccessories(
+      int shopId, String categoryId) async {
     try {
-      final response = await supabase.from(tableName).select();
+      final response = await supabase
+          .from(tableName)
+          .select()
+          .eq('store_id', shopId)
+          .eq('category_id', categoryId)
+          .order('created_at', ascending: false);
+
       return (response as List)
-          .map((e) => AccessoryModel.fromJson(e))
+          .map((json) => AccessoryModel.fromJson(json))
           .toList();
     } catch (e) {
-      debugPrint('❌ Error fetching accessories: $e');
-      return [];
+      debugPrint("❌ Error fetching accessories: $e");
+      rethrow;
     }
   }
 
   Future<AccessoryModel?> addAccessory(AccessoryModel accessory) async {
     try {
-      final response =
-          await supabase.from(tableName).insert(accessory.toJson()).select().single();
+      final response = await supabase
+          .from(tableName)
+          .insert(accessory.toJson())
+          .select()
+          .single();
+
       return AccessoryModel.fromJson(response);
     } catch (e) {
-      debugPrint('❌ Error adding accessory: $e');
+      debugPrint("❌ Error adding accessory: $e");
       return null;
     }
   }
@@ -33,7 +42,7 @@ class AccessoryService extends BaseService{
       await supabase.from(tableName).update(data).eq('id', id);
       return true;
     } catch (e) {
-      debugPrint('❌ Error updating accessory: $e');
+      debugPrint("❌ Error updating accessory: $e");
       return false;
     }
   }
@@ -43,7 +52,7 @@ class AccessoryService extends BaseService{
       await supabase.from(tableName).delete().eq('id', id);
       return true;
     } catch (e) {
-      debugPrint('❌ Error deleting accessory: $e');
+      debugPrint("❌ Error deleting accessory: $e");
       return false;
     }
   }
