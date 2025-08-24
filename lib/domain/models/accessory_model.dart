@@ -9,6 +9,7 @@ class AccessoryModel {
   final DateTime createdAt;
   final int storeId;
   final String userId;
+  final int quantity;
 
   AccessoryModel({
     required this.id,
@@ -21,6 +22,7 @@ class AccessoryModel {
     required this.createdAt,
     required this.storeId,
     required this.userId,
+    required this.quantity,
   });
 
   factory AccessoryModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class AccessoryModel {
       createdAt: DateTime.parse(json['created_at']),
       storeId: json['store_id'] as int,
       userId: json['user_id'] as String,
+      quantity: json['quantity'] as int,
     );
   }
 
@@ -50,6 +53,7 @@ class AccessoryModel {
       'created_at': createdAt.toIso8601String(),
       'store_id': storeId,
       'user_id': userId,
+      'quantity': quantity,
     };
   }
 }
