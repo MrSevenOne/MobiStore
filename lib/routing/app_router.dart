@@ -1,4 +1,7 @@
+import 'package:mobi_store/data/services/data/supabase/database/accessory_service.dart';
+import 'package:mobi_store/domain/models/accessory_category_model.dart';
 import 'package:mobi_store/export.dart';
+import 'package:mobi_store/ui/accessory/accessories_screen.dart';
 import 'package:mobi_store/ui/auth/admin_connect_screen.dart';
 import 'package:mobi_store/ui/auth/login_screen.dart';
 import 'package:mobi_store/ui/auth/signup_screen.dart';
@@ -28,6 +31,7 @@ class AppRouter {
   static const String phones = '/PhonesPage';
   static const String phoneReport = '/PhoneReportScreen';
   static const String report = '/ReportScreen';
+  static const String accessories = '/AccessoriesScreen';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -124,6 +128,13 @@ class AppRouter {
         // final arg = settings.arguments;
         return MaterialPageRoute(
           builder: (context) => SettingScreen(),
+        );
+      case accessories:
+        final arg = settings.arguments;
+        return MaterialPageRoute(
+          builder: (context) => AccessoriesScreen(
+            accessoryCategoryModel: arg as AccessoryCategoryModel,
+          ),
         );
 
       default:
