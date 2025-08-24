@@ -37,6 +37,28 @@ Future<List<ShopModel>> getStoresByUser(String userId) async {
   }
 }
 
+/// ID bo‘yicha bitta store olish
+Future<ShopModel?> getStoreById(int id) async {
+  try {
+    final response = await supabase
+        .from(tableName)
+        .select('*')
+        .eq('id', id)
+        .maybeSingle(); // faqat bitta qiymat qaytaradi
+
+    if (response == null) {
+      debugPrint("⚠️ Store topilmadi (id: $id)");
+      return null;
+    }
+
+    return ShopModel.fromMap(response);
+  } catch (e) {
+    debugPrint("❌ getStoreById Error: $e");
+    rethrow;
+  }
+}
+
+
 
 /// Store tahrirlash
 Future<void> updateStore(ShopModel storeModel) async {
