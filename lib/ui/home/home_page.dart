@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobi_store/ui/accessory/accessory_category_screen.dart';
 import 'package:mobi_store/ui/phones/phones_page.dart';
 import 'package:mobi_store/ui/phones/widgets/phone_add.dart';
 import 'package:mobi_store/ui/reports/report_screen.dart';
@@ -14,7 +15,7 @@ class _HomePageState extends State<HomeScreen> {
   int _currentIndex = 0;
   final List<Widget> _pages = [
     const PhonesPage(),
-    const Center(child: Text("❤️ Favorites")),
+    const AccessoryCategoryScreen(),
     const ReportScreen(),
     const Center(child: Text("👤 Profile")),
   ];
