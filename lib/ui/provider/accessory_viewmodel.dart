@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobi_store/data/services/data/supabase/database/accessory_category_service.dart';
+import 'package:mobi_store/data/services/data/supabase/database/accessory_service.dart';
 import '../../domain/models/accessory_model.dart';
 
 class AccessoryViewModel extends ChangeNotifier {
@@ -14,12 +14,12 @@ class AccessoryViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  Future<void> fetchAccessories(int shopId) async {
+  Future<void> fetchAccessories(int shopId, String categoryId) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      _accessories = await _repository.getAccessoriesByShop(shopId);
+      _accessories = await _repository.getAccessories(shopId, categoryId);
       _errorMessage = null;
     } catch (e) {
       _errorMessage = e.toString();
