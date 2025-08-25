@@ -8,7 +8,7 @@ import 'package:mobi_store/ui/core/ui/dropdown/imei_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/dropdown/memory_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/snack_bar/snackbar_widget.dart';
 import 'package:mobi_store/ui/core/ui/textfield/custom_textfield.dart';
-import 'package:mobi_store/ui/phones/widgets/imageupload_widget.dart';
+import 'package:mobi_store/ui/core/ui/imageupload_widget.dart';
 import 'package:mobi_store/ui/provider/company_viewmodel.dart';
 import 'package:mobi_store/ui/provider/phone_viewmodel.dart';
 import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
@@ -95,9 +95,6 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
     final userId = UserManager.currentUserId;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("add_phone".tr),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(36.0),
         child: Form(
@@ -113,6 +110,7 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
                   uploadedImageUrl = url;
                   uploadedFileId = fileId;
                 },
+                folderType: 'phones',
               ),
 
               /// Company
