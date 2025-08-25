@@ -29,17 +29,28 @@ class AccessoryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addAccessory(AccessoryModel accessory) async {
+  // AccessoryViewModel
+  Future<AccessoryModel?> addAccessory(AccessoryModel accessory) async {
     _isLoading = true;
     notifyListeners();
 
-    final newAccessory = await _repository.addAccessory(accessory);
-    if (newAccessory != null) {
-      _accessories.insert(0, newAccessory);
+    try {
+      final newAccessory = await _repository
+          .addAccessory(accessory); // repository ham AccessoryModel? qaytarsin
+      if (newAccessory != null) {
+        _accessories.insert(0, newAccessory);
+        return newAccessory;
+      } else {
+        _errorMessage = "Accessory qo‘shishda xatolik yuz berdi";
+        return null;
+      }
+    } catch (e) {
+      _errorMessage = e.toString();
+      return null;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
-
-    _isLoading = false;
-    notifyListeners();
   }
 
   Future<void> updateAccessory(String id, Map<String, dynamic> data) async {
