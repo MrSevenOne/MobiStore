@@ -14,24 +14,10 @@ class AccessoryCategoryViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  /// Har bir kategoriya uchun count saqlash
   final Map<String, int> _categoryCounts = {};
   Map<String, int> get categoryCounts => _categoryCounts;
 
-  /// Bitta category uchun count olish
-  Future<void> fetchAccessoryCount(String categoryId) async {
-    try {
-      final count = await _service.getAccessoryCountByCategory(categoryId);
-      _categoryCounts[categoryId] = count;
-      notifyListeners();
-    } catch (e) {
-      debugPrint("❌ Error fetching accessory count: $e");
-      _categoryCounts[categoryId] = 0;
-      notifyListeners();
-    }
-  }
-
-  /// Fetch all categories va countlarni ham olish
+  /// Fetch all categories va countlarni **parallel** olish
   Future<void> fetchCategories() async {
     _isLoading = true;
     _errorMessage = null;
@@ -40,13 +26,20 @@ class AccessoryCategoryViewModel extends ChangeNotifier {
     try {
       _categories = await _service.getCategories();
 
-      // har bir category uchun count olish
-      for (var category in _categories) {
-        await fetchAccessoryCount(category.id);
-      }
+      // parallel fetch: barcha category counts bir vaqtda
+      final futures = _categories.map((c) async {
+        try {
+          final count = await _service.getAccessoryCountByCategory(c.id);
+          _categoryCounts[c.id] = count;
+        } catch (_) {
+          _categoryCounts[c.id] = 0;
+        }
+      }).toList();
+
+      await Future.wait(futures);
     } catch (e) {
       _errorMessage = "Failed to fetch categories";
-      print("❌ fetchCategories error: $e");
+      debugPrint("❌ fetchCategories error: $e");
     }
 
     _isLoading = false;
