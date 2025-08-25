@@ -1,6 +1,8 @@
 import 'package:mobi_store/config/constants/colour_map.dart';
+import 'package:mobi_store/config/constants/shimmer_box.dart';
 import 'package:mobi_store/domain/models/accessory_model.dart';
 import 'package:mobi_store/export.dart';
+import 'package:mobi_store/ui/core/ui/show/accessorysale_show.dart';
 
 class AccessoryCard extends StatelessWidget {
   final AccessoryModel accessory;
@@ -60,21 +62,25 @@ class AccessoryCard extends StatelessWidget {
                     )
                   : Padding(
                       padding: const EdgeInsets.only(top: 12.0),
-                      child: Image.network(
-                        accessory.imageUrl!,
-                        height: 80,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: Image.asset(
-                              'assets/logo/logo.png',
-                              height: 100.0,
-                              fit: BoxFit.fill,
-                            ),
-                          );
-                        },
-                      ),
+                      child: Image.network(accessory.imageUrl!,
+                          height: 100,
+                          fit: BoxFit.contain,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return ShimmerBox(
+                              height: 100,
+                              width: double.infinity,
+                              radius: 0.0,
+                            );
+                          },
+                          errorBuilder: (_, __, ___) => Padding(
+                                padding: const EdgeInsets.only(top: 12.0),
+                                child: Image.asset(
+                                  'assets/logo/logo.png',
+                                  height: 100.0,
+                                  fit: BoxFit.fill,
+                                ),
+                              )),
                     ),
             ),
             const SizedBox(height: 6.0),
@@ -123,28 +129,14 @@ class AccessoryCard extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // showDialog(
-                  //   context: context,
-                  //   builder: (ctx) {
-                  //     return SaleDialog(
-                  //       onConfirm: (salePrice, paymentType) async {
-                  //         final vm =
-                  //             context.read<AccessoryReportViewModel>();
-                  //         await vm.moveAccessoryToReport(
-                  //           accessoryId: accessory.id!,
-                  //           salePrice: salePrice,
-                  //           paymentType: paymentType,
-                  //         );
-                  //         context
-                  //             .read<AccessoryViewModel>()
-                  //             .fetchAccessories(
-                  //                 accessory.storeId, accessory.categoryId);
-                  //       },
-                  //     );
-                  //   },
-                  // );
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AccessorySellDialog(
+                      accessoryModel: accessory,
+                    ),
+                  );
                 },
-                child: Text("sale".tr),
+                child: Text("Sale".tr),
               ),
             ),
           ],
