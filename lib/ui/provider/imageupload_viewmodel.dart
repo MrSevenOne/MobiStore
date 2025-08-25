@@ -23,7 +23,12 @@ class ImageUploadViewModel extends ChangeNotifier {
   }
 
   /// 📌 Yangi rasmni yuklash
-  Future<void> uploadImage(String userId, String storeId) async {
+  /// folderType: "phones" yoki "accessories" kabi
+  Future<void> uploadImage({
+    required String userId,
+    required String storeId,
+    required String folderType,
+  }) async {
     if (pickedImage == null) return;
 
     isUploading = true;
@@ -33,6 +38,7 @@ class ImageUploadViewModel extends ChangeNotifier {
       file: pickedImage!,
       userId: userId,
       storeId: storeId,
+      folderType: folderType,
     );
 
     isUploading = false;
@@ -46,7 +52,11 @@ class ImageUploadViewModel extends ChangeNotifier {
   }
 
   /// 📌 Rasmni yangilash (eski rasmni o‘chirib, yangi rasm yuklash)
-  Future<void> updateImage(String userId, String storeId) async {
+  Future<void> updateImage({
+    required String userId,
+    required String storeId,
+    required String folderType,
+  }) async {
     if (pickedImage == null || uploadedFileId == null) return;
 
     isUploading = true;
@@ -56,6 +66,7 @@ class ImageUploadViewModel extends ChangeNotifier {
       newFile: pickedImage!,
       userId: userId,
       storeId: storeId,
+      folderType: folderType,
       oldFileId: uploadedFileId!,
     );
 
