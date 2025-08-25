@@ -3,7 +3,7 @@ import 'package:mobi_store/config/constants/shimmer_box.dart';
 import 'package:mobi_store/domain/models/phone_model.dart';
 import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/core/ui/show/options_show.dart';
-import 'package:mobi_store/ui/core/ui/show/sale_show.dart';
+import 'package:mobi_store/ui/core/ui/show/phonesale_show.dart';
 import 'package:mobi_store/ui/provider/phone_report_view_model.dart';
 import 'package:mobi_store/ui/provider/phone_viewmodel.dart';
 
@@ -55,19 +55,18 @@ class PhoneCard extends StatelessWidget {
           spacing: 6.0,
           children: [
             Center(
-                child: phone.imageUrl == null || phone.imageUrl!.isEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 12.0),
-                        child: Image.asset(
-                          'assets/logo/logo.png',
-                          height: 100.0,
-                          fit: BoxFit.fill,
-                        ),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.only(top: 12.0),
-                        child: Image.network(
-                          phone.imageUrl!,
+              child: phone.imageUrl == null || phone.imageUrl!.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Image.asset(
+                        'assets/logo/logo.png',
+                        height: 100.0,
+                        fit: BoxFit.fill,
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Image.network(phone.imageUrl!,
                           height: 100,
                           fit: BoxFit.contain,
                           loadingBuilder: (context, child, loadingProgress) {
@@ -78,13 +77,16 @@ class PhoneCard extends StatelessWidget {
                               radius: 0.0,
                             );
                           },
-                          errorBuilder: (_, __, ___) => const Icon(
-                            Icons.phone_android,
-                            size: 80,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      )),
+                          errorBuilder: (_, __, ___) => Padding(
+                                padding: const EdgeInsets.only(top: 12.0),
+                                child: Image.asset(
+                                  'assets/logo/logo.png',
+                                  height: 100.0,
+                                  fit: BoxFit.fill,
+                                ),
+                              )),
+                    ),
+            ),
             const SizedBox(height: 2.0),
             Text(
               "${phone.companyName.isNotEmpty ? phone.companyModel?.name : 'Noma’lum'} ${phone.modelName}",
@@ -106,11 +108,13 @@ class PhoneCard extends StatelessWidget {
                   padding: const EdgeInsets.all(2), // border qalinligi
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: theme.colorScheme.shadow, // border rangi (shadow sifatida)
+                    color: theme
+                        .colorScheme.shadow, // border rangi (shadow sifatida)
                   ),
                   child: CircleAvatar(
                     radius: 8.0,
-                    backgroundColor: colorMap[phone.colour] ?? Colors.grey, // fon rangi
+                    backgroundColor:
+                        colorMap[phone.colour] ?? Colors.grey, // fon rangi
                   ),
                 ),
               ],
@@ -149,18 +153,19 @@ class PhoneCard extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (ctx) {
-                      return SaleDialog(
+                      return PhonesaleDialog(
                         onConfirm: (salePrice, paymentType) async {
                           final vm = context.read<PhoneReportViewModel>();
-                          print("phone ID: ${phone.id}");
                           await vm.movePhoneToReport(
                             phoneId: phone.id!,
                             salePrice: salePrice,
                             paymentType: paymentType,
                           );
-                          context
+
+                          // shopId bilan chaqiramiz
+                          await context
                               .read<PhoneViewModel>()
-                              .fetchPhonesByShop('${phone.id}');
+                              .fetchPhonesByShop(phone.shopId);
                         },
                       );
                     },
