@@ -22,20 +22,17 @@ class AccessoryService extends BaseService {
     }
   }
 
-  Future<AccessoryModel?> addAccessory(AccessoryModel accessory) async {
-    try {
-      final response = await supabase
-          .from(tableName)
-          .insert(accessory.toJson())
-          .select()
-          .single();
-
-      return AccessoryModel.fromJson(response);
-    } catch (e) {
-      debugPrint("❌ Error adding accessory: $e");
-      return null;
-    }
+// AccessoryService
+Future<AccessoryModel?> addAccessory(AccessoryModel accessory) async {
+  try {
+    final inserted = await supabase.from('accessories').insert(accessory.toJson()).select().single();
+    return AccessoryModel.fromJson(inserted);
+  } catch (e) {
+    debugPrint("❌ Add accessory error: $e");
+    return null;
   }
+}
+
 
   Future<bool> updateAccessory(String id, Map<String, dynamic> data) async {
     try {
