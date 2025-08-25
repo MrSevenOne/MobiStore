@@ -1,5 +1,5 @@
 class AccessoryModel {
-  final String id;
+  final String? id;
   final String name;
   final int price;
   final String? categoryId;
@@ -12,7 +12,7 @@ class AccessoryModel {
   final int quantity;
 
   AccessoryModel({
-    required this.id,
+    this.id,
     required this.name,
     required this.price,
     this.categoryId,
@@ -43,7 +43,6 @@ class AccessoryModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'name': name,
       'price': price,
       'category_id': categoryId,
