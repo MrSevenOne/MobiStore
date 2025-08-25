@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobi_store/ui/core/ui/drawer/custom_drawer.dart';
 import 'package:mobi_store/ui/core/ui/show/date_picker_show.dart';
 import 'package:mobi_store/ui/reports/widget/topSalePhone_card.dart';
 import 'package:mobi_store/ui/reports/widget/total_price.dart';
@@ -23,7 +24,7 @@ class _ReportScreenState extends State<ReportScreen> {
     super.initState();
     final shopId = context.read<SelectedStoreViewModel>().storeId;
     vm = PhoneReportViewModel();
-    vm.fetchReportsByShop("${shopId}");
+    vm.fetchReportsByShop("$shopId");
   }
 
   @override
@@ -42,6 +43,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: vm),
@@ -57,12 +59,25 @@ class _ReportScreenState extends State<ReportScreen> {
             return Center(child: Text(vm.errorMessage!));
           }
 
-          final chartData =
-              vm.getProfitDataByDateRange(dateVm.range.start, dateVm.range.end);
+          vm.getProfitDataByDateRange(dateVm.range.start, dateVm.range.end);
 
           return Scaffold(
             appBar: AppBar(
               title: const Text("Telefon Daromad Reporti"),
+              leading: Builder(
+                builder: (context) => IconButton(
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                  icon: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: const Icon(Icons.menu, size: 20),
+                  ),
+                ),
+              ),
               actions: [
                 IconButton(
                   onPressed: () => _pickDateRange(dateVm),
@@ -72,6 +87,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
               ],
             ),
+            drawer: CustomDrawer(),
             body: Padding(
               padding: const EdgeInsets.all(12),
               child: SingleChildScrollView(
@@ -82,7 +98,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     const SizedBox(height: 12),
                     StatChartCard(),
                     const SizedBox(height: 12),
-                   TopsalephoneCard(),
+                    TopsalephoneCard(),
                   ],
                 ),
               ),
