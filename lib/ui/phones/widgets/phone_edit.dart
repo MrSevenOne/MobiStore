@@ -6,7 +6,7 @@ import 'package:mobi_store/ui/core/ui/dropdown/colour_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/dropdown/company_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/dropdown/memory_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/textfield/custom_textfield.dart';
-import 'package:mobi_store/ui/phones/widgets/imageupload_widget.dart';
+import 'package:mobi_store/ui/core/ui/imageupload_widget.dart';
 import 'package:mobi_store/ui/provider/phone_viewmodel.dart';
 import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
 
@@ -203,6 +203,7 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
                         uploadedFileId = fileId;
                       });
                     },
+                    folderType: 'phones',
                   ),
 
                   CompanyDropdown(
@@ -226,7 +227,7 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
                     selectedMemory: selectedMemory,
                     onChanged: (val) => setState(() => selectedMemory = val),
                   ),
-                  //Buy Price 
+                  //Buy Price
                   CustomTextfield(
                     label: 'Buy Price',
                     hint: 'enter_price'.tr,
@@ -237,7 +238,7 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
                         : null,
                   ),
                   //Cost Price
-                   CustomTextfield(
+                  CustomTextfield(
                     label: 'Buy Price',
                     hint: 'enter_price'.tr,
                     controller: costPriceController,
