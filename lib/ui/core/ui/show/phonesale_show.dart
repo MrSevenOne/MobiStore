@@ -1,6 +1,8 @@
 import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/core/ui/buttons/showdialog_button.dart';
 import 'package:mobi_store/ui/core/ui/dropdown/paymenttype_dropdown.dart';
+import 'package:mobi_store/ui/core/ui/textfield/currency_textcontroller.dart';
+import 'package:mobi_store/ui/provider/currency_viewmodel.dart';
 
 class PhonesaleDialog extends StatefulWidget {
   final Future<void> Function(double salePrice, int paymentType) onConfirm;
@@ -13,9 +15,16 @@ class PhonesaleDialog extends StatefulWidget {
 
 class _PhonesaleDialogState extends State<PhonesaleDialog> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _priceController = TextEditingController();
   int _paymentType = 0; // default: cash
   bool _isLoading = false;
+
+  late CurrencyTextController _priceController;
+
+  @override
+  void initState() {
+    super.initState();
+    _priceController = CurrencyTextController(); // ✅ endi context kerak emas
+  }
 
   @override
   void dispose() {
@@ -28,7 +37,14 @@ class _PhonesaleDialogState extends State<PhonesaleDialog> {
 
     setState(() => _isLoading = true);
 
-    final price = double.parse(_priceController.text.trim());
+    final currencyVM = Provider.of<CurrencyViewModel>(context, listen: false);
+
+    // ✅ Controller → numericValue
+    final rawPrice = _priceController.numericValue;
+
+    // ✅ ViewModel → UZS ga o‘tkazish
+    final price = currencyVM.toUzsNumeric(rawPrice);
+
     await widget.onConfirm(price, _paymentType);
 
     if (mounted) Navigator.pop(context);
@@ -78,9 +94,12 @@ class _PhonesaleDialogState extends State<PhonesaleDialog> {
                 ),
               ),
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return "sale_price_enter".tr;
-                if (double.tryParse(value) == null) return "invalid_number".tr;
+                }
+                if (double.tryParse(value.replaceAll(',', '').replaceAll(' ', '')) == null) {
+                  return "invalid_number".tr;
+                }
                 return null;
               },
             ),

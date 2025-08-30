@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mobi_store/ui/core/ui/dropdown/accessories_category_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/dropdown/colour_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/imageupload_widget.dart';
+import 'package:mobi_store/ui/core/ui/textfield/currency_textcontroller.dart';
+import 'package:mobi_store/ui/provider/company_viewmodel.dart';
+import 'package:mobi_store/ui/provider/currency_viewmodel.dart';
 import 'package:mobi_store/utils/user/user_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:mobi_store/domain/models/accessory_model.dart';
@@ -21,11 +24,23 @@ class AccessoryAddPage extends StatefulWidget {
 class _AccessoryAddPageState extends State<AccessoryAddPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
   final TextEditingController brandController = TextEditingController();
   final TextEditingController colourController = TextEditingController();
   final TextEditingController quantityController =
       TextEditingController(text: "1");
+
+  final CurrencyTextController costPriceController = CurrencyTextController();
+  final CurrencyTextController buyPriceController = CurrencyTextController();
+@override
+void initState() {
+  super.initState();
+
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    Provider.of<CompanyViewModel>(context, listen: false).fetchCompanies();
+  });
+}
+
+ 
 
   String? selectedCategoryId;
   String? uploadedImageUrl;
@@ -37,13 +52,23 @@ class _AccessoryAddPageState extends State<AccessoryAddPage> {
 
     setState(() => isLoading = true);
 
-    final storeVM = Provider.of<SelectedStoreViewModel>(context, listen: false);
+    final storeVM = context.read<SelectedStoreViewModel>();
     final storeId = int.tryParse(storeVM.storeId.toString()) ?? 0;
     final userId = UserManager.currentUserId ?? "";
+    final currencyVM = context.read<CurrencyViewModel>();
+
+    // 🔹 Controller → raw double qiymat
+    final rawCostPrice = costPriceController.numericValue;
+    final rawBuyPrice = buyPriceController.numericValue;
+
+    // 🔹 Har doim UZS ga convert qilamiz
+    final costPriceUzs = currencyVM.toUzsNumeric(rawCostPrice);
+    final buyPriceUzs = currencyVM.toUzsNumeric(rawBuyPrice);
 
     final accessory = AccessoryModel(
       name: nameController.text.trim(),
-      price: int.tryParse(priceController.text.trim()) ?? 0,
+      buyPrice: buyPriceUzs,
+      costPrice: costPriceUzs,
       categoryId: selectedCategoryId,
       brand: brandController.text.trim(),
       colour: colourController.text.trim(),
@@ -54,15 +79,19 @@ class _AccessoryAddPageState extends State<AccessoryAddPage> {
       quantity: int.tryParse(quantityController.text.trim()) ?? 1,
     );
 
-    final accessoryVM = Provider.of<AccessoryViewModel>(context, listen: false);
+    final accessoryVM = context.read<AccessoryViewModel>();
     final result = await accessoryVM.addAccessory(accessory);
 
     if (result != null) {
       SnackBarWidget.showSuccess(
-          "Accessory qo‘shildi", 'Accessory muvaffaqiyatli qo‘shildi');
+        "Accessory qo‘shildi",
+        'Accessory muvaffaqiyatli qo‘shildi',
+      );
     } else {
       SnackBarWidget.showError(
-          "Xatolik", 'Accessory qo‘shishda xatolik yuz berdi');
+        "Xatolik",
+        'Accessory qo‘shishda xatolik yuz berdi',
+      );
     }
 
     setState(() => isLoading = false);
@@ -70,7 +99,7 @@ class _AccessoryAddPageState extends State<AccessoryAddPage> {
 
   @override
   Widget build(BuildContext context) {
-    final storeVM = Provider.of<SelectedStoreViewModel>(context);
+    final storeVM = context.watch<SelectedStoreViewModel>();
     final userId = UserManager.currentUserId;
 
     return Scaffold(
@@ -114,14 +143,38 @@ class _AccessoryAddPageState extends State<AccessoryAddPage> {
                     value == null || value.isEmpty ? 'Enter name' : null,
               ),
 
-              /// Price
+              /// Cost Price
               CustomTextfield(
-                label: 'Price',
-                hint: 'Enter price',
-                controller: priceController,
+                label: 'Cost Price',
+                hint: 'Enter cost price',
+                controller: costPriceController,
                 keyboardType: TextInputType.number,
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Enter price' : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty) return 'Enter price';
+                  if (double.tryParse(
+                          value.replaceAll(',', '').replaceAll(' ', '')) ==
+                      null) {
+                    return 'Invalid number';
+                  }
+                  return null;
+                },
+              ),
+
+              /// Buy Price
+              CustomTextfield(
+                label: 'Buy Price',
+                hint: 'Enter buy price',
+                controller: buyPriceController,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) return 'Enter price';
+                  if (double.tryParse(
+                          value.replaceAll(',', '').replaceAll(' ', '')) ==
+                      null) {
+                    return 'Invalid number';
+                  }
+                  return null;
+                },
               ),
 
               /// Brand

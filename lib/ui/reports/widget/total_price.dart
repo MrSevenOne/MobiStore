@@ -1,25 +1,36 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:mobi_store/export.dart';
+import 'package:mobi_store/ui/provider/accessory_report_viewmodel.dart';
+import 'package:mobi_store/ui/provider/currency_viewmodel.dart';
 import 'package:mobi_store/ui/provider/daterange_viewmodel.dart';
 import 'package:mobi_store/ui/provider/phone_report_view_model.dart';
 import 'package:mobi_store/utils/formater/date_formater.dart';
+import 'package:mobi_store/utils/formater/price_formater.dart';
+import 'package:mobi_store/utils/helper/currency_helper.dart';
 
 class TotalPriceCard extends StatelessWidget {
-  const TotalPriceCard({
-    super.key,
-  });
+  const TotalPriceCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Consumer2<PhoneReportViewModel, DaterangeViewmodel>(
-      builder: (context, reportVm, dateVm, _) {
+    return Consumer3<PhoneReportViewModel, AccessoryReportViewModel,
+        DaterangeViewmodel>(
+      builder: (context, phoneVm, accVm, dateVm, _) {
         final range = dateVm.range;
-        final totalProfit = reportVm.getTotalProfitByDateRange(
-          range.start,
-          range.end,
-        );
+
+        /// Phone va Accessory foydasini hisoblash
+        final phoneProfit =
+            phoneVm.getTotalProfitByDateRange(range.start, range.end);
+        final accessoryProfit =
+            accVm.getTotalProfitByDateRange(range.start, range.end);
+
+        final totalProfit = phoneProfit + accessoryProfit;
+        final currencyVM = context.watch<CurrencyViewModel>();
+
+        final sum = CurrencyHelper.fromUzsFormatted(
+            totalProfit, currencyVM.selectedCurrency);
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
@@ -28,31 +39,24 @@ class TotalPriceCard extends StatelessWidget {
             color: theme.colorScheme.secondary,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Total Profit",
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                ],
+              Text(
+                "Umumiy Foyda",
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.primary,
+                ),
               ),
               const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
-                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${totalProfit.toStringAsFixed(2)} \$",
-                        style: theme.textTheme.headlineMedium?.copyWith(
+                        sum,
+                        style: theme.textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),

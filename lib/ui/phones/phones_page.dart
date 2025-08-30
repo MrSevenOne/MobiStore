@@ -3,22 +3,20 @@ import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/core/ui/appBar/custom_appBar.dart';
 import 'package:mobi_store/ui/core/ui/delayedLoader.dart';
 import 'package:mobi_store/ui/core/ui/drawer/custom_drawer.dart';
-import 'package:mobi_store/ui/core/ui/searchbar/phone_search.dart';
-import 'package:mobi_store/ui/phones/widgets/phone_add.dart';
+import 'package:mobi_store/ui/core/ui/searchbar/search.dart';
 import 'package:mobi_store/ui/phones/widgets/phonecard_shimmer.dart';
 import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
 import 'package:mobi_store/ui/provider/phone_viewmodel.dart';
 import 'package:mobi_store/ui/phones/widgets/phone_card.dart';
 
-
 class PhonesPage extends StatefulWidget {
   const PhonesPage({super.key});
 
   @override
-  State<PhonesPage> createState() => _HomeScreenState();
+  State<PhonesPage> createState() => _PhonesPageState();
 }
 
-class _HomeScreenState extends State<PhonesPage> {
+class _PhonesPageState extends State<PhonesPage> {
   final TextEditingController _searchController = TextEditingController();
   String _query = "";
 
@@ -51,7 +49,7 @@ class _HomeScreenState extends State<PhonesPage> {
       body: Column(
         children: [
           // 🔍 Search bar
-          PhoneSearchBar(
+          UniversalSearchBar(
             controller: _searchController,
             onChanged: (value) {
               setState(() {
@@ -75,20 +73,14 @@ class _HomeScreenState extends State<PhonesPage> {
               },
               child: DelayedLoader(
                 isLoading: phoneVM.isLoading,
-                delay: const Duration(milliseconds: 600), // ⚡ shimmerni kechiktiramiz
-                shimmer: SingleChildScrollView(
+                delay: const Duration(milliseconds: 600),
+                shimmer: ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(12),
-                  child: Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: List.generate(
-                      6,
-                      (index) => SizedBox(
-                        width: MediaQuery.of(context).size.width / 2 - 18,
-                        child: const PhoneCardShimmer(),
-                      ),
-                    ),
+                  itemCount: 6,
+                  itemBuilder: (context, index) => const Padding(
+                    padding: EdgeInsets.only(bottom: 12),
+                    child: PhoneCardShimmer(),
                   ),
                 ),
                 child: phoneVM.errorMessage != null
@@ -117,48 +109,30 @@ class _HomeScreenState extends State<PhonesPage> {
                               ],
                             ),
                           )
-                        : SingleChildScrollView(
+                        : ListView.builder(
                             physics: const AlwaysScrollableScrollPhysics(),
-                            padding: const EdgeInsets.all(12),
-                            child: filteredPhones.length == 1
-                                ? Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width / 2 -
-                                              18,
-                                      child: PhoneCard(
-                                          phone: filteredPhones.first),
-                                    ),
-                                  )
-                                : Wrap(
-                                    spacing: 12,
-                                    runSpacing: 12,
-                                    children: filteredPhones.map((phone) {
-                                      if (phone.id == null) {
-                                        debugPrint(
-                                            "Xato: Telefon ID null - ${phone.modelName}");
-                                        return const SizedBox.shrink();
-                                      }
-                                      return SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                    2 -
-                                                18,
-                                        child: Selector<PhoneViewModel,
-                                            PhoneModel>(
-                                          selector: (_, vm) => vm.phones
-                                              .firstWhere(
-                                                  (p) => p.id == phone.id,
-                                                  orElse: () => phone),
-                                          builder: (_, selectedPhone, __) {
-                                            return PhoneCard(
-                                                phone: selectedPhone);
-                                          },
-                                        ),
-                                      );
-                                    }).toList(),
+                            padding:  EdgeInsets.all(UiConstants.padding),
+                            itemCount: filteredPhones.length,
+                            itemBuilder: (context, index) {
+                              final phone = filteredPhones[index];
+                              if (phone.id == null) {
+                                debugPrint(
+                                    "Xato: Telefon ID null - ${phone.modelName}");
+                                return const SizedBox.shrink();
+                              }
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: Selector<PhoneViewModel, PhoneModel>(
+                                  selector: (_, vm) => vm.phones.firstWhere(
+                                    (p) => p.id == phone.id,
+                                    orElse: () => phone,
                                   ),
+                                  builder: (_, selectedPhone, __) {
+                                    return PhoneCard(phone: selectedPhone);
+                                  },
+                                ),
+                              );
+                            },
                           ),
               ),
             ),

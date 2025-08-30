@@ -2,8 +2,11 @@ import 'package:mobi_store/domain/models/accessory_model.dart';
 import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/core/ui/buttons/showdialog_button.dart';
 import 'package:mobi_store/ui/core/ui/dropdown/paymenttype_dropdown.dart';
+import 'package:mobi_store/ui/core/ui/textfield/currency_textcontroller.dart';
 import 'package:mobi_store/ui/provider/accessory_report_viewmodel.dart';
 import 'package:mobi_store/ui/provider/accessory_viewmodel.dart';
+import 'package:mobi_store/ui/provider/currency_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class AccessorySellDialog extends StatefulWidget {
   final AccessoryModel accessoryModel;
@@ -18,17 +21,17 @@ class AccessorySellDialog extends StatefulWidget {
 }
 
 class _AccessorySellDialogState extends State<AccessorySellDialog> {
-  late TextEditingController salePriceController;
-  late TextEditingController quantityController;
-
-  final _formKey = GlobalKey<FormState>(); // Form key
+  final _formKey = GlobalKey<FormState>();
   int selectedPaymentType = 0; // 0 = Cash, 1 = Card, 2 = Transfer
   bool _isLoading = false;
+
+  late CurrencyTextController salePriceController;
+  late TextEditingController quantityController;
 
   @override
   void initState() {
     super.initState();
-    salePriceController = TextEditingController();
+    salePriceController = CurrencyTextController(); // ✅ endi context kerak emas
     quantityController = TextEditingController(text: "1"); // default 1
   }
 
@@ -40,29 +43,36 @@ class _AccessorySellDialogState extends State<AccessorySellDialog> {
   }
 
   Future<void> _handleSubmit() async {
-    if (!_formKey.currentState!.validate()) return; // validation tekshirish
+    if (!_formKey.currentState!.validate()) return;
 
     final saleQuantity = int.tryParse(quantityController.text) ?? 1;
-    final salePrice =
-        int.tryParse(salePriceController.text) ?? widget.accessoryModel.price;
-
     setState(() => _isLoading = true);
 
     final paymentTypeMap = {0: 'Cash', 1: 'Card', 2: 'Transfer'};
+
     final reportVM = context.read<AccessoryReportViewModel>();
     final accessoryVM = context.read<AccessoryViewModel>();
+    final currencyVM = context.read<CurrencyViewModel>();
 
-    final success = await reportVM.addReport(
+    // 🔹 Controller → raw double
+    final rawPrice = salePriceController.numericValue;
+
+    // 🔹 Always convert to UZS
+    final salePriceUzs = currencyVM.toUzsNumeric(rawPrice).toInt();
+
+    final success = await reportVM.addAccessoryToReport(
       accessoryId: widget.accessoryModel.id ?? '',
       saleQuantity: saleQuantity,
-      salePrice: salePrice,
+      salePrice: salePriceUzs, // ✅ endi doim UZS va int
       paymentType: paymentTypeMap[selectedPaymentType]!,
       storeId: widget.accessoryModel.storeId,
     );
 
     if (success) {
-      await accessoryVM.fetchAccessories(widget.accessoryModel.storeId,
-          widget.accessoryModel.categoryId ?? '');
+      await accessoryVM.fetchAccessories(
+        widget.accessoryModel.storeId,
+        widget.accessoryModel.categoryId ?? '',
+      );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Accessory sold successfully")),
@@ -91,7 +101,7 @@ class _AccessorySellDialogState extends State<AccessorySellDialog> {
         textAlign: TextAlign.center,
       ),
       content: Form(
-        key: _formKey, // Form key
+        key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -132,9 +142,12 @@ class _AccessorySellDialogState extends State<AccessorySellDialog> {
                 ),
               ),
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return 'sale_price_enter'.tr;
-                if (int.tryParse(value) == null) return 'invalid_number'.tr;
+                }
+                if (double.tryParse(value.replaceAll(',', '').replaceAll(' ', '')) == null) {
+                  return 'invalid_number'.tr;
+                }
                 return null;
               },
             ),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobi_store/ui/core/ui/drawer/custom_drawer.dart';
 import 'package:mobi_store/ui/core/ui/show/date_picker_show.dart';
+import 'package:mobi_store/ui/provider/accessory_report_viewmodel.dart';
 import 'package:mobi_store/ui/reports/widget/topSalePhone_card.dart';
+import 'package:mobi_store/ui/reports/widget/total_card.dart';
 import 'package:mobi_store/ui/reports/widget/total_price.dart';
+import 'package:mobi_store/utils/chart_data.dart';
 import 'package:provider/provider.dart';
 import 'package:mobi_store/ui/provider/phone_report_view_model.dart';
 import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
@@ -23,8 +26,8 @@ class _ReportScreenState extends State<ReportScreen> {
   void initState() {
     super.initState();
     final shopId = context.read<SelectedStoreViewModel>().storeId;
-    vm = PhoneReportViewModel();
-    vm.fetchReportsByShop("$shopId");
+    vm = PhoneReportViewModel(shopId: shopId!);
+    vm.fetchReportsByShop(shopId);
   }
 
   @override
@@ -93,12 +96,56 @@ class _ReportScreenState extends State<ReportScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 12.0,
                   children: [
                     TotalPriceCard(),
-                    const SizedBox(height: 12),
-                    StatChartCard(),
-                    const SizedBox(height: 12),
-                    TopsalephoneCard(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TotalCard<PhoneReportViewModel>(
+                            title: "Telefonlar",
+                            getTotal: (vm, start, end) =>
+                                vm.getTotalProfitByDateRange(start, end),
+                          ),
+                        ),
+                        SizedBox(
+                            width:
+                                12), // kartalar orasiga biroz joy tashlab turadi
+                        Expanded(
+                          child: TotalCard<AccessoryReportViewModel>(
+                            title: "Accessorialar",
+                            getTotal: (vm, start, end) =>
+                                vm.getTotalProfitByDateRange(start, end),
+                          ),
+                        ),
+                      ],
+                    ),
+                    StatChartCard<PhoneReportViewModel>(
+                      title: "Telefon foyda diagrammasi",
+                      getData: (vm, start, end) =>
+                          vm.getProfitDataByDateRange(start, end),
+                    ),
+                    StatChartCard<AccessoryReportViewModel>(
+                      title: "Aksesuar foyda diagrammasi",
+                      getData: (vm, start, end) =>
+                          vm.getProfitDataByDateRange(start, end),
+                    ),
+                    TopSaleCard<PhoneReportViewModel>(
+                      title: "Ko‘p sotilgan telefonlar",
+                      getData: (vm, start, end) => vm
+                          .getTop5ModelsByDateRange(start, end)
+                          .map((e) => ChartData(
+                              label: e.key, value: e.value.toDouble()))
+                          .toList(),
+                    ),
+                    TopSaleCard<AccessoryReportViewModel>(
+                      title: "Ko‘p sotilgan accessorialar",
+                      getData: (vm, start, end) => vm
+                          .getTop5AccessoriesByDateRange(start, end)
+                          .map((e) => ChartData(
+                              label: e.key, value: e.value.toDouble()))
+                          .toList(),
+                    ),
                   ],
                 ),
               ),

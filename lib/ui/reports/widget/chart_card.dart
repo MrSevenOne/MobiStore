@@ -4,19 +4,29 @@ import 'package:intl/intl.dart';
 import 'package:mobi_store/config/constants/ui_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:mobi_store/ui/provider/daterange_viewmodel.dart';
-import 'package:mobi_store/ui/provider/phone_report_view_model.dart';
+import 'package:mobi_store/utils/chart_data.dart';
 
-class StatChartCard extends StatelessWidget {
-  const StatChartCard({super.key});
+class StatChartCard<T> extends StatelessWidget {
+  final String title;
+  final List<ChartData> Function(T vm, DateTime start, DateTime end) getData;
+
+  const StatChartCard({
+    super.key,
+    required this.title,
+    required this.getData,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Consumer2<PhoneReportViewModel, DaterangeViewmodel>(
-      builder: (context, phoneReportVM, dateRangeVM, child) {
+
+    return Consumer2<T, DaterangeViewmodel>(
+      builder: (context, reportVM, dateRangeVM, child) {
         final start = dateRangeVM.range.start;
         final end = dateRangeVM.range.end;
-        final chartData = phoneReportVM.getProfitDataByDateRange(start, end);
+
+        /// 🔹 Callback orqali data olish
+        final chartData = getData(reportVM, start, end);
 
         if (chartData.isEmpty) {
           return Container(
@@ -28,17 +38,11 @@ class StatChartCard extends StatelessWidget {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              spacing: 12.0,
               children: [
-                Image.asset(
-                  'assets/icons/emptyitem.png',
-                  height: 96,
-                ),
-                Text(
-                  "Ma'lumot mavjud emas",
-                  style: theme.textTheme.bodySmall,
-                ),
+                Image.asset('assets/icons/emptyitem.png', height: 96),
+                const SizedBox(height: 12),
+                Text("Ma'lumot mavjud emas",
+                    style: theme.textTheme.bodySmall),
               ],
             ),
           );
@@ -70,19 +74,19 @@ class StatChartCard extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Foyda diagrammasi",
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  title,
+                  style: theme.textTheme.titleSmall!.copyWith(
                         color: theme.colorScheme.primary,
                       ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 SizedBox(
                   height: 200,
                   width: double.infinity,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(
-                      width: spots.length * 35, // har bir nuqtaga 40px joy
+                      width: spots.length * 35,
                       child: LineChart(
                         LineChartData(
                           gridData: const FlGridData(show: false),
@@ -125,22 +129,19 @@ class StatChartCard extends StatelessWidget {
                             touchTooltipData: LineTouchTooltipData(
                               getTooltipColor: (touchedSpot) =>
                                   theme.colorScheme.primary,
-                              tooltipRoundedRadius: 8.0, // radius
-                              tooltipPadding:
-                                  const EdgeInsets.all(8), // ichki padding
-                              tooltipMargin: 12, // nuqtadan yuqoriga masofa
-                              fitInsideHorizontally:
-                                  true, // ekran tashqarisiga chiqib ketmasin
+                              tooltipRoundedRadius: 8.0,
+                              tooltipPadding: const EdgeInsets.all(8),
+                              tooltipMargin: 12,
+                              fitInsideHorizontally: true,
                               fitInsideVertically: true,
                               getTooltipItems: (touchedSpots) {
                                 return touchedSpots.map((t) {
                                   final i = t.spotIndex;
                                   final d = parsed[i].date;
                                   return LineTooltipItem(
-                                    "${formatDate(d)}\n${t.y.toStringAsFixed(2)} \$",
+                                    "${formatDate(d)}\n${t.y.toStringAsFixed(2)} so'm",
                                     TextStyle(
-                                      color: theme.colorScheme
-                                          .secondary, // matn oq, chunki fon qizil
+                                      color: theme.colorScheme.secondary,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 13,
                                     ),
@@ -159,7 +160,6 @@ class StatChartCard extends StatelessWidget {
                                 show: true,
                                 gradient: LinearGradient(
                                   colors: [
-                                    // ignore: deprecated_member_use
                                     Colors.blueAccent.withOpacity(0.3),
                                     Colors.transparent,
                                   ],

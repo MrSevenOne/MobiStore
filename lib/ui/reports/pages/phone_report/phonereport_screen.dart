@@ -18,7 +18,7 @@ class PhoneReportScreen extends StatelessWidget {
         title: const Text('📊 Phone Reports'),
       ),
       body: FutureBuilder<List<PhoneReportModel>>(
-        future: reportVM.fetchReportsByShop('$shopId'),
+        future: reportVM.fetchReportsByShop(shopId!),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

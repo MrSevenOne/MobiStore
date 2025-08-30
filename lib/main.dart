@@ -8,6 +8,7 @@ import 'package:mobi_store/ui/provider/accessory_category_viewmodel.dart';
 import 'package:mobi_store/ui/provider/accessory_report_viewmodel.dart';
 import 'package:mobi_store/ui/provider/accessory_viewmodel.dart';
 import 'package:mobi_store/ui/provider/company_viewmodel.dart';
+import 'package:mobi_store/ui/provider/currency_viewmodel.dart';
 import 'package:mobi_store/ui/provider/daterange_viewmodel.dart';
 import 'package:mobi_store/ui/provider/imageupload_viewmodel.dart';
 import 'package:mobi_store/ui/provider/locale_viewmodel.dart';
@@ -54,11 +55,16 @@ void main() async {
         ChangeNotifierProvider(create: (_) => CompanyViewModel()),
         ChangeNotifierProvider(create: (_) => PhoneViewModel()),
         ChangeNotifierProvider(create: (_) => ImageUploadViewModel()),
-        ChangeNotifierProvider(create: (_) => PhoneReportViewModel()),
+        ChangeNotifierProvider(
+            create: (_) => PhoneReportViewModel(shopId: storeVM.storeId!)),
         ChangeNotifierProvider(create: (_) => DaterangeViewmodel()),
         ChangeNotifierProvider(create: (_) => AccessoryCategoryViewModel()),
         ChangeNotifierProvider(create: (_) => AccessoryViewModel()),
-        ChangeNotifierProvider(create: (_) => AccessoryReportViewModel()),
+        ChangeNotifierProvider(
+            create: (_) => AccessoryReportViewModel(storeId: storeVM.storeId!)),
+        ChangeNotifierProvider(
+          create: (_) => CurrencyViewModel()..loadCurrencies(),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),

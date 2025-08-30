@@ -9,7 +9,9 @@ import 'package:mobi_store/ui/core/ui/dropdown/memory_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/snack_bar/snackbar_widget.dart';
 import 'package:mobi_store/ui/core/ui/textfield/custom_textfield.dart';
 import 'package:mobi_store/ui/core/ui/imageupload_widget.dart';
+import 'package:mobi_store/ui/core/ui/textfield/currency_textcontroller.dart';
 import 'package:mobi_store/ui/provider/company_viewmodel.dart';
+import 'package:mobi_store/ui/provider/currency_viewmodel.dart';
 import 'package:mobi_store/ui/provider/phone_viewmodel.dart';
 import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
 
@@ -26,9 +28,11 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
   final TextEditingController colourController = TextEditingController();
   final TextEditingController yomkistController = TextEditingController();
   final TextEditingController imeiController = TextEditingController();
-  final TextEditingController buyPriceController = TextEditingController();
-  final TextEditingController costPriceController = TextEditingController();
   final TextEditingController ramController = TextEditingController();
+  // Price Controller
+
+  final CurrencyTextController costPriceController = CurrencyTextController();
+  final CurrencyTextController buyPriceController = CurrencyTextController();
 
   String? selectedCompanyId;
   int? selectedMemory;
@@ -38,59 +42,67 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
   bool isLoading = false;
   String? uploadedImageUrl;
   String? uploadedFileId;
+ 
 
   Future<void> submit() async {
-    if (!_formKey.currentState!.validate()) return;
+  if (!_formKey.currentState!.validate()) return;
 
-    if (selectedCompanyId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("select_company_warning".tr)),
-      );
-      return;
-    }
-
-    setState(() => isLoading = true);
-
-    final storeVM = Provider.of<SelectedStoreViewModel>(context, listen: false);
-    final shopId = storeVM.storeId?.toString() ?? "bosh";
-
-    final phone = PhoneModel(
-      modelName: modelController.text.trim(),
-      colour: colourController.text.trim(),
-      yomkist: int.tryParse(yomkistController.text.trim()),
-      status: statusValue,
-      box: boxValue,
-      imei: imeiCount,
-      buyPrice: double.tryParse(buyPriceController.text.trim()) ?? 0,
-      CostPrice: double.tryParse(costPriceController.text.trim()) ?? 0,
-      companyName: selectedCompanyId!,
-      shopId: shopId,
-      imageUrl: uploadedImageUrl,
-      fileId: uploadedFileId,
-      memory: selectedMemory ?? 64,
-      ram: ramController.text.trim().isEmpty
-          ? 0
-          : int.tryParse(ramController.text.trim()) ?? 0,
+  if (selectedCompanyId == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("select_company_warning".tr)),
     );
-
-    final phoneVM = Provider.of<PhoneViewModel>(context, listen: false);
-    final result = await phoneVM.addPhone(phone);
-
-    if (result != null) {
-      SnackBarWidget.showSuccess("phone_add_true".tr, 'phone_added_success'.tr);
-
-      // ✅ HomePage ga qaytarish
-      Navigator.pushNamed(context, AppRouter.home);
-    } else {
-      SnackBarWidget.showError("phone_add_false".tr, 'phone_added_error'.tr);
-    }
-
-    setState(() => isLoading = false);
+    return;
   }
+
+  setState(() => isLoading = true);
+
+  final storeVM = Provider.of<SelectedStoreViewModel>(context, listen: false);
+  final currencyVM = Provider.of<CurrencyViewModel>(context, listen: false);
+  final shopId = storeVM.storeId?.toString() ?? "bosh";
+
+  // ✅ Controller → numericValue
+  final rawCost = costPriceController.numericValue;
+  final rawBuy = buyPriceController.numericValue;
+
+  // ✅ ViewModel → UZS ga konvertatsiya
+  final costPrice = currencyVM.toUzsNumeric(rawCost);
+  final buyPrice  = currencyVM.toUzsNumeric(rawBuy);
+
+  final phone = PhoneModel(
+    modelName: modelController.text.trim(),
+    colour: colourController.text.trim(),
+    yomkist: int.tryParse(yomkistController.text.trim()),
+    status: statusValue,
+    box: boxValue,
+    imei: imeiCount,
+    buyPrice: buyPrice,
+    CostPrice: costPrice,
+    companyName: selectedCompanyId!,
+    shopId: shopId,
+    imageUrl: uploadedImageUrl,
+    fileId: uploadedFileId,
+    memory: selectedMemory ?? 64,
+    ram: ramController.text.trim().isEmpty
+        ? 0
+        : int.tryParse(ramController.text.trim()) ?? 0,
+  );
+
+  final phoneVM = Provider.of<PhoneViewModel>(context, listen: false);
+  final result = await phoneVM.addPhone(phone);
+
+  if (result != null) {
+    SnackBarWidget.showSuccess("phone_add_true".tr, 'phone_added_success'.tr);
+    Navigator.pushNamed(context, AppRouter.home);
+  } else {
+    SnackBarWidget.showError("phone_add_false".tr, 'phone_added_error'.tr);
+  }
+
+  setState(() => isLoading = false);
+}
+
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final storeVM = Provider.of<SelectedStoreViewModel>(context);
     final userId = UserManager.currentUserId;
 
@@ -213,21 +225,21 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
                 },
               ),
 
-              /// Buy Price
-              CustomTextfield(
-                label: 'Buy Price',
-                hint: 'enter_price'.tr,
-                controller: buyPriceController,
-                keyboardType: TextInputType.number,
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'enter_price'.tr : null,
-              ),
-
               /// Cost Price
               CustomTextfield(
                 label: 'Cost Price',
                 hint: 'enter_price'.tr,
                 controller: costPriceController,
+                keyboardType: TextInputType.number,
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'enter_price'.tr : null,
+              ),
+
+              /// Buy Price
+              CustomTextfield(
+                label: 'Buy Price',
+                hint: 'enter_price'.tr,
+                controller: buyPriceController,
                 keyboardType: TextInputType.number,
                 validator: (value) =>
                     value == null || value.isEmpty ? 'enter_price'.tr : null,

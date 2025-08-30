@@ -54,12 +54,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        shopVM.currentShop!.address,
+                        shopVM.currentShop!.storeName,
                         style: theme.textTheme.bodySmall,
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        shopVM.currentShop!.storeName,
+                        shopVM.currentShop!.address,
                         style: theme.textTheme.bodyLarge!.copyWith(
                           fontWeight: FontWeight.w600,
                         ),

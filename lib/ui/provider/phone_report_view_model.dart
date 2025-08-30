@@ -16,8 +16,12 @@ class PhoneReportViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  String? _currentShopId;
-  String? get currentShopId => _currentShopId;
+  int? _currentShopId;
+  int? get currentShopId => _currentShopId;
+    /// 📌 Constructor ichida fetch chaqiramiz
+  PhoneReportViewModel({required int shopId}){
+    fetchReportsByShop(shopId);
+  }
 
   void _setLoading(bool value) {
     _isLoading = value;
@@ -30,10 +34,10 @@ class PhoneReportViewModel extends ChangeNotifier {
   }
 
   /// 📌 Shop bo‘yicha reportlarni olish
-  Future<List<PhoneReportModel>> fetchReportsByShop(String shopId) async {
+  Future<List<PhoneReportModel>> fetchReportsByShop(int shopId) async {
     try {
       _currentShopId = shopId;
-      final reports = await _service.getReportsByShop(shopId);
+      final reports = await _service.getReportsByShop("$shopId");
       _reports = reports;
       notifyListeners();
       return reports;

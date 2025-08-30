@@ -5,18 +5,19 @@ class TariffService extends BaseService{
    TariffService() : super('tariffs');
 
 
-  Future<List<TariffModel>> getAllTariffs() async {
-    try {
-      final response = await supabase
-          .from(tableName)
-          .select('*')
-          .order('created_at');
-      return (response as List).map((e) => TariffModel.fromMap(e)).toList();
-    } catch (e) {
-      debugPrint('❌ Error fetching tariffs: $e');
-      rethrow;
-    }
+ Future<List<TariffModel>> getAllTariffs() async {
+  try {
+    final response = await supabase
+        .from(tableName)
+        .select('*')
+        .order('price', ascending: true); // 🔑 Narx bo‘yicha saralash
+    return (response as List).map((e) => TariffModel.fromMap(e)).toList();
+  } catch (e) {
+    debugPrint('❌ Error fetching tariffs: $e');
+    rethrow;
   }
+}
+
 
   Future<TariffModel?> getTariffById(String id) async {
     try {

@@ -31,6 +31,7 @@ class AccessoryCategoryViewModel extends ChangeNotifier {
         try {
           final count = await _service.getAccessoryCountByCategory(c.id);
           _categoryCounts[c.id] = count;
+          debugPrint("fetchCategories $_categories");
         } catch (_) {
           _categoryCounts[c.id] = 0;
         }

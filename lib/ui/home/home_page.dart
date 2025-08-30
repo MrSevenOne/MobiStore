@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/accessory/accessory_category_screen.dart';
 import 'package:mobi_store/ui/accessory/widgets/accessory_add.dart';
-import 'package:mobi_store/ui/core/ui/appBar/custom_appBar.dart';
-import 'package:mobi_store/ui/core/ui/drawer/custom_drawer.dart';
 import 'package:mobi_store/ui/phones/phones_page.dart';
 import 'package:mobi_store/ui/phones/widgets/phone_add.dart';
 import 'package:mobi_store/ui/reports/report_screen.dart';
+import 'package:mobi_store/ui/setting/widgets/setting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -37,6 +35,8 @@ class _HomePageState extends State<HomeScreen> {
         break;
       case 4:
         body = const PhoneAddPage();
+      case 5:
+        body = const SettingScreen();
         break;
       default:
         body = const PhonesPage();
@@ -132,8 +132,8 @@ class _HomePageState extends State<HomeScreen> {
               ),
               IconButton(
                 icon: Icon(Icons.person,
-                    color: _currentIndex == 3 ? Colors.blue : Colors.grey),
-                onPressed: () => setState(() => _currentIndex = 3),
+                    color: _currentIndex == 5 ? Colors.blue : Colors.grey),
+                onPressed: () => setState(() => _currentIndex = 5),
               ),
             ],
           ),

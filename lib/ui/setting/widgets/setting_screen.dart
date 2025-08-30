@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:mobi_store/ui/core/ui/dropdown/currency_select_dropdown.dart';
 import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/provider/theme_provider.dart';
 
@@ -25,17 +25,16 @@ class SettingScreen extends StatelessWidget {
               "App Setting",
               style: theme.textTheme.titleSmall!.copyWith(
                 color: theme.colorScheme.onPrimary,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 12.0),
+
+            /// Dark Mode
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Dark Mode",
-                  style: theme.textTheme.bodyMedium,
-                ),
+                Text("Dark Mode", style: theme.textTheme.bodyMedium),
                 CupertinoSwitch(
                   value: themeVM.isDarkMode,
                   onChanged: (value) {
@@ -46,34 +45,29 @@ class SettingScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8.0),
             Divider(color: theme.colorScheme.outline),
-            // Language dropdown
+
+            /// Language dropdown
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Language',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium, // Theme bilan rang moslashadi
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
                   decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .surface, // Theme surface rangi
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                         color: Theme.of(context).colorScheme.outline),
                   ),
                   child: DropdownButton<String>(
                     value: Get.locale?.languageCode ?? 'en',
-                    underline:
-                        const SizedBox(), // default underline yo‘q qiladi
-                    dropdownColor:
-                        Theme.of(context).colorScheme.surface, // dropdown rang
-                    style: Theme.of(context).textTheme.bodyMedium, // text style
+                    underline: const SizedBox(),
+                    dropdownColor: Theme.of(context).colorScheme.surface,
+                    style: Theme.of(context).textTheme.bodyMedium,
                     items: const [
                       DropdownMenuItem(value: 'en', child: Text('English')),
                       DropdownMenuItem(value: 'uz', child: Text("O'zbekcha")),
@@ -81,8 +75,7 @@ class SettingScreen extends StatelessWidget {
                     ],
                     onChanged: (value) {
                       if (value != null) {
-                        Get.updateLocale(
-                            Locale(value)); // tilni darhol o‘zgartiradi
+                        Get.updateLocale(Locale(value));
                       }
                     },
                   ),
@@ -90,10 +83,11 @@ class SettingScreen extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 24),
-            // Matnlarni chiqarish (.tr ishlaydi)
-            Text('sign_in'.tr, style: const TextStyle(fontSize: 20)),
-            Text('home_title'.tr, style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 12.0),
+            Divider(color: theme.colorScheme.outline),
+
+            /// Currency dropdown
+            CurrencyDropdown(),
           ],
         ),
       ),

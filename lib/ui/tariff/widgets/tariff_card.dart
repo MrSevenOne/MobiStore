@@ -12,7 +12,8 @@ class TariffCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final userTariffVM = context.watch<UserTariffViewModel>(); // Use watch to react to isLoading changes
+    final userTariffVM = context.watch<
+        UserTariffViewModel>(); // Use watch to react to isLoading changes
     final userId = UserManager.currentUserId;
 
     Widget rowElement(String title) {
@@ -59,7 +60,7 @@ class TariffCard extends StatelessWidget {
       ),
       width: double.infinity,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           /// Title
           Text(
@@ -67,14 +68,6 @@ class TariffCard extends StatelessWidget {
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: const Color(0xFF0F1E50),
-            ),
-          ),
-          const Text(
-            'Starting at',
-            style: TextStyle(
-              color: Color(0xFF858FAB),
-              fontSize: 17,
-              fontWeight: FontWeight.w400,
             ),
           ),
           const SizedBox(height: 28.0),
@@ -116,7 +109,9 @@ class TariffCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
-              onPressed: userTariffVM.isLoading ? null : onBuyPressed, // Disable button when loading
+              onPressed: userTariffVM.isLoading
+                  ? null
+                  : onBuyPressed, // Disable button when loading
               child: userTariffVM.isLoading
                   ? const SizedBox(
                       height: 20,
@@ -132,12 +127,14 @@ class TariffCard extends StatelessWidget {
 
           const SizedBox(height: 18.0),
 
-          /// Description or features
-          if (tariff.description?.isNotEmpty ?? false)
-            rowElement(tariff.description!),
-
-          rowElement('${tariff.storeAmount} store amount'),
-          rowElement('Accessory: ${tariff.accessory ? "Yes" : "No"}'),
+          Column(
+            spacing: 8.0,
+            children: [
+              rowElement('Do\'kon soni: ${tariff.storeAmount}'),
+              rowElement('Aksessuar: ${tariff.accessory ? "Ha" : "Yo'q"}'),
+              rowElement(tariff.description ?? ''),
+            ],
+          )
         ],
       ),
     );

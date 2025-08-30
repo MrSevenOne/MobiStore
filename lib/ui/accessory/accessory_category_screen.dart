@@ -3,8 +3,22 @@ import 'package:mobi_store/ui/core/ui/appBar/custom_appBar.dart';
 import 'package:mobi_store/ui/core/ui/drawer/custom_drawer.dart';
 import 'package:mobi_store/ui/provider/accessory_category_viewmodel.dart';
 
-class AccessoryCategoryScreen extends StatelessWidget {
+class AccessoryCategoryScreen extends StatefulWidget {
   const AccessoryCategoryScreen({super.key});
+
+  @override
+  State<AccessoryCategoryScreen> createState() =>
+      _AccessoryCategoryScreenState();
+}
+
+class _AccessoryCategoryScreenState extends State<AccessoryCategoryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AccessoryCategoryViewModel>().fetchCategories();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

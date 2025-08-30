@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:mobi_store/domain/models/company_model.dart';
 
 class PhoneModel {
@@ -41,6 +42,17 @@ class PhoneModel {
     this.ram,
   });
 
+  // Getterlar
+  String get buyPriceFormatted {
+    final formatter = NumberFormat.decimalPattern('uz_UZ');
+    return formatter.format(buyPrice);
+  }
+
+  String get costPriceFormatted {
+    final formatter = NumberFormat.decimalPattern('uz_UZ');
+    return formatter.format(CostPrice);
+  }
+
   factory PhoneModel.fromJson(Map<String, dynamic> json) => PhoneModel(
         id: json['id'],
         modelName: json['model_name'],
@@ -75,7 +87,7 @@ class PhoneModel {
         'box': box,
         'imei': imei,
         'buy_price': buyPrice,
-        'cost_price':CostPrice,
+        'cost_price': CostPrice,
         'shop_id': shopId,
         'image_url': imageUrl,
         'file_id': fileId,
