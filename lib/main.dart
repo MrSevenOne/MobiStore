@@ -18,6 +18,7 @@ import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
 import 'package:mobi_store/ui/provider/theme_provider.dart';
 import 'package:mobi_store/ui/provider/user_provider.dart';
 import 'package:mobi_store/ui/splash/view_model/splash_view_model.dart';
+import 'package:mobi_store/ui/splash/widgets/splash_screen.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
@@ -94,8 +95,7 @@ class MyApp extends StatelessWidget {
       theme: LightTheme,
       darkTheme: DarkTheme,
       themeMode: themeVM.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      initialRoute: AppRouter.splash,
-      onGenerateRoute: AppRouter.onGenerateRoute,
+      home: SplashScreen(viewModel: SplashViewModel()),
       builder: (context, child) => ResponsiveBreakpoints.builder(
         child: child!,
         breakpoints: [
