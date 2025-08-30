@@ -28,25 +28,18 @@ void main() async {
     anonKey: SupabaseConstants.supabaseAnonKey,
   );
 
-  // Endi UserManager ishlatish xavfsiz
-  final userId = UserManager.currentUserId;
-  debugPrint('Xozirgi User Idsi: $userId');
-
   // 📥 Saqlangan ID ni yuklaymiz
   final storeVM = SelectedStoreViewModel();
-  await storeVM.loadStoreId();
+  await storeVM.loadStoreId(); // Asinxron yuklashni kutamiz
   debugPrint("📌 Saqlangan storeId: ${storeVM.storeId}");
+
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => LocaleViewmodel(),
-        ),
+        ChangeNotifierProvider(create: (_) => LocaleViewmodel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (context) => SplashViewModel()),
-        ChangeNotifierProvider(
-          create: (_) => TariffViewModel(),
-        ),
+        ChangeNotifierProvider(create: (_) => TariffViewModel()),
         ChangeNotifierProvider(create: (_) => UserTariffViewModel()),
         ChangeNotifierProvider(create: (_) => SelectedStoreViewModel()),
         ChangeNotifierProvider(create: (_) => ShopViewmodel()),
@@ -56,12 +49,17 @@ void main() async {
         ChangeNotifierProvider(create: (_) => PhoneViewModel()),
         ChangeNotifierProvider(create: (_) => ImageUploadViewModel()),
         ChangeNotifierProvider(
-            create: (_) => PhoneReportViewModel(shopId: storeVM.storeId!)),
+          create: (_) => PhoneReportViewModel(shopId: storeVM.storeId ?? 0
+          ),
+        ),
         ChangeNotifierProvider(create: (_) => DaterangeViewmodel()),
         ChangeNotifierProvider(create: (_) => AccessoryCategoryViewModel()),
         ChangeNotifierProvider(create: (_) => AccessoryViewModel()),
         ChangeNotifierProvider(
-            create: (_) => AccessoryReportViewModel(storeId: storeVM.storeId!)),
+          create: (_) => AccessoryReportViewModel(
+            storeId: storeVM.storeId ?? 0, // Null bo‘lsa default qiymat
+          ),
+        ),
         ChangeNotifierProvider(
           create: (_) => CurrencyViewModel()..loadCurrencies(),
         ),
