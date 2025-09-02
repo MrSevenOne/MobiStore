@@ -50,8 +50,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => PhoneViewModel()),
         ChangeNotifierProvider(create: (_) => ImageUploadViewModel()),
         ChangeNotifierProvider(
-          create: (_) => PhoneReportViewModel(shopId: storeVM.storeId ?? 0
-          ),
+          create: (_) => PhoneReportViewModel(shopId: storeVM.storeId ?? 0),
         ),
         ChangeNotifierProvider(create: (_) => DaterangeViewmodel()),
         ChangeNotifierProvider(create: (_) => AccessoryCategoryViewModel()),
@@ -95,7 +94,10 @@ class MyApp extends StatelessWidget {
       theme: LightTheme,
       darkTheme: DarkTheme,
       themeMode: themeVM.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      home: SplashScreen(viewModel: SplashViewModel()),
+      // 🚀 Routing
+      initialRoute: AppRouter.splash,
+      onGenerateRoute: AppRouter.onGenerateRoute,
+
       builder: (context, child) => ResponsiveBreakpoints.builder(
         child: child!,
         breakpoints: [

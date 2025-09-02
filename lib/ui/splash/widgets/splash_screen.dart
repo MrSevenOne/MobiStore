@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     final targetRoute = widget.viewModel.targetRoute ?? AppRouter.login;
 
-    Navigator.of(context).pushReplacementNamed(targetRoute);
+    Navigator.pushReplacementNamed(context, targetRoute);
   }
 
   @override
