@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:mobi_store/export.dart';
 
 class UniversalSearchBar extends StatelessWidget {
   final TextEditingController controller;
@@ -12,7 +12,7 @@ class UniversalSearchBar extends StatelessWidget {
     super.key,
     required this.controller,
     required this.onChanged,
-    this.hintText = "Qidirish...",
+    this.hintText = "search",
     this.prefixIcon = Icons.search,
     this.padding = const EdgeInsets.only(right: 12, left: 12, top: 24),
     this.borderRadius = 30,

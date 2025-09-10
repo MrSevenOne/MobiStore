@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:mobi_store/config/constants/shimmer_box.dart';
+import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/core/ui/delayedLoader.dart';
-import 'package:provider/provider.dart';
-import 'package:mobi_store/ui/shop/view_model/shop_viewmodel.dart';
 import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
+
+import '../../../../config/constants/shimmer_box.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -33,6 +32,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     final theme = Theme.of(context);
 
     return AppBar(
+      automaticallyImplyLeading: false,
       title: Consumer<ShopViewmodel>(
         builder: (context, shopVM, child) {
           return DelayedLoader(
@@ -48,7 +48,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               ],
             ),
             child: shopVM.currentShop == null
-                ? const Text("Do‘kon tanlanmagan")
+                ?  Text("no_store_selected".tr)
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -69,31 +69,20 @@ class _CustomAppBarState extends State<CustomAppBar> {
           );
         },
       ),
-      leading: Builder(
-        builder: (context) => IconButton(
-          onPressed: () => Scaffold.of(context).openDrawer(),
-          icon: Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              color: theme.colorScheme.secondary,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: const Icon(Icons.menu, size: 20),
-          ),
-        ),
-      ),
-      actions: [
-        Container(
-          height: 40,
-          width: 40,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.secondary,
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: const Icon(Icons.face, size: 20),
-        ),
-      ],
+      // leading: Builder(
+      //   builder: (context) => IconButton(
+      //     onPressed: () => Scaffold.of(context).openDrawer(),
+      //     icon: Container(
+      //       height: 40,
+      //       width: 40,
+      //       decoration: BoxDecoration(
+      //         color: theme.colorScheme.secondary,
+      //         borderRadius: BorderRadius.circular(30),
+      //       ),
+      //       child: const Icon(Icons.menu, size: 20),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

@@ -61,7 +61,7 @@ class _CompanyDropdownState extends State<CompanyDropdown> {
               child: Text(
                 'company'.tr,
                 style: theme.textTheme.bodyMedium!
-                    .copyWith(color: theme.colorScheme.onSecondary),
+                    .copyWith(color: theme.colorScheme.onPrimary),
               ),
             ),
             SizedBox(height: 6.0),

@@ -42,64 +42,62 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
   bool isLoading = false;
   String? uploadedImageUrl;
   String? uploadedFileId;
- 
 
   Future<void> submit() async {
-  if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) return;
 
-  if (selectedCompanyId == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("select_company_warning".tr)),
+    if (selectedCompanyId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("select_company_warning".tr)),
+      );
+      return;
+    }
+
+    setState(() => isLoading = true);
+
+    final storeVM = Provider.of<SelectedStoreViewModel>(context, listen: false);
+    final currencyVM = Provider.of<CurrencyViewModel>(context, listen: false);
+    final shopId = storeVM.storeId?.toString() ?? "bosh";
+
+    // ✅ Controller → numericValue
+    final rawCost = costPriceController.numericValue;
+    final rawBuy = buyPriceController.numericValue;
+
+    // ✅ ViewModel → UZS ga konvertatsiya
+    final costPrice = currencyVM.toUzsNumeric(rawCost);
+    final buyPrice = currencyVM.toUzsNumeric(rawBuy);
+
+    final phone = PhoneModel(
+      modelName: modelController.text.trim(),
+      colour: colourController.text.trim(),
+      yomkist: int.tryParse(yomkistController.text.trim()),
+      status: statusValue,
+      box: boxValue,
+      imei: imeiCount,
+      buyPrice: buyPrice,
+      CostPrice: costPrice,
+      companyName: selectedCompanyId!,
+      shopId: shopId,
+      imageUrl: uploadedImageUrl,
+      fileId: uploadedFileId,
+      memory: selectedMemory ?? 64,
+      ram: ramController.text.trim().isEmpty
+          ? 0
+          : int.tryParse(ramController.text.trim()) ?? 0,
     );
-    return;
+
+    final phoneVM = Provider.of<PhoneViewModel>(context, listen: false);
+    final result = await phoneVM.addPhone(phone);
+
+    if (result != null) {
+      SnackBarWidget.showSuccess("phone_add_true".tr, 'phone_added_success'.tr);
+      Navigator.pushNamed(context, AppRouter.home);
+    } else {
+      SnackBarWidget.showError("phone_add_false".tr, 'phone_added_error'.tr);
+    }
+
+    setState(() => isLoading = false);
   }
-
-  setState(() => isLoading = true);
-
-  final storeVM = Provider.of<SelectedStoreViewModel>(context, listen: false);
-  final currencyVM = Provider.of<CurrencyViewModel>(context, listen: false);
-  final shopId = storeVM.storeId?.toString() ?? "bosh";
-
-  // ✅ Controller → numericValue
-  final rawCost = costPriceController.numericValue;
-  final rawBuy = buyPriceController.numericValue;
-
-  // ✅ ViewModel → UZS ga konvertatsiya
-  final costPrice = currencyVM.toUzsNumeric(rawCost);
-  final buyPrice  = currencyVM.toUzsNumeric(rawBuy);
-
-  final phone = PhoneModel(
-    modelName: modelController.text.trim(),
-    colour: colourController.text.trim(),
-    yomkist: int.tryParse(yomkistController.text.trim()),
-    status: statusValue,
-    box: boxValue,
-    imei: imeiCount,
-    buyPrice: buyPrice,
-    CostPrice: costPrice,
-    companyName: selectedCompanyId!,
-    shopId: shopId,
-    imageUrl: uploadedImageUrl,
-    fileId: uploadedFileId,
-    memory: selectedMemory ?? 64,
-    ram: ramController.text.trim().isEmpty
-        ? 0
-        : int.tryParse(ramController.text.trim()) ?? 0,
-  );
-
-  final phoneVM = Provider.of<PhoneViewModel>(context, listen: false);
-  final result = await phoneVM.addPhone(phone);
-
-  if (result != null) {
-    SnackBarWidget.showSuccess("phone_add_true".tr, 'phone_added_success'.tr);
-    Navigator.pushNamed(context, AppRouter.home);
-  } else {
-    SnackBarWidget.showError("phone_add_false".tr, 'phone_added_error'.tr);
-  }
-
-  setState(() => isLoading = false);
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +225,7 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
 
               /// Cost Price
               CustomTextfield(
-                label: 'Cost Price',
+                label: 'cost_price'.tr,
                 hint: 'enter_price'.tr,
                 controller: costPriceController,
                 keyboardType: TextInputType.number,
@@ -237,7 +235,7 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
 
               /// Buy Price
               CustomTextfield(
-                label: 'Buy Price',
+                label: 'buy_price'.tr,
                 hint: 'enter_price'.tr,
                 controller: buyPriceController,
                 keyboardType: TextInputType.number,
@@ -249,7 +247,7 @@ class _PhoneAddPageState extends State<PhoneAddPage> {
 
               /// ✅ Buttonlar
               DialogButtons(
-                onCancel: () => Navigator.of(context).pop(),
+                onCancel: () => Navigator.pushNamed(context, AppRouter.home),
                 onSubmit: submit,
                 isLoading: isLoading,
                 cancelText: "cancel".tr,

@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text("Profile"),
+        title:  Text("profile".tr),
       ),
       body: SafeArea(
         child: Padding(
@@ -59,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      'Edit Account',
+                      'edit_account'.tr,
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: theme.colorScheme.secondary,
                       ),

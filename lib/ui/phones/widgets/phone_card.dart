@@ -2,7 +2,7 @@ import 'package:mobi_store/config/constants/colour_map.dart';
 import 'package:mobi_store/config/constants/shimmer_box.dart';
 import 'package:mobi_store/domain/models/phone_model.dart';
 import 'package:mobi_store/export.dart';
-import 'package:mobi_store/ui/core/ui/show/options_show.dart';
+import 'package:mobi_store/ui/core/ui/show/options_phone_show.dart';
 import 'package:mobi_store/ui/core/ui/show/phonesale_show.dart';
 import 'package:mobi_store/ui/provider/currency_viewmodel.dart';
 import 'package:mobi_store/ui/provider/phone_report_view_model.dart';
@@ -21,7 +21,7 @@ class PhoneCard extends StatelessWidget {
     // 🔹 CurrencyViewModel ni olish
     final currencyVM = context.watch<CurrencyViewModel>();
 
-    // 🔹 Narxlarni valyutaga konvert qilish (agar kurs tanlanmagan bo‘lsa, fallback UZSda ko‘rsatamiz)
+    // 🔹 Narxlarni valyutaga konvert qilish
     final buyPrice = CurrencyHelper.fromUzsFormatted(
         phone.buyPrice.toDouble(), currencyVM.selectedCurrency);
 
@@ -36,7 +36,7 @@ class PhoneCard extends StatelessWidget {
           Text(
             titleKey.tr,
             style: theme.textTheme.bodySmall!.copyWith(
-              color: theme.colorScheme.onSecondary,
+              color: theme.colorScheme.onPrimary,
             ),
           ),
           const SizedBox(width: 8),
@@ -57,7 +57,7 @@ class PhoneCard extends StatelessWidget {
 
     return InkWell(
       onTap: () => debugPrint('Ontap: ${phone.id ?? "ID yo‘q"}'),
-      onLongPress: () => OptionsShowWidget.show(context, phone),
+      onLongPress: () => OptionsPhoneShowWidget.show(context, phone),
       child: Container(
         padding: EdgeInsets.all(UiConstants.padding),
         decoration: BoxDecoration(
@@ -73,13 +73,13 @@ class PhoneCard extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          spacing: 6.0,
+          spacing: UiConstants.spacing,
           children: [
             // 🔹 Telefon nomi
             Text(
-              "${phone.companyName.isNotEmpty ? phone.companyModel?.name : 'Noma’lum'} ${phone.modelName}",
+              "${phone.companyName.isNotEmpty ? phone.companyModel?.name : 'unknown'.tr} ${phone.modelName}",
               style: theme.textTheme.bodyLarge!.copyWith(
-                color: theme.primaryColor,
+                color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w600,
               ),
               textAlign: TextAlign.center,
@@ -101,29 +101,36 @@ class PhoneCard extends StatelessWidget {
                     )
                   : Padding(
                       padding: const EdgeInsets.only(top: 12.0),
-                      child: SizedBox(
-                        height: 200,
-                        width: double.maxFinite,
-                        child: ClipRRect(
-                          borderRadius:
-                              BorderRadius.circular(UiConstants.borderRadius),
-                          child: Image.network(
-                            phone.imageUrl!,
-                            fit: BoxFit.fill,
-                            loadingBuilder: (context, child, progress) {
-                              if (progress == null) return child;
-                              return ShimmerBox(
-                                height: 220,
-                                width: double.infinity,
-                                radius: 12.0,
-                              );
-                            },
-                            errorBuilder: (_, __, ___) => Image.asset(
-                              'assets/logo/logo.png',
-                              fit: BoxFit.cover,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Container(
+                            height: 200,
+                            width: constraints.maxWidth, // Konteyner kengligiga moslash
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(UiConstants.borderRadius)
                             ),
-                          ),
-                        ),
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(UiConstants.borderRadius),
+                              child: Image.network(
+                                phone.imageUrl!,
+                                fit: BoxFit.contain, // Asl nisbati saqlanadi
+                                loadingBuilder: (context, child, progress) {
+                                  if (progress == null) return child;
+                                  return ShimmerBox(
+                                    height: 200,
+                                    width: constraints.maxWidth,
+                                    radius: 12.0,
+                                  );
+                                },
+                                errorBuilder: (_, __, ___) => Image.asset(
+                                  'assets/logo/logo.png',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
             ),
@@ -135,9 +142,9 @@ class PhoneCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Colour",
+                  "colour".tr,
                   style: theme.textTheme.bodySmall!.copyWith(
-                    color: theme.colorScheme.onSecondary,
+                    color: theme.colorScheme.onPrimary,
                   ),
                 ),
                 CircleAvatar(
@@ -148,19 +155,19 @@ class PhoneCard extends StatelessWidget {
             ),
 
             // 🔹 Parametrlar
-            row("Memory", "${phone.memory} GB"),
-            if (phone.yomkist != null) row("Yomkist", "${phone.yomkist}"),
-            if (phone.ram != 0) row("RAM", "${phone.ram} GB"),
-            row("Status", phone.status),
+            row("memory".tr, "${phone.memory} GB"),
+            if (phone.yomkist != null) row("yomkist", "${phone.yomkist}"),
+            if (phone.ram != 0) row("ram", "${phone.ram} GB"),
+            row("status".tr, phone.status),
 
             // 🔹 Box bor/yo‘qligi
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Box",
+                  "box".tr,
                   style: theme.textTheme.bodySmall!.copyWith(
-                    color: theme.colorScheme.onSecondary,
+                    color: theme.colorScheme.onPrimary,
                   ),
                 ),
                 Icon(
@@ -171,9 +178,9 @@ class PhoneCard extends StatelessWidget {
               ],
             ),
 
-            // 🔹 Narxlar (konvert qilingan valyutada)
-            row("Buy Price", buyPrice),
-            row("Cost Price", costPrice),
+            // 🔹 Narxlar
+            row("buy_price", buyPrice),
+            row("cost_price", costPrice),
 
             const SizedBox(height: 8.0),
 
@@ -208,9 +215,9 @@ class PhoneCard extends StatelessWidget {
                   );
                 },
                 child: Text(
-                  "Sale".tr,
+                  "sale".tr,
                   style: theme.textTheme.bodyMedium!.copyWith(
-                    color: theme.colorScheme.secondary,
+                    color: theme.colorScheme.onSecondary,
                   ),
                 ),
               ),

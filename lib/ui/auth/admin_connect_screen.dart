@@ -82,7 +82,7 @@ class AdminConnectScreen extends StatelessWidget {
                     ),
                     icon: const Icon(Icons.telegram, color: Colors.white),
                     label: Text(
-                      'kontakt admin',
+                      'contact_admin_button'.tr,
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

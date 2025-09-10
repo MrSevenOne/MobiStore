@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-import 'package:mobi_store/config/constants/ui_constants.dart';
-import 'package:provider/provider.dart';
+import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/provider/daterange_viewmodel.dart';
 import 'package:mobi_store/utils/chart_data.dart';
 
@@ -41,7 +39,7 @@ class StatChartCard<T> extends StatelessWidget {
               children: [
                 Image.asset('assets/icons/emptyitem.png', height: 96),
                 const SizedBox(height: 12),
-                Text("Ma'lumot mavjud emas",
+                Text("no_data_available".tr,
                     style: theme.textTheme.bodySmall),
               ],
             ),
@@ -115,9 +113,9 @@ class StatChartCard<T> extends StatelessWidget {
                                     child: Text(
                                       DateFormat('dd.MM')
                                           .format(parsed[i].date),
-                                      style: const TextStyle(
+                                      style:  TextStyle(
                                         fontSize: 10,
-                                        color: Colors.black54,
+                                        color: theme.colorScheme.onPrimary,
                                       ),
                                     ),
                                   );
@@ -160,6 +158,7 @@ class StatChartCard<T> extends StatelessWidget {
                                 show: true,
                                 gradient: LinearGradient(
                                   colors: [
+                                    // ignore: deprecated_member_use
                                     Colors.blueAccent.withOpacity(0.3),
                                     Colors.transparent,
                                   ],

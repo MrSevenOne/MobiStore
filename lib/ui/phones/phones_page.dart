@@ -45,7 +45,7 @@ class _PhonesPageState extends State<PhonesPage> {
 
     return Scaffold(
       appBar: const CustomAppBar(),
-      drawer: const CustomDrawer(),
+      // drawer: const CustomDrawer(),
       body: Column(
         children: [
           // 🔍 Search bar

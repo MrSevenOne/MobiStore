@@ -31,27 +31,12 @@ class MemoryDropdownWidget extends StatelessWidget {
           child: Text(
             'memory'.tr,
             style: theme.textTheme.bodyMedium!
-                .copyWith(color: theme.colorScheme.onSecondary),
+                .copyWith(color: theme.colorScheme.onPrimary),
           ),
         ),
         const SizedBox(height: 6.0),
         DropdownButtonFormField<int>(
           value: selectedMemory,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.onSecondary),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide:
-                  BorderSide(color: theme.colorScheme.onSecondary, width: 1.2),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5),
-            ),
-          ),
           hint: Text(
             "select_memory".tr,
             style: theme.textTheme.bodyMedium!.copyWith(
@@ -66,7 +51,7 @@ class MemoryDropdownWidget extends StatelessWidget {
                   ))
               .toList(),
           onChanged: onChanged,
-          validator: (value) => value == null ? 'Please select memory'.tr : null,
+          validator: (value) => value == null ? 'please_select_memory'.tr : null,
         ),
       ],
     );

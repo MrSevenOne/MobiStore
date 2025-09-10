@@ -25,67 +25,76 @@ class DialogButtons extends StatelessWidget {
       children: [
         // ❌ Cancel Button
         Expanded(
-          child: InkWell(
-            borderRadius: BorderRadius.circular(8),
-            onTap: isLoading ? null : onCancel,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              decoration: BoxDecoration(
-                border: Border.all(color: theme.colorScheme.shadow),
-                borderRadius: BorderRadius.circular(8),
-                color: theme.colorScheme.secondary,
+          child: Semantics(
+            button: true,
+            label: cancelText,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: isLoading ? null : onCancel,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: theme.colorScheme.shadow),
+                  borderRadius: BorderRadius.circular(8),
+                  color: theme.colorScheme.secondary,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  cancelText,
+                  style: theme.textTheme.bodySmall,
+                ),
               ),
-              alignment: Alignment.center,
-              child: Text(
-                cancelText,
-                style: theme.textTheme.bodySmall,
-              ),
-            ),
-          )
-              // ⬇️ Animate chiqish: fade + slide + sekin
-              .animate()
-              .fadeIn(duration: 500.ms)
-              .slideY(begin: 0.3, end: 0, duration: 500.ms)
-              .scaleXY(begin: 0.95, end: 1.0, duration: 500.ms),
+            ).animatedEntry(),
+          ),
         ),
 
         const SizedBox(width: 12),
 
         // ✅ Submit Button
         Expanded(
-          child: InkWell(
-            borderRadius: BorderRadius.circular(8),
-            onTap: isLoading ? null : onSubmit,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              alignment: Alignment.center,
-              child: isLoading
-                  ? SizedBox(
-                      height: 18,
-                      width: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: theme.colorScheme.secondary,
+          child: Semantics(
+            button: true,
+            label: submitText,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: isLoading ? null : onSubmit,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                alignment: Alignment.center,
+                child: isLoading
+                    ? SizedBox(
+                        height: 18,
+                        width: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: theme.colorScheme.secondary,
+                        ),
+                      )
+                    : Text(
+                        submitText,
+                        style: theme.textTheme.bodySmall!.copyWith(
+                          color: theme.colorScheme.secondary,
+                        ),
                       ),
-                    )
-                  : Text(
-                      submitText,
-                      style: theme.textTheme.bodySmall!
-                          .copyWith(color: theme.colorScheme.secondary),
-                    ),
-            ),
-          )
-              // ⬇️ Animate chiqish: fade + slide + sekin
-              .animate()
-              .fadeIn(duration: 500.ms)
-              .slideY(begin: 0.3, end: 0, duration: 500.ms)
-              .scaleXY(begin: 0.95, end: 1.0, duration: 500.ms),
+              ),
+            ).animatedEntry(),
+          ),
         ),
       ],
     );
   }
+}
+
+/// 🔄 Qayta-qayta yozmaslik uchun animate extension
+extension AnimatedEntry on Widget {
+  Widget animatedEntry() => animate()
+      .fadeIn(duration: 500.ms)
+      .slideY(begin: 0.3, end: 0, duration: 500.ms)
+      .scaleXY(begin: 0.95, end: 1.0, duration: 500.ms);
 }

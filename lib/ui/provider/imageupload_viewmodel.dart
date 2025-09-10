@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobi_store/data/services/data/imagekit/imagekit_service.dart';
@@ -6,7 +5,8 @@ import 'package:mobi_store/data/services/data/imagekit/imagekit_service.dart';
 class ImageUploadViewModel extends ChangeNotifier {
   final ImagePicker _picker = ImagePicker();
 
-  File? pickedImage;
+  // File o'rniga XFile ishlatamiz, chunki u Web va mobilni qo'llab-quvvatlaydi
+  XFile? pickedImage;
   bool isUploading = false;
   String? uploadedUrl;
   String? uploadedFileId;
@@ -15,7 +15,7 @@ class ImageUploadViewModel extends ChangeNotifier {
   Future<void> pickImage() async {
     final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
     if (file != null) {
-      pickedImage = File(file.path);
+      pickedImage = file;
       uploadedUrl = null;
       uploadedFileId = null;
       notifyListeners();

@@ -1,13 +1,15 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/provider/imageupload_viewmodel.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ImageUploadWidget extends StatelessWidget {
   final String userId;
   final String storeId;
   final String folderType; // "phones" yoki "accessories"
   final Function(String imageUrl, String fileId) onImageUploaded;
-
-  /// 🔹 Eski rasmni ko‘rsatish uchun
   final String? initialImageUrl;
 
   const ImageUploadWidget({
@@ -25,7 +27,8 @@ class ImageUploadWidget extends StatelessWidget {
       create: (_) => ImageUploadViewModel(),
       child: Consumer<ImageUploadViewModel>(
         builder: (context, vm, _) {
-          final displayImage = vm.uploadedUrl ?? vm.pickedImage?.path ?? initialImageUrl;
+          final displayImage =
+              vm.uploadedUrl ?? (vm.pickedImage != null ? (kIsWeb ? '' : vm.pickedImage!.path) : initialImageUrl);
 
           return GestureDetector(
             onTap: vm.isUploading
@@ -42,8 +45,8 @@ class ImageUploadWidget extends StatelessWidget {
                         onImageUploaded(vm.uploadedUrl!, vm.uploadedFileId!);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Rasm yuklashda xatolik yuz berdi"),
+                          SnackBar(
+                            content: Text("image_upload_error".tr),
                           ),
                         );
                       }
@@ -53,16 +56,29 @@ class ImageUploadWidget extends StatelessWidget {
               height: 150,
               width: 200,
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: Theme.of(context).colorScheme.outline,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: vm.isUploading
                   ? const Center(child: CircularProgressIndicator())
                   : displayImage != null
                       ? (vm.pickedImage != null
-                          ? Image.file(vm.pickedImage!, fit: BoxFit.cover)
+                          ? (kIsWeb
+                              ? FutureBuilder<Widget>(
+                                  future: vm.pickedImage!.readAsBytes().then((bytes) => Image.memory(bytes, fit: BoxFit.cover)),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                                      return snapshot.data!;
+                                    }
+                                    return const SizedBox.shrink();
+                                  },
+                                )
+                              : Image.file(File(vm.pickedImage!.path), fit: BoxFit.cover))
                           : Image.network(displayImage, fit: BoxFit.cover))
-                      : const Icon(Icons.add_a_photo, size: 50),
+                      : Icon(
+                          Icons.add_a_photo,
+                          size: 50,
+                        ),
             ),
           );
         },

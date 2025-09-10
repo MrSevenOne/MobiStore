@@ -60,7 +60,7 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
             Text(
               'category'.tr,
               style: theme.textTheme.bodyMedium!
-                  .copyWith(color: theme.colorScheme.onSecondary),
+                  .copyWith(color: theme.colorScheme.onPrimary),
             ),
             const SizedBox(height: 6.0),
             DropdownButtonFormField<String>(
@@ -71,7 +71,7 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
                 ),
               ),
               hint: Text(
-                "enter_category".tr,
+                "enter category",
                 style: GoogleFonts.aBeeZee(
                   textStyle: TextStyle(
                     color: theme.colorScheme.shadow,

@@ -1,18 +1,17 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 /// 🔹 ImageKit konfiguratsiyasi
 const String imageKitUploadUrl = "https://upload.imagekit.io/api/v1/files/upload";
 const String imageKitPrivateKey = "private_K1xUUjspkXcLUHHdWQK2FynIYPs=";
 
 class ImageKitService {
-
   /// 🔹 Umumiy rasm yuklash
   /// folderType: "phones", "accessories" va hokazo
   static Future<Map<String, dynamic>?> uploadImage({
-    required File file,
+    required XFile file,
     required String userId,
     required String storeId,
     required String folderType, // misol: "phones" yoki "accessories"
@@ -28,9 +27,16 @@ class ImageKitService {
       final request = http.MultipartRequest('POST', uri)
         ..fields['fileName'] = uniqueFileName
         ..fields['folder'] = folderPath
-        ..files.add(await http.MultipartFile.fromPath('file', file.path))
         ..headers['Authorization'] =
             'Basic ${base64Encode(utf8.encode("$imageKitPrivateKey:"))}';
+
+      // Web uchun Uint8List, mobil uchun File dan foydalanamiz
+      if (kIsWeb) {
+        final bytes = await file.readAsBytes();
+        request.files.add(http.MultipartFile.fromBytes('file', bytes, filename: uniqueFileName));
+      } else {
+        request.files.add(await http.MultipartFile.fromPath('file', file.path));
+      }
 
       final response = await request.send();
       final respStr = await response.stream.bytesToString();
@@ -81,7 +87,7 @@ class ImageKitService {
 
   /// 🔹 Rasmni yangilash (oldFileId bilan o‘chirib, yangi rasmni yuklash)
   static Future<Map<String, dynamic>?> updateImage({
-    required File newFile,
+    required XFile newFile,
     required String userId,
     required String storeId,
     required String folderType, // "phones" yoki "accessories"
@@ -107,7 +113,7 @@ class ImageKitService {
 
   /// 🔹 Safe update: avval yangi rasmni yuklaydi, keyin eski rasmni o‘chiradi
   static Future<Map<String, dynamic>?> safeUpdateImage({
-    required File newFile,
+    required XFile newFile,
     required String userId,
     required String storeId,
     required String folderType, // "phones" yoki "accessories"

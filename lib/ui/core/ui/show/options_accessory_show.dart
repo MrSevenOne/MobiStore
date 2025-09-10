@@ -1,31 +1,32 @@
-import 'package:flutter/material.dart';
 import 'package:mobi_store/data/services/data/imagekit/imagekit_service.dart';
-import 'package:mobi_store/data/services/data/supabase/database/phone_service.dart';
-import 'package:mobi_store/domain/models/phone_model.dart';
+import 'package:mobi_store/domain/models/accessory_model.dart';
 import 'package:mobi_store/export.dart';
-import 'package:mobi_store/ui/phones/widgets/phone_edit.dart';
-import 'package:mobi_store/ui/provider/phone_viewmodel.dart';
+import 'package:mobi_store/ui/core/ui/show/accessoryedit_show.dart';
+import 'package:mobi_store/ui/core/ui/show/delete_show.dart';
+import 'package:mobi_store/ui/provider/accessory_viewmodel.dart';
 
-class OptionsShowWidget extends StatelessWidget {
-  final PhoneModel phoneModel;
-  const OptionsShowWidget({super.key, required this.phoneModel});
+class OptionsAccessoryShowWidget extends StatelessWidget {
+  final AccessoryModel accessoryModel;
+  const OptionsAccessoryShowWidget({super.key, required this.accessoryModel});
 
-  static Future<bool?> show(BuildContext context, PhoneModel phoneModel) async {
+  static Future<bool?> show(
+      BuildContext context, AccessoryModel accessoryModel) async {
     return showDialog<bool>(
       context: context,
-      builder: (_) => OptionsShowWidget(phoneModel: phoneModel),
+      builder: (_) =>
+          OptionsAccessoryShowWidget(accessoryModel: accessoryModel),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final phoneViewModel = context.watch<PhoneViewModel>();
+    final accessoryVM = context.watch<AccessoryViewModel>();
 
     return AlertDialog(
       backgroundColor: theme.scaffoldBackgroundColor,
       title: Text(
-        "${phoneModel.companyModel?.name} ${phoneModel.modelName}",
+        accessoryModel.name,
         style: theme.textTheme.titleSmall,
         textAlign: TextAlign.center,
       ),
@@ -35,24 +36,27 @@ class OptionsShowWidget extends StatelessWidget {
           // 🔹 Delete tugmasi
           GestureDetector(
             onTap: () async {
+              Navigator.pop(context);
               try {
                 // Agar rasm fileId mavjud bo'lsa, rasmni o'chiramiz
-                if (phoneModel.fileId != null &&
-                    phoneModel.fileId!.isNotEmpty) {
-                  await ImageKitService.deleteImage(phoneModel.fileId!);
+                if (accessoryModel.fileId != null &&
+                    accessoryModel.fileId!.isNotEmpty) {
+                  await ImageKitService.deleteImage(accessoryModel.fileId!);
                 }
 
-                // Agar telefon id mavjud bo'lsa, telefonni o'chiramiz
-                if (phoneModel.id != null) {
-                  await phoneViewModel.deletePhone(phoneModel.id!);
-                }
-
-                Navigator.of(context)
-                    .pop(true); // dialog yopiladi va true qaytadi
+                // O'chirishni tasdiqlash uchun dialog
+                await DeleteDialog.show(
+                  context: context,
+                  onConfirm: () async {
+                    if (accessoryModel.id != null) {
+                      await accessoryVM.deleteAccessory(accessoryModel.id!);
+                    }
+                  },
+                  title: "delete_accessory".tr,
+                  description: "are_you_sure_delete_accessory".tr,
+                );
               } catch (e) {
                 debugPrint("Delete Error: $e");
-              } finally {
-                debugPrint("rasm va telefon malumot ochirildi: true");
               }
             },
             child: Container(
@@ -79,8 +83,8 @@ class OptionsShowWidget extends StatelessWidget {
           // ✏️ Edit tugmasi
           GestureDetector(
             onTap: () {
-              // Edit funksiyasini shu yerga qo‘shish mumkin
-              PhoneEditWidget.show(context, phoneModel);
+              AccessoryEditWidget.show(context, accessoryModel);
+              Navigator.pop(context);
             },
             child: Container(
               width: double.infinity,

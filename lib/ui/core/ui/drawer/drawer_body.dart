@@ -28,27 +28,27 @@ class DrawerBodySection extends StatelessWidget {
       children: [
         buildMenuItem(
           CupertinoIcons.person_crop_circle, // Profil icon
-          "Profile",
+          "profile".tr,
           () => Navigator.pushNamed(context, AppRouter.profile),
         ),
         buildMenuItem(
           CupertinoIcons.gear_alt, // Sozlamalar icon
-          "Setting",
+          "setting".tr,
           () => Navigator.pushNamed(context, AppRouter.setting),
         ),
          buildMenuItem(
           CupertinoIcons.creditcard, // Tariff icon
-          "Tariffs",
+          "tariffs".tr,
           () {},
         ),
         buildMenuItem(
           CupertinoIcons.info, // App haqida icon
-          "About App",
+          "aboutApp".tr,
           () => Navigator.pushNamed(context, AppRouter.profile),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Divider(color: theme.colorScheme.shadow),
+          child: Divider(color: theme.colorScheme.outline),
         ),
         ListTile(
           leading: const Icon(
@@ -56,7 +56,7 @@ class DrawerBodySection extends StatelessWidget {
             color: Colors.red,
           ),
           title: Text(
-            "Sign Out",
+            "signOut".tr,
             style: theme.textTheme.bodyMedium!.copyWith(
               color: theme.colorScheme.error,
             ),

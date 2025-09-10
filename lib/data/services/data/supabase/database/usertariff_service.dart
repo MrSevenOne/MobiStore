@@ -6,12 +6,14 @@ class UserTariffService extends BaseService {
   /// Upsert - agar user_id bo‘yicha mavjud bo‘lsa update qiladi
   Future<UserTariffModel?> upsertUserTariff(UserTariffModel userTariff) async {
     try {
+      debugPrint("📥 Upsert input: ${userTariff.toMap()}");
       final response = await supabase
           .from(tableName)
           .upsert(userTariff.toMap(), onConflict: 'user_id')
-          .select()
+          .select('*, tariffs(*)') // tariffs ni ham yuklash uchun qo'shing
           .maybeSingle();
 
+      debugPrint("📡 Upsert response: $response");
       if (response != null) {
         return UserTariffModel.fromMap(response);
       }
@@ -26,7 +28,7 @@ class UserTariffService extends BaseService {
     try {
       final response = await supabase
           .from(tableName)
-          .select('*')
+          .select('*,tariffs(*)')
           .eq('user_id', userId)
           .maybeSingle();
 
@@ -40,22 +42,18 @@ class UserTariffService extends BaseService {
     }
   }
 
-
   Future<bool> hasUserTariff(String userId) async {
-  try {
-    final response = await supabase
-        .from(tableName)
-        .select('id')
-        .eq('user_id', userId)
-        .maybeSingle();
+    try {
+      final response = await supabase
+          .from(tableName)
+          .select('id')
+          .eq('user_id', userId)
+          .maybeSingle();
 
-    return response != null; //yozuv bolsa TRUE
-  } catch (e) {
-    debugPrint('❌ Error in hasUserTariff: $e');
-    return false; // yozuv yoq bolsa FALSE
+      return response != null; //yozuv bolsa TRUE
+    } catch (e) {
+      debugPrint('❌ Error in hasUserTariff: $e');
+      return false; // yozuv yoq bolsa FALSE
+    }
   }
-}
-
-
-
 }

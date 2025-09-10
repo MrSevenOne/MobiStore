@@ -1,7 +1,6 @@
 import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/provider/theme_provider.dart';
 import 'package:mobi_store/ui/provider/user_provider.dart';
-import 'package:shimmer/shimmer.dart';
 
 class DrawerHeaderSection extends StatefulWidget {
   const DrawerHeaderSection({super.key});

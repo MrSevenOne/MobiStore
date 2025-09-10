@@ -115,7 +115,7 @@ class _PhonesaleDialogState extends State<PhonesaleDialog> {
         DialogButtons(
           isLoading: _isLoading,
           cancelText: "cancel".tr,
-          submitText: "config".tr,
+          submitText: "ok".tr,
           onCancel: () => Navigator.pop(context),
           onSubmit: _handleSubmit, // async handler
         ),

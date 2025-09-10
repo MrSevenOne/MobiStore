@@ -1,49 +1,40 @@
 import 'package:mobi_store/data/services/data/imagekit/imagekit_service.dart';
-import 'package:mobi_store/domain/models/phone_model.dart';
+import 'package:mobi_store/domain/models/accessory_model.dart';
 import 'package:mobi_store/export.dart';
 import 'package:mobi_store/ui/core/ui/buttons/showdialog_button.dart';
 import 'package:mobi_store/ui/core/ui/dropdown/colour_dropdown.dart';
-import 'package:mobi_store/ui/core/ui/dropdown/company_dropdown.dart';
-import 'package:mobi_store/ui/core/ui/dropdown/memory_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/textfield/currency_textcontroller.dart';
 import 'package:mobi_store/ui/core/ui/textfield/custom_textfield.dart';
 import 'package:mobi_store/ui/core/ui/imageupload_widget.dart';
-import 'package:mobi_store/ui/provider/phone_viewmodel.dart';
+import 'package:mobi_store/ui/provider/accessory_viewmodel.dart';
 import 'package:mobi_store/ui/provider/selectstore_viewmodel.dart';
 import 'package:mobi_store/ui/provider/currency_viewmodel.dart';
-import 'package:mobi_store/utils/helper/currency_helper.dart';
 
-class PhoneEditWidget extends StatefulWidget {
-  final PhoneModel phone;
+class AccessoryEditWidget extends StatefulWidget {
+  final AccessoryModel accessory;
 
-  const PhoneEditWidget({super.key, required this.phone});
+  const AccessoryEditWidget({super.key, required this.accessory});
 
   @override
-  State<PhoneEditWidget> createState() => _PhoneEditWidgetState();
+  State<AccessoryEditWidget> createState() => _AccessoryEditWidgetState();
 
-  static Future<void> show(BuildContext context, PhoneModel phone) {
+  static Future<void> show(BuildContext context, AccessoryModel accessory) {
     return showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => PhoneEditWidget(phone: phone),
+      builder: (_) => AccessoryEditWidget(accessory: accessory),
     );
   }
 }
 
-class _PhoneEditWidgetState extends State<PhoneEditWidget> {
+class _AccessoryEditWidgetState extends State<AccessoryEditWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late TextEditingController modelController;
+  late TextEditingController nameController;
+  late TextEditingController brandController;
   late TextEditingController colourController;
-  late TextEditingController yomkistController;
   late CurrencyTextController buyPriceController;
-  late TextEditingController ramController;
   late CurrencyTextController costPriceController;
-
-  String? selectedCompanyId;
-  int? selectedMemory;
-  int imeiCount = 0;
-  String statusValue = "Yangi";
-  bool boxValue = true;
+  late TextEditingController quantityController;
 
   bool isLoading = false;
 
@@ -54,35 +45,20 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
   @override
   void initState() {
     super.initState();
-    final phone = widget.phone;
-    modelController = TextEditingController(text: phone.modelName);
-    colourController = TextEditingController(text: phone.colour);
-    yomkistController = TextEditingController(text: phone.yomkist?.toString());
-    ramController = TextEditingController(text: phone.ram?.toString());
-
-    // Controllerlarni bo'sh qoldirib, buildda konvertatsiya qilingan qiymat bilan to'ldiramiz
+    final accessory = widget.accessory;
+    nameController = TextEditingController(text: accessory.name);
+    brandController = TextEditingController(text: accessory.brand ?? '');
+    colourController = TextEditingController(text: accessory.colour ?? '');
     buyPriceController = CurrencyTextController();
     costPriceController = CurrencyTextController();
+    quantityController =
+        TextEditingController(text: accessory.quantity.toString());
 
-    selectedCompanyId = phone.companyName;
-    selectedMemory = phone.memory;
-    imeiCount = phone.imei;
-    statusValue = phone.status;
-    boxValue = phone.box;
-
-    uploadedImageUrl = phone.imageUrl; // Eski rasm saqlanadi, agar mavjud bo'lsa
-    uploadedFileId = phone.fileId;
+    uploadedImageUrl = accessory.imageUrl;
   }
 
   Future<void> submit() async {
     if (!_formKey.currentState!.validate()) return;
-
-    if (selectedCompanyId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("select_company_warning".tr)),
-      );
-      return;
-    }
 
     setState(() => isLoading = true);
 
@@ -99,61 +75,54 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
       return;
     }
 
-    // 🔹 Yangi qiymatlar
-    int? yomkist;
-    if (yomkistController.text.trim().isNotEmpty) {
-      yomkist = int.tryParse(yomkistController.text.trim());
-    }
-
-    int? ram;
-    if (ramController.text.trim().isNotEmpty) {
-      ram = int.tryParse(ramController.text.trim());
-    }
-
-    // 🔹 Controllerdan kiritilgan qiymatni tanlangan valyutadan UZSga konvert qilish
+    // 🔹 Kiritilgan qiymatlarni UZSga konvert qilish
     double buyPriceUzs = currencyVM.toUzsNumeric(
-      double.tryParse(buyPriceController.text.trim().replaceAll(RegExp(r'[^\d.]'), '')) ?? 0,
+      double.tryParse(buyPriceController.text
+              .trim()
+              .replaceAll(RegExp(r'[^\d.]'), '')) ??
+          0,
     );
     double costPriceUzs = currencyVM.toUzsNumeric(
-      double.tryParse(costPriceController.text.trim().replaceAll(RegExp(r'[^\d.]'), '')) ?? 0,
+      double.tryParse(costPriceController.text
+              .trim()
+              .replaceAll(RegExp(r'[^\d.]'), '')) ??
+          0,
     );
+    int quantity = int.tryParse(quantityController.text.trim()) ?? 0;
 
-    // 🔹 Yangilangan telefon modelini yaratish
-    final updatedPhone = PhoneModel(
-      id: widget.phone.id,
-      modelName: modelController.text.trim(),
+    final updatedAccessory = AccessoryModel(
+      categoryId: widget.accessory.categoryId,
+      id: widget.accessory.id,
+      name: nameController.text.trim(),
+      brand: brandController.text.trim().isNotEmpty
+          ? brandController.text.trim()
+          : null,
       colour: colourController.text.trim().isNotEmpty
           ? colourController.text.trim()
           : null,
-      yomkist: yomkist,
-      status: statusValue,
-      box: boxValue,
-      imei: imeiCount,
       buyPrice: buyPriceUzs,
-      CostPrice: costPriceUzs,
+      costPrice: costPriceUzs,
+      quantity: quantity,
+      imageUrl: uploadedImageUrl,
       userId: userId,
-      shopId: shopId,
-      imageUrl: uploadedImageUrl, // Rasm ixtiyoriy, null bo'lishi mumkin
-      fileId: uploadedFileId,
-      companyName: selectedCompanyId!,
-      memory: selectedMemory ?? 64,
-      ram: ram,
-      createdAt: widget.phone.createdAt,
-      companyModel: widget.phone.companyModel,
+      createdAt: widget.accessory.createdAt,
+      storeId: widget.accessory.storeId,
     );
 
-    final phoneVM = Provider.of<PhoneViewModel>(context, listen: false);
-    final result = await phoneVM.updatePhone(updatedPhone);
+    final accessoryVM = Provider.of<AccessoryViewModel>(context, listen: false);
+    final result = await accessoryVM.updateAccessory(
+        widget.accessory.id!, updatedAccessory.toJson());
 
-    if (result != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("phone_updated_success".tr)),
-      );
+    if (result) {
       Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("accessory_updated_success".tr)),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(phoneVM.errorMessage ?? "phone_update_false".tr)),
+            content:
+                Text(accessoryVM.errorMessage ?? "accessory_update_false".tr)),
       );
     }
 
@@ -177,13 +146,15 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
       );
     }
 
-    // 🔹 Bazadan kelgan UZS qiymatni tanlangan valyutaga konvert qilish va controllerlarga qo'yish
+    // 🔹 Bazadan kelgan UZS qiymatni tanlangan valyutaga konvert qilish
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (buyPriceController.text.isEmpty) {
-        buyPriceController.text = currencyVM.formatFromUzs(widget.phone.buyPrice.toDouble());
+        buyPriceController.text =
+            currencyVM.formatFromUzs(widget.accessory.buyPrice);
       }
       if (costPriceController.text.isEmpty) {
-        costPriceController.text = currencyVM.formatFromUzs(widget.phone.CostPrice.toDouble());
+        costPriceController.text =
+            currencyVM.formatFromUzs(widget.accessory.costPrice);
       }
     });
 
@@ -200,16 +171,14 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
                 spacing: 8.0,
                 children: [
                   Text(
-                    "edit_phone".tr,
+                    "edit_accessory".tr,
                     style: theme.textTheme.titleMedium!
                         .copyWith(color: theme.colorScheme.onPrimary),
                   ),
-
-                  /// 🔹 Rasm yuklash/yangilash
                   ImageUploadWidget(
                     userId: userId,
                     storeId: storeVM.storeId.toString(),
-                    initialImageUrl: uploadedImageUrl, // eski rasm ko‘rinadi
+                    initialImageUrl: uploadedImageUrl,
                     onImageUploaded: (url, fileId) async {
                       if (uploadedFileId != null && uploadedFileId != fileId) {
                         await ImageKitService.deleteImage(uploadedFileId!);
@@ -219,32 +188,30 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
                         uploadedFileId = fileId;
                       });
                     },
-                    folderType: 'phones',
+                    folderType: 'accessories',
                   ),
-
-                  CompanyDropdown(
-                    selectedCompanyId: selectedCompanyId,
-                    onChanged: (value) =>
-                        setState(() => selectedCompanyId = value),
-                  ),
-
                   CustomTextfield(
-                    label: 'mobile_name'.tr,
-                    hint: 'enter_model'.tr,
-                    controller: modelController,
+                    label: 'name'.tr,
+                    hint: 'enter_name'.tr,
+                    controller: nameController,
+                    validator: (value) =>
+                        value == null || value.isEmpty ? 'enter_name'.tr : null,
+                  ),
+                  CustomTextfield(
+                    label: 'brand'.tr,
+                    hint: 'enter_brand'.tr,
+                    controller: brandController,
+                  ),
+                  ColourDropdown(controller: colourController),
+                  CustomTextfield(
+                    label: 'quantity'.tr,
+                    hint: 'enter_quantity'.tr,
+                    controller: quantityController,
+                    keyboardType: TextInputType.number,
                     validator: (value) => value == null || value.isEmpty
-                        ? 'enter_model'.tr
+                        ? 'enter_quantity'.tr
                         : null,
                   ),
-
-                  ColourDropdown(controller: colourController),
-
-                  MemoryDropdownWidget(
-                    selectedMemory: selectedMemory,
-                    onChanged: (val) => setState(() => selectedMemory = val),
-                  ),
-
-                  // Buy Price
                   CustomTextfield(
                     label: 'buy_price'.tr,
                     hint: 'enter_price'.tr,
@@ -254,8 +221,6 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
                         ? 'enter_price'.tr
                         : null,
                   ),
-
-                  // Cost Price
                   CustomTextfield(
                     label: 'cost_price'.tr,
                     hint: 'enter_price'.tr,
@@ -265,9 +230,7 @@ class _PhoneEditWidgetState extends State<PhoneEditWidget> {
                         ? 'enter_price'.tr
                         : null,
                   ),
-
                   const SizedBox(height: 16),
-
                   DialogButtons(
                     onCancel: () => Navigator.of(context).pop(),
                     onSubmit: submit,

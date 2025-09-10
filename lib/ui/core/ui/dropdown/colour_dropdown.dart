@@ -31,30 +31,14 @@ class _ColourDropdownState extends State<ColourDropdown> {
           child: Text(
             'colour'.tr,
             style: theme.textTheme.bodyMedium!
-                .copyWith(color: theme.colorScheme.onSecondary),
+                .copyWith(color: theme.colorScheme.onPrimary),
           ),
         ),
         const SizedBox(height: 6.0),
         DropdownButtonFormField<String>(
           value: selectedColor,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.onSecondary),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide:
-                  BorderSide(color: theme.colorScheme.onSecondary, width: 1.2),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide:
-                  BorderSide(color: theme.colorScheme.primary, width: 1.5),
-            ),
-          ),
           hint: Text(
-            "Select colour".tr,
+            "select_colour".tr,
             style: theme.textTheme.bodyMedium!.copyWith(
               color: theme.colorScheme.shadow,
               fontSize: 14,

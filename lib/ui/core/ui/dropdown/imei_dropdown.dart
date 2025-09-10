@@ -26,18 +26,12 @@ class IMEIDropdown extends StatelessWidget {
           child: Text(
             'imei'.tr,
             style: theme.textTheme.bodyMedium!
-                .copyWith(color: theme.colorScheme.onSecondary),
+                .copyWith(color: theme.colorScheme.onPrimary),
           ),
         ),
         SizedBox(height: 6.0),
         DropdownButtonFormField<int>(
           value: selectedValue,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-          ),
           items: options.entries
               .map(
                 (e) => DropdownMenuItem<int>(

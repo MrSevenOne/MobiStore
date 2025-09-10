@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobi_store/routing/app_router.dart';
 import 'package:mobi_store/ui/core/ui/dropdown/accessories_category_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/dropdown/colour_dropdown.dart';
 import 'package:mobi_store/ui/core/ui/imageupload_widget.dart';
@@ -31,16 +32,14 @@ class _AccessoryAddPageState extends State<AccessoryAddPage> {
 
   final CurrencyTextController costPriceController = CurrencyTextController();
   final CurrencyTextController buyPriceController = CurrencyTextController();
-@override
-void initState() {
-  super.initState();
+  @override
+  void initState() {
+    super.initState();
 
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    Provider.of<CompanyViewModel>(context, listen: false).fetchCompanies();
-  });
-}
-
- 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<CompanyViewModel>(context, listen: false).fetchCompanies();
+    });
+  }
 
   String? selectedCategoryId;
   String? uploadedImageUrl;
@@ -77,12 +76,14 @@ void initState() {
       userId: userId,
       createdAt: DateTime.now(),
       quantity: int.tryParse(quantityController.text.trim()) ?? 1,
+      fileId: uploadedFileId,
     );
 
     final accessoryVM = context.read<AccessoryViewModel>();
     final result = await accessoryVM.addAccessory(accessory);
 
     if (result != null) {
+      Navigator.pushNamed(context, AppRouter.home);
       SnackBarWidget.showSuccess(
         "Accessory qo‘shildi",
         'Accessory muvaffaqiyatli qo‘shildi',
@@ -103,9 +104,6 @@ void initState() {
     final userId = UserManager.currentUserId;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Add Accessory"),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Form(
@@ -201,7 +199,7 @@ void initState() {
 
               /// ✅ Buttonlar
               DialogButtons(
-                onCancel: () => Navigator.of(context).pop(),
+                onCancel: () => Navigator.pushNamed(context, AppRouter.home),
                 onSubmit: submit,
                 isLoading: isLoading,
                 cancelText: "Cancel",

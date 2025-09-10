@@ -6,7 +6,6 @@ import 'package:mobi_store/ui/core/ui/textfield/currency_textcontroller.dart';
 import 'package:mobi_store/ui/provider/accessory_report_viewmodel.dart';
 import 'package:mobi_store/ui/provider/accessory_viewmodel.dart';
 import 'package:mobi_store/ui/provider/currency_viewmodel.dart';
-import 'package:provider/provider.dart';
 
 class AccessorySellDialog extends StatefulWidget {
   final AccessoryModel accessoryModel;
@@ -63,7 +62,7 @@ class _AccessorySellDialogState extends State<AccessorySellDialog> {
     final success = await reportVM.addAccessoryToReport(
       accessoryId: widget.accessoryModel.id ?? '',
       saleQuantity: saleQuantity,
-      salePrice: salePriceUzs, // ✅ endi doim UZS va int
+      salePrice: salePriceUzs,
       paymentType: paymentTypeMap[selectedPaymentType]!,
       storeId: widget.accessoryModel.storeId,
     );
@@ -75,13 +74,13 @@ class _AccessorySellDialogState extends State<AccessorySellDialog> {
       );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Accessory sold successfully")),
+          SnackBar(content: Text("accessory_sold_success".tr)),
         );
       }
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Failed to sell accessory")),
+          SnackBar(content: Text("accessory_sold_failed".tr)),
         );
       }
     }
@@ -96,7 +95,7 @@ class _AccessorySellDialogState extends State<AccessorySellDialog> {
 
     return AlertDialog(
       title: Text(
-        "Sell Accessory",
+        "sell_accessory".tr,
         style: theme.textTheme.titleSmall,
         textAlign: TextAlign.center,
       ),
@@ -145,7 +144,9 @@ class _AccessorySellDialogState extends State<AccessorySellDialog> {
                 if (value == null || value.isEmpty) {
                   return 'sale_price_enter'.tr;
                 }
-                if (double.tryParse(value.replaceAll(',', '').replaceAll(' ', '')) == null) {
+                if (double.tryParse(
+                        value.replaceAll(',', '').replaceAll(' ', '')) ==
+                    null) {
                   return 'invalid_number'.tr;
                 }
                 return null;
@@ -199,9 +200,7 @@ class _AccessorySellDialogState extends State<AccessorySellDialog> {
                 return null;
               },
             ),
-
             const SizedBox(height: 10),
-
             // Payment type
             PaymentTypeDropdown(
               selectedValue: selectedPaymentType,
@@ -214,7 +213,7 @@ class _AccessorySellDialogState extends State<AccessorySellDialog> {
         DialogButtons(
           isLoading: _isLoading,
           cancelText: "cancel".tr,
-          submitText: "config".tr,
+          submitText: "ok".tr,
           onCancel: () => Navigator.of(context).pop(),
           onSubmit: _handleSubmit,
         ),

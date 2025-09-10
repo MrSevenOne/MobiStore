@@ -56,11 +56,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   /// Title texts
                   Column(
                     children: [
-                      Text('title'.tr,
+                      Text('sign_in_title'.tr,
                           style: theme.textTheme.titleLarge,
                           textAlign: TextAlign.center),
                       SizedBox(height: 4),
-                      Text('subtitle'.tr,
+                      Text('sign_in_subtitle'.tr,
                           style: theme.textTheme.bodyLarge,
                           textAlign: TextAlign.center),
                     ],

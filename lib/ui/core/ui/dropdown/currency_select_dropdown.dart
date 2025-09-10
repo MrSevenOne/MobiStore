@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:mobi_store/export.dart';
 import 'package:mobi_store/domain/models/currency_model.dart';
 import 'package:mobi_store/ui/provider/currency_viewmodel.dart';
 
@@ -14,18 +13,17 @@ class CurrencyDropdown extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("Currency", style: theme.textTheme.bodyMedium),
+        Text("currency".tr, style: theme.textTheme.bodyMedium),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
+            color: theme.colorScheme.secondary,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: theme.colorScheme.outline),
           ),
           child: DropdownButton<CurrencyModel>(
             value: currencyVM.selectedCurrency,
             underline: const SizedBox(),
-            dropdownColor: theme.colorScheme.surface,
+            dropdownColor: theme.colorScheme.secondary,
             style: theme.textTheme.bodyMedium,
             items: currencyVM.currencies.map((currency) {
               return DropdownMenuItem<CurrencyModel>(

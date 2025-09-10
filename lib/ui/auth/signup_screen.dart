@@ -153,7 +153,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: Text(
-                        authViewModel.errorMessage!,
+                        authViewModel.errorMessage ?? "sign_up_error".tr,
                         style: const TextStyle(color: Colors.red),
                       ),
                     ),
@@ -191,13 +191,13 @@ class _SignupScreenState extends State<SignupScreen> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("have_account".tr,
-              style: theme.textTheme.bodySmall),
+          Text("have_account".tr, style: theme.textTheme.bodySmall),
           TextButton(
             onPressed: () => Navigator.pushNamed(context, AppRouter.login),
             child: Text(
               "sign_in".tr,
-              style:theme.textTheme.bodyMedium!.copyWith(color: theme.primaryColor),
+              style: theme.textTheme.bodyMedium!
+                  .copyWith(color: theme.primaryColor),
             ),
           ),
         ],

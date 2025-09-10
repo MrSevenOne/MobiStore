@@ -53,7 +53,7 @@ class AccessoryViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> updateAccessory(String id, Map<String, dynamic> data) async {
+  Future<bool> updateAccessory(String id, Map<String, dynamic> data) async {
     final success = await _repository.updateAccessory(id, data);
     if (success) {
       final index = _accessories.indexWhere((a) => a.id == id);
@@ -62,6 +62,10 @@ class AccessoryViewModel extends ChangeNotifier {
             AccessoryModel.fromJson({..._accessories[index].toJson(), ...data});
       }
       notifyListeners();
+      return true; // ✅ qaytarish shart
+    } else {
+      _errorMessage = "Accessory yangilashda xatolik yuz berdi";
+      return false; // ✅ qaytarish shart
     }
   }
 

@@ -3,15 +3,6 @@ import 'package:mobi_store/export.dart';
 class UserService extends BaseService {
   UserService() : super('users');
 
-  Future<List<UserModel>> getAllUsers() async {
-    try {
-      final response =
-          await supabase.from(tableName).select().order('created_at');
-      return (response as List).map((e) => UserModel.fromMap(e)).toList();
-    } catch (e) {
-      throw 'UserService.getAllUsers error: $e';
-    }
-  }
 
   /// Hozirgi foydalanuvchi ma’lumotlarini olish
   Future<UserModel?> getUserById(String id) async {

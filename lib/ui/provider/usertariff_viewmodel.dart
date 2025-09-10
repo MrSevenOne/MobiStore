@@ -76,4 +76,15 @@ class UserTariffViewModel extends ChangeNotifier {
       return false;
     }
   }
+   /// 🔹 Asosiy tekshiruv: user accessory ishlata oladimi?
+  Future<bool> hasAccessoryAccess() async {
+    if (userId == null) return false;
+    try {
+      final data = await _service.getUserTariffByUserId(userId!);
+      return data?.tariff?.accessory ?? false;
+    } catch (e) {
+      debugPrint("❌ hasAccessoryAccess error: $e");
+      return false;
+    }
+  }
 }

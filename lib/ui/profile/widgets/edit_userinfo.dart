@@ -68,8 +68,8 @@ class _EditUserinfoWidgetState extends State<EditUserinfoWidget> {
     final isLoading = context.select((UserViewModel vm) => vm.isLoading);
 
     return AlertDialog(
-      title: const Text(
-        "Edit Account",
+      title:  Text(
+        "edit_account".tr,
         textAlign: TextAlign.center,
       ),
       content: Form(
@@ -80,20 +80,20 @@ class _EditUserinfoWidgetState extends State<EditUserinfoWidget> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(hintText: 'Enter name'),
+                decoration:  InputDecoration(hintText: 'enter_name'.tr),
                 validator: (v) =>
-                    v == null || v.isEmpty ? "Enter name" : null,
+                    v == null || v.isEmpty ? "enter_name".tr : null,
               ),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _emailController,
-                decoration: const InputDecoration(hintText: 'Enter email'),
+                decoration:  InputDecoration(hintText: 'enter_email'.tr),
                 validator: (v) {
-                  if (v == null || v.isEmpty) return "Enter email";
+                  if (v == null || v.isEmpty) return "enter_email".tr;
                   final emailRegex =
                       RegExp(r'^[\w\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}$');
                   if (!emailRegex.hasMatch(v.trim())) {
-                    return "Invalid email format";
+                    return "invalid_email_format".tr;
                   }
                   return null;
                 },
@@ -101,13 +101,13 @@ class _EditUserinfoWidgetState extends State<EditUserinfoWidget> {
               const SizedBox(height: 8),
               TextFormField(
                 controller: _passwordController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter new password (optional)',
+                decoration:  InputDecoration(
+                  hintText: 'enter_new_password_optional'.tr,
                 ),
                 obscureText: true,
                 validator: (v) {
                   if (v != null && v.isNotEmpty && v.length < 6) {
-                    return "Password must be at least 6 characters";
+                    return "password_too_short".tr;
                   }
                   return null;
                 },
@@ -119,7 +119,7 @@ class _EditUserinfoWidgetState extends State<EditUserinfoWidget> {
       actions: [
         TextButton(
           onPressed: isLoading ? null : () => Navigator.of(context).pop(),
-          child: const Text("Cancel"),
+          child:  Text("cancel".tr),
         ),
         ElevatedButton(
           onPressed: isLoading ? null : _save,
@@ -129,7 +129,7 @@ class _EditUserinfoWidgetState extends State<EditUserinfoWidget> {
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text("Save"),
+              :  Text("save".tr),
         ),
       ],
     );

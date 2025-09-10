@@ -8,6 +8,7 @@ class AccessoryModel {
   final String? brand;
   final String? colour;
   final String? imageUrl;
+  final String? fileId;    // Yangi qo'shilgan field
   final DateTime createdAt;
   final int storeId;
   final String userId;
@@ -22,6 +23,7 @@ class AccessoryModel {
     this.brand,
     this.colour,
     this.imageUrl,
+    this.fileId,           // Yangi qo'shilgan parametr
     required this.createdAt,
     required this.storeId,
     required this.userId,
@@ -38,6 +40,7 @@ class AccessoryModel {
       brand: json['brand'] as String?,
       colour: json['colour'] as String?,
       imageUrl: json['image_url'] as String?,
+      fileId: json['file_id'] as String?,  // Yangi qo'shilgan field
       createdAt: DateTime.parse(json['created_at']),
       storeId: (json['store_id'] as num).toInt(),
       userId: json['user_id'] as String,
@@ -54,6 +57,7 @@ class AccessoryModel {
       'brand': brand,
       'colour': colour,
       'image_url': imageUrl,
+      'file_id': fileId,    // Yangi qo'shilgan field
       'created_at': createdAt.toIso8601String(),
       'store_id': storeId,
       'user_id': userId,

@@ -39,7 +39,9 @@ class DeleteDialog extends StatelessWidget {
         children: [
           Image.asset('assets/icons/information.png', width: 30),
           const SizedBox(width: 12),
-          Text(title, style: theme.textTheme.titleSmall!.copyWith(color: theme.colorScheme.onPrimary)),
+          Text(title,
+              style: theme.textTheme.titleSmall!
+                  .copyWith(color: theme.colorScheme.onPrimary)),
         ],
       ),
       content: Text(
@@ -49,7 +51,6 @@ class DeleteDialog extends StatelessWidget {
       actions: [
         Row(
           children: [
-            // ❌ Cancel Button
             Expanded(
               child: Material(
                 color: Colors.transparent,
@@ -109,7 +110,7 @@ class DeleteDialog extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child:  Center(
+                    child: Center(
                       child: Text(
                         'delete'.tr,
                         style: TextStyle(

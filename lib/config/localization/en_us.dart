@@ -1,20 +1,30 @@
 const Map<String, String> enUS = {
-  // //
+  // General
   'ok': 'OK',
-  'cancel': 'cancel',
-  'config':'Config',
+  'cancel': 'Cancel',
+  'config': 'Config',
   'delete': 'Delete',
   'edit': 'Edit',
+  'add': 'Add',
+  'save': 'Save',
+  'search': 'Search...',
   'hello': 'Hello',
-  'from':'From',
-  'to':'To',
-  // SIGN IN PAGE
-  'title': 'Hello, Again',
-  'subtitle': 'Welcome back, you\'ve been missed',
+  'from': 'From',
+  'to': 'To',
+
+  // Sign In Page
+  'sign_in_title': 'Hello, Again',
+  'sign_in_subtitle': 'Welcome back, you\'ve been missed',
+  'sign_in': 'Sign In',
+  'dont_have_account': 'Don\'t have an account?',
+  'sign_up': 'Sign Up',
+  'have_account': 'Already Have An Account?',
+  'create_account_title': 'Create Account',
+  'create_account_subtitle': 'Let\'s Create Account Together',
   'user_name': 'Your Name',
+  'name_hint': 'Name',
   'name_empty': 'Please enter your name',
   'name_invalid': 'Invalid name',
-  'name_hint': 'name',
   'email': 'Email Address',
   'email_hint': 'Enter your email',
   'email_empty': 'Please enter your email',
@@ -23,23 +33,22 @@ const Map<String, String> enUS = {
   'password_hint': 'Enter your password',
   'password_empty': 'Please enter your password',
   'recovery_password': 'Recovery Password',
-  'sign_in': 'Sign In',
-  'dont_have_account': 'Don\'t have an account?',
-  'have_account': 'Already Have An Account?',
-  'sign_up': 'Sign Up',
-  'create_account': "Create Account",
-  'create_account_subtitle': 'Let\'s Create Account Together',
-  'admin_c_title': 'Connect With Admin',
-  'admin_c_subtitle': '"Contact the admin to confirm the tariff"',
-  //TARIFF PAGE
+
+  // Admin Connect Page
+  'admin_connect_title': 'Connect With Admin',
+  'admin_connect_subtitle': 'Contact the admin to confirm the tariff',
+  'contact_admin_button': 'Contact Admin',
+
+  // Tariff Page
   'tariff_title': 'Tariffs',
   'tariff_subtitle': 'Choose your tariff',
-  'tariff_buy': "Buy now",
+  'tariff_buy': 'Buy now',
   'tariff_limit_title': 'Tariff Limit',
   'tariff_limit_subtitle':
       'Your store addition limit for the tariff has been reached',
-  //STORE PAGE
-  'store_title': "Your Stores",
+
+  // Store Page
+  'store_title': 'Your Stores',
   'store_subtitle': 'To add a store, click the add button below.',
   'store_create': 'Create Your Store',
   'store_name': 'Store Name',
@@ -47,10 +56,72 @@ const Map<String, String> enUS = {
   'store_name_add': 'Enter name',
   'store_location_add': 'Enter location',
   'shop_delete_title': 'Delete',
-  'shop_delete_description': 'Should the store be deleted ?',
-  'home_title': 'Home Page',
+  'shop_delete_description': 'Should the store be deleted?',
 
-  // Colour names
+  // Home Page
+  'home_title': 'Home Page',
+  'search_phone': 'Looking for model',
+  'add_phone_title': 'Add Phone',
+  'add_accessory_title': 'Add Accessory',
+  'no_store_selected': 'No store selected',
+
+  // Phone Add Page
+  'add_phone': 'Add Phone',
+  'phone_add_true': 'Phone Add',
+  'phone_added_success': 'Phone successfully added',
+  'phone_add_false': 'Phone Error',
+  'phone_added_error': 'An error occurred while adding the phone',
+  'add_press': 'Press + to add information',
+  'upload_image_warning': 'Please upload an image',
+  'image_upload_error': 'An error occurred while uploading the image',
+
+  // Phone Info
+  'mobile_name': 'Model Name',
+  'enter_model': 'Enter model',
+  'imei': 'IMEI',
+  'select_imei': 'Select IMEI count',
+  'status': 'Status',
+  'unknown': 'Unknown',
+  'memory': 'Memory',
+  'select_memory': 'Select memory',
+  'please_select_memory': 'Please select memory',
+  'yomkist': 'Capacity', // Consider renaming to 'capacity' for consistency
+  'ram': 'RAM',
+  'box': 'Box',
+  'box_yes': 'Yes',
+  'box_no': 'No',
+  'buy_price': 'Buy Price',
+  'cost_price': 'Cost Price',
+  'sale_price': 'Sale Price',
+  'sale_price_enter': 'Please enter sale price',
+  'price': 'Price',
+  'enter_price': 'Enter price',
+  'sale': 'Sale',
+  'sale_phone': 'Sell Phone',
+  'payment_type': 'Payment Type',
+  'cash': 'Cash',
+  'card': 'Card',
+  'transfer': 'Transfer',
+  'invalid_number': 'Invalid number',
+  'edit_phone': "Edit Phone",
+
+  // Accessory
+  'sell_accessory': 'Sell Accessory',
+  'quantity': 'Quantity',
+  'quantity_must_be_positive': 'Quantity must be greater than 0',
+  'accessory_sold_success': 'Accessory sold successfully',
+  'accessory_sold_failed': 'Failed to sell accessory',
+  'are_you_sure_delete_accessory':
+      'Are you sure you want to delete this accessory?',
+
+  // Company
+  'company': 'Company',
+  'enter_company': 'Enter company',
+  'select_company': 'Select a company',
+  'select_company_warning': 'Please select a company',
+  'not_select_company': 'No companies available',
+
+  // Colors
   'colour': 'Colour',
   'select_colour': 'Select a colour',
   'color_black': 'Black',
@@ -68,43 +139,44 @@ const Map<String, String> enUS = {
   'color_navy': 'Navy',
   'color_rose_gold': 'Rose Gold',
   'color_champagne': 'Champagne',
-  //Company
-  'company': 'Company',
-  'enter_company': 'Enter company',
-  'select_company': 'Select a company',
-  'not_select_company': 'No companies available',
-  //IMEI
-  'imei': 'Imei',
-  'select_imei': 'Select IMEI count',
-  //Mobile
-  'mobile_name': 'Model Name',
-  'enter_model': 'Enter model',
-  'status': 'Status',
-  // Phone Add Page
-  'add_phone': 'Add Phone',
-  'upload_image_warning': 'Please upload an image',
-  'select_company_warning': 'Please select a company',
-  'phone_add_true': "Phone Add",
-  'phone_added_success': 'Phone successfully added',
-  'phone_add_false': "Phone Error",
-  'phone_added_error': 'An error occurred while adding the phone',
-  'add': 'Add',
-  'price': 'Price',
-  'enter_price': 'Enter price',
-  'box': 'Box',
-  'box_yes': 'Yes',
-  'box_no': 'No',
-  'add_press': 'Press + to add information',
-  //Phone info
-  'yomkis': 'Yomkis',
-  'sale': 'Sale',
-  'memory': "Memory",
-  'select_memory': 'Select memory',
-  'sale_price': 'Sale Price',
-  'sale_price_enter': 'Please enter sale price',
-  'sale_phone': 'Sele Phone',
-  'payment_type': 'Payment Type',
-  'invalid_number': 'Invalid number',
-  //Home Page
-  'search_phone': 'Looking for model',
+
+  // Edit User Info
+  'edit_account': 'Edit Account',
+  'enter_name': 'Enter name',
+  'enter_email': 'Enter email',
+  'invalid_email_format': 'Invalid email format',
+  'enter_new_password_optional': 'Enter new password (optional)',
+  'password_too_short': 'Password must be at least 6 characters',
+  'user_info_updated': '✅ User info updated successfully',
+  'user_info_update_error': '❌ Error: ',
+  'profile': 'Profile',
+
+  // Report Page
+  'report_title': ' Income Report',
+  'total_phones': 'Phones',
+  'total_accessories': 'Accessories',
+  'phone_profit_chart': 'Phone Profit Chart',
+  'accessory_profit_chart': 'Accessory Profit Chart',
+  'top_selling_phones': 'Top Selling Phones',
+  'top_selling_accessories': 'Top Selling Accessories',
+  'no_data_available': 'No data available',
+  'currency_suffix': "so'm",
+  'total_profit': 'Total Profit',
+  "no_permission": "No permission",
+  "no_accessory_permission_message": "You do not have permission to add accessories. Please upgrade your tariff.",
+
+  // Settings
+  'app_setting': 'App Setting',
+  "account_settings": "Account Settings",
+  'setting_and_account': 'Setting & Account',
+  'setting': 'Setting',
+  'dark_mode': 'Dark Mode',
+  'language': 'Language',
+  'currency': 'Currency',
+  'tariffs': 'Tariffs',
+  'aboutApp': 'About App',
+  'signOut': 'Sign Out',
+
+  // Generic Error
+  'error_generic': 'Something went wrong. Please try again.',
 };

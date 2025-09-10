@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:mobi_store/export.dart';
 import 'package:provider/provider.dart';
 import 'package:mobi_store/config/constants/ui_constants.dart';
 import 'package:mobi_store/ui/provider/daterange_viewmodel.dart';
@@ -47,7 +48,7 @@ class TopSaleCard<T> extends StatelessWidget {
               children: [
                 Image.asset('assets/icons/emptyitem.png', height: 96),
                 const SizedBox(height: 12),
-                Text("Ma'lumot mavjud emas",
+                Text("no_data_available".tr,
                     style: theme.textTheme.bodySmall),
               ],
             ),
