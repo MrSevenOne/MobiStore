@@ -1,0 +1,1 @@
+ build/web/manifest.json:  /Users/macbook/Desktop/MyApp/MobiStore/web/index.html /Users/macbook/Desktop/MyApp/MobiStore/web/manifest.json
